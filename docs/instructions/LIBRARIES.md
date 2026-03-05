@@ -5,7 +5,13 @@ Agents should follow this file before introducing new dependencies.
 
 ## Selection Rules
 
-- Prefer libraries listed here over alternatives.
+- Use this explicit precedence for dependency decisions:
+  1. User direct instruction
+  2. Project override (`./LIBRARIES.override.md` in target project root)
+  3. Existing installed/used libraries in the target project
+  4. This policy file (`docs/instructions/LIBRARIES.md`)
+  5. Agent default choice
+- Prefer libraries listed here over alternatives when no higher-precedence rule applies.
 - Before implementation, detect currently installed/used libraries from manifests and code imports.
 - Use existing installed/used libraries first; do not introduce new ones unless required.
 - Reuse existing project dependencies when possible.
@@ -89,7 +95,7 @@ Agents should follow this file before introducing new dependencies.
 
 ## Project Overrides
 
-Projects may define `./LIBRARIES.override.md` for local exceptions.
+Projects may define `./LIBRARIES.override.md` for local exceptions (`./` means target project root).
 
 ### Override Template
 
@@ -117,5 +123,5 @@ Projects may define `./LIBRARIES.override.md` for local exceptions.
 
 1. User direct instruction
 2. `./LIBRARIES.override.md`
-3. Root `LIBRARIES.md`
+3. Repository policy file `docs/instructions/LIBRARIES.md`
 4. Agent default choice

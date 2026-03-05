@@ -6,6 +6,10 @@ Unified home for Claude and Codex configuration.
 
 - `AGENTS.md`: shared cross-agent operating guidance.
 - `CLAUDE.md`: Claude-specific guidance.
+- `docs/instructions/CONVENTIONS.md`: shared engineering conventions.
+- `docs/instructions/LIBRARIES.md`: preferred libraries and dependency policy.
+- `docs/instructions/TRACKING.md`: persistent plan/phase/task tracking standard.
+- `docs/instructions/ENGINEERING_GROWTH.md`: agentic engineering coaching rules.
 - `claude/`: runtime/settings root used via `CLAUDE_CONFIG_DIR`.
 - `codex/`: runtime/settings root used via `CODEX_HOME`.
 - `skills/`: shared skill library.

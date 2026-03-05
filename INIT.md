@@ -16,7 +16,14 @@ bash scripts/init.sh
 ## 3) Reload shell
 
 ```bash
+# zsh
 source ~/.zshrc
+
+# bash
+source ~/.bashrc
+
+# fallback
+source ~/.profile
 ```
 
 ## 4) Verify
