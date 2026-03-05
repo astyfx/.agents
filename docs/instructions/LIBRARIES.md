@@ -46,6 +46,7 @@ Agents should follow this file before introducing new dependencies.
 ### Data Fetching
 
 - `@tanstack/react-query`
+- `axios`
 
 ### Web API
 
