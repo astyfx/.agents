@@ -6,8 +6,8 @@ Unified home for Claude and Codex configuration.
 
 - `AGENTS.md`: shared cross-agent operating guidance.
 - `CLAUDE.md`: Claude-specific guidance.
-- `claude/`: runtime/settings root used by `~/.claude`.
-- `codex/`: runtime/settings root used by `~/.codex`.
+- `claude/`: runtime/settings root used via `CLAUDE_CONFIG_DIR`.
+- `codex/`: runtime/settings root used via `CODEX_HOME`.
 - `skills/`: shared skill library.
 - `subagents/`: shared subagent definitions.
 
@@ -15,3 +15,8 @@ Unified home for Claude and Codex configuration.
 
 This repository is intentionally initialized with a clean baseline.
 Existing `~/.claude` and `~/.codex` are not copied here.
+
+## Bootstrap
+
+Run `scripts/init.sh` on a new device after cloning this repo.
+It configures shell env vars and creates clean baseline files.
