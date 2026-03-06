@@ -1,7 +1,7 @@
 __pycache__/
 *.pyc
 .DS_Store
-codex/rules/
-claude/rules/
-codex/history.jsonl
-codex/tmp/
+
+# Runtime/state directories (local only)
+codex/
+claude/

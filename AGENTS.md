@@ -14,9 +14,14 @@ Shared rules for both Claude and Codex.
 - `docs/instructions/LIBRARIES.md`: preferred libraries and dependency selection policy
 - `docs/instructions/TRACKING.md`: required plan/phase/task artifact structure and lifecycle
 - `docs/instructions/ENGINEERING_GROWTH.md`: coaching rules for agentic engineering skill development
-- `CLAUDE.md` and `claude/`: Claude-specific guidance and settings
-- `codex/`: Codex-specific guidance and settings
+- `CLAUDE.md`: Claude-specific guidance used from the repository root
 - `skills/` and `subagents/`: shared reusable assets
+
+## Runtime Directories
+
+- `claude/` and `codex/` are local runtime/state directories.
+- Do not treat files in those directories as source-of-truth policy.
+- Keep policy and reusable configuration in root-level docs and shared folders.
 
 ## Policy Precedence
 
