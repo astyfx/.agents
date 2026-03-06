@@ -38,9 +38,9 @@ Use Conventional Commits:
 - `docs: ...`
 - `test: ...`
 
-IMPORTANT (Codex + Claude):
-- Do not create, amend, or push commits with a non-Conventional message.
-- If a commit was made with a non-Conventional message, fix it immediately before continuing.
+IMPORTANT: MANDATORY FOR CODEX AND CLAUDE
+- NEVER create, amend, or push commits with a non-Conventional message.
+- If any non-Conventional commit exists, STOP and fix it immediately before any further work.
 
 Rules:
 - Use imperative mood
