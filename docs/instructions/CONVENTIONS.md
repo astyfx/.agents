@@ -38,6 +38,10 @@ Use Conventional Commits:
 - `docs: ...`
 - `test: ...`
 
+IMPORTANT (Codex + Claude):
+- Do not create, amend, or push commits with a non-Conventional message.
+- If a commit was made with a non-Conventional message, fix it immediately before continuing.
+
 Rules:
 - Use imperative mood
 - Keep subject concise (about 72 chars)
