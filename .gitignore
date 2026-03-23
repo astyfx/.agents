@@ -5,3 +5,4 @@ __pycache__/
 # Runtime/state directories (local only)
 codex/
 claude/
+migration-backups/

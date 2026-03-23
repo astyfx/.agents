@@ -40,8 +40,10 @@ Expected:
 
 ## Notes
 
-- No symlink is required.
-- Existing `~/.claude` and `~/.codex` are preserved if present.
+- `~/.claude` and `~/.codex` should be symlinks to `~/.agents/claude` and
+  `~/.agents/codex`.
+- Existing `~/.claude` and `~/.codex` are migrated into `~/.agents` and then
+  replaced with symlinks.
 - The script is idempotent and safe to re-run.
 - `claude/` and `codex/` under this repo are treated as local runtime/state folders.
 - Manage shared policy in `AGENTS.md`, `CLAUDE.md`, `skills/`, and `subagents/`.

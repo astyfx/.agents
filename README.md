@@ -18,9 +18,16 @@ Unified home for Claude and Codex configuration.
 ## Notes
 
 This repository is intentionally initialized with a clean baseline.
-Existing `~/.claude` and `~/.codex` are not copied here.
+The intended steady-state layout is:
+
+- real Claude runtime data under `~/.agents/claude`
+- real Codex runtime data under `~/.agents/codex`
+- `~/.claude` as a symlink to `~/.agents/claude`
+- `~/.codex` as a symlink to `~/.agents/codex`
 
 ## Bootstrap
 
 Run `scripts/init.sh` on a new device after cloning this repo.
-It configures shell env vars and creates clean baseline files.
+It configures shell env vars, creates baseline files, migrates any existing
+runtime state into `~/.agents`, and recreates `~/.claude` / `~/.codex` as
+symlinks.

@@ -3,6 +3,7 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 HOME_DIR="${HOME}"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 
 # Choose shell rc file with a safe fallback.
 SHELL_NAME="$(basename "${SHELL:-}")"
@@ -15,6 +16,7 @@ fi
 
 CLAUDE_DIR="${REPO_DIR}/claude"
 CODEX_DIR="${REPO_DIR}/codex"
+BACKUP_ROOT="${REPO_DIR}/migration-backups/${TIMESTAMP}"
 
 mkdir -p "${CLAUDE_DIR}" "${CODEX_DIR}"
 
@@ -40,21 +42,32 @@ web_search = true
 EOF
 fi
 
-# Avoid symlink dependency: ensure default folders are plain directories.
-timestamp="$(date +%Y%m%d-%H%M%S)"
+mkdir -p "${REPO_DIR}/migration-backups"
+
 if [[ -L "${HOME_DIR}/.claude" ]]; then
   rm "${HOME_DIR}/.claude"
+elif [[ -d "${HOME_DIR}/.claude" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  rsync -a "${HOME_DIR}/.claude/" "${CLAUDE_DIR}/"
+  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy"
+elif [[ -e "${HOME_DIR}/.claude" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy-file"
 fi
+
 if [[ -L "${HOME_DIR}/.codex" ]]; then
   rm "${HOME_DIR}/.codex"
+elif [[ -d "${HOME_DIR}/.codex" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  rsync -a "${HOME_DIR}/.codex/" "${CODEX_DIR}/"
+  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy"
+elif [[ -e "${HOME_DIR}/.codex" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy-file"
 fi
-if [[ -e "${HOME_DIR}/.claude" && ! -d "${HOME_DIR}/.claude" ]]; then
-  mv "${HOME_DIR}/.claude" "${HOME_DIR}/.claude.backup-${timestamp}"
-fi
-if [[ -e "${HOME_DIR}/.codex" && ! -d "${HOME_DIR}/.codex" ]]; then
-  mv "${HOME_DIR}/.codex" "${HOME_DIR}/.codex.backup-${timestamp}"
-fi
-mkdir -p "${HOME_DIR}/.claude" "${HOME_DIR}/.codex"
+
+ln -s "${CLAUDE_DIR}" "${HOME_DIR}/.claude"
+ln -s "${CODEX_DIR}" "${HOME_DIR}/.codex"
 
 # Add env exports to the selected shell rc file once.
 if [[ ! -f "${RC_FILE}" ]]; then
@@ -75,3 +88,5 @@ echo "Config written to: ${RC_FILE}"
 echo "Reload shell: source ${RC_FILE}"
 echo "CLAUDE_CONFIG_DIR=\$HOME/.agents/claude"
 echo "CODEX_HOME=\$HOME/.agents/codex"
+echo "~/.claude -> \$HOME/.agents/claude"
+echo "~/.codex -> \$HOME/.agents/codex"
