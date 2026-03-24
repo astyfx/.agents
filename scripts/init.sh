@@ -27,9 +27,13 @@ fi
 
 if [[ ! -f "${CLAUDE_DIR}/CLAUDE.md" ]]; then
   cat > "${CLAUDE_DIR}/CLAUDE.md" <<'EOF'
-# Claude Local Memory
+# Claude Global Policy
 
-Clean baseline for Claude memory/settings in .agents.
+## Central Policy Reference
+
+- All agent policies are defined in `~/.agents/AGENTS.md`.
+- Always read and follow `~/.agents/AGENTS.md` as the canonical policy source, regardless of which workspace you are working in.
+- This file (`~/.claude/CLAUDE.md`) is the global entry point that ensures the central policy is applied everywhere.
 EOF
 fi
 
@@ -39,6 +43,20 @@ if [[ ! -f "${CODEX_DIR}/config.toml" ]]; then
 
 [tools]
 web_search = true
+EOF
+fi
+
+if [[ ! -f "${CODEX_DIR}/AGENTS.md" ]]; then
+  cat > "${CODEX_DIR}/AGENTS.md" <<'EOF'
+# AGENTS.md
+
+This runtime directory is not a source-of-truth policy location.
+
+Use `../AGENTS.md` as the canonical policy for work under `CODEX_HOME`.
+Treat the instructions in `../AGENTS.md` as fully incorporated here by reference.
+
+If a future local `AGENTS.md` in this runtime directory conflicts with the root file,
+`../AGENTS.md` wins unless the user explicitly instructs otherwise.
 EOF
 fi
 

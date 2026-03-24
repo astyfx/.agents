@@ -45,5 +45,9 @@ Expected:
 - Existing `~/.claude` and `~/.codex` are migrated into `~/.agents` and then
   replaced with symlinks.
 - The script is idempotent and safe to re-run.
-- `claude/` and `codex/` under this repo are treated as local runtime/state folders.
-- Manage shared policy in `AGENTS.md`, `CLAUDE.md`, `skills/`, and `subagents/`.
+- Aside from their bridge policy files, `claude/` and `codex/` under this repo are
+  treated as local runtime/state folders.
+- `~/.agents/AGENTS.md` is the canonical shared policy for all agents.
+- `~/.agents/CLAUDE.md` is only for Claude-specific behavior inside the `.agents` workspace.
+- `claude/CLAUDE.md` and `codex/AGENTS.md` should stay as thin runtime entry files
+  that delegate back to `~/.agents/AGENTS.md`.

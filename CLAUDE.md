@@ -1,10 +1,13 @@
 # CLAUDE.md
 
-Claude-specific instructions for this environment.
+Claude-specific instructions when working inside the `.agents` repository.
 
 ## Scope
 
-- Applies to Claude when working from this `.agents` repository.
-- Shared policies remain in `AGENTS.md`.
-- Root-level `CLAUDE.md` is the maintained Claude policy file.
-- `claude/` is treated as runtime/state storage, not policy source-of-truth.
+- This file applies only when Claude is working from the `.agents` repository itself.
+- Central policy: `./AGENTS.md` (always takes precedence).
+- For Claude-specific customizations within this workspace, add them below.
+
+## Claude-Specific Settings
+
+(none yet — add Claude-specific overrides here as needed)
