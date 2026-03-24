@@ -100,6 +100,9 @@ export CODEX_HOME="\$HOME/.agents/codex"
 EOF
 fi
 
+# GitHub MCP token — set this to your GitHub PAT in your shell rc or secrets manager
+# export GITHUB_MCP_TOKEN="your_token_here"
+
 echo "Initialized .agents settings."
 echo "Shell detected: ${SHELL_NAME:-unknown}"
 echo "Config written to: ${RC_FILE}"
@@ -108,3 +111,20 @@ echo "CLAUDE_CONFIG_DIR=\$HOME/.agents/claude"
 echo "CODEX_HOME=\$HOME/.agents/codex"
 echo "~/.claude -> \$HOME/.agents/claude"
 echo "~/.codex -> \$HOME/.agents/codex"
+
+# --- Health Check ---
+echo ""
+echo "=== Harness Health Check ==="
+HEALTH_OK=true
+[[ -f "${REPO_DIR}/scripts/hooks/pre-commit-lint.sh" ]] && echo "✓ commit hook" || { echo "✗ commit hook missing"; HEALTH_OK=false; }
+[[ -f "${REPO_DIR}/scripts/hooks/pre-write-secrets.sh" ]] && echo "✓ secrets hook" || { echo "✗ secrets hook missing"; HEALTH_OK=false; }
+[[ -f "${REPO_DIR}/scripts/hooks/post-write-format.sh" ]] && echo "✓ format hook" || { echo "✗ format hook missing"; HEALTH_OK=false; }
+[[ -f "${REPO_DIR}/scripts/check-harness.sh" ]] && echo "✓ check-harness.sh" || { echo "✗ check-harness.sh missing"; HEALTH_OK=false; }
+[[ -f "${REPO_DIR}/skills/INDEX.md" ]] && echo "✓ skill index" || { echo "✗ skill index missing (run after skills are added)"; }
+SKILL_COUNT=$(ls "${REPO_DIR}/skills/"*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+echo "  ${SKILL_COUNT} skills registered"
+if [[ "${HEALTH_OK}" == "true" ]]; then
+  echo "Harness: OK"
+else
+  echo "Harness: some components missing — run this script again after setup is complete"
+fi

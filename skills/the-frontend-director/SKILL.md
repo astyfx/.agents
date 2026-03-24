@@ -1,6 +1,13 @@
 ---
 name: the-frontend-director
 description: Build production-grade frontend interfaces for dashboards, admin panels, settings screens, onboarding flows, product pages, landing-page redesigns, and desktop-style Electron UI with strong product design judgment. Use this skill when the user asks to build, redesign, modernize, polish, or rethink a component, page, flow, or interface where layout, hierarchy, interaction, responsiveness, accessibility, or visual UX materially matter; follow the existing repo's framework and design system first, otherwise default to mainstream modern product-stack patterns. Skip this skill for tiny CSS tweaks or logic-only fixes unless the user explicitly wants UI polish, redesign, or a stronger frontend result.
+compatible-tools: [claude, codex]
+category: ui
+test-prompts:
+  - "build a dashboard"
+  - "컴포넌트 만들어줘"
+  - "design this page"
+  - "admin panel 만들어줘"
 ---
 
 # The Frontend Director

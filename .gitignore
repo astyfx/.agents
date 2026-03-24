@@ -6,3 +6,6 @@ __pycache__/
 codex/
 claude/
 migration-backups/
+
+# Cross-session progress scratch file (not committed — use tracking/ for permanent records)
+claude-progress.txt

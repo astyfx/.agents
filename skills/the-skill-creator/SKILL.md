@@ -1,6 +1,13 @@
 ---
 name: the-skill-creator
 description: Create, rewrite, evaluate, and tighten reusable skills. Use whenever the user wants to turn a workflow into a skill, merge or improve existing skills, refine skill triggering/frontmatter, add scripts/references/assets, or test whether a skill actually performs better. For new skills created with this skill, default the folder name and frontmatter name to the-<slug> unless the user explicitly asks for another name.
+compatible-tools: [claude, codex]
+category: workflow
+test-prompts:
+  - "create a new skill"
+  - "새 스킬 만들어줘"
+  - "turn this workflow into a skill"
+  - "스킬 업데이트해줘"
 ---
 
 # The Skill Creator
@@ -93,3 +100,4 @@ Build skills that are small, reusable, and worth triggering.
 - `SKILL.md` is concise and trigger-clear.
 - Optional resources are actually referenced and useful.
 - The skill has been sanity-checked on realistic prompts, or the lack of evals is a conscious choice because the task is subjective.
+- `skills/INDEX.md` is updated to include the new skill (name, category, compatible-tools, trigger summary).

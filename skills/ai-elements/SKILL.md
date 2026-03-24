@@ -1,6 +1,12 @@
 ---
 name: ai-elements
 description: Create new AI chat interface components for the ai-elements library following established composable patterns, shadcn/ui integration, and Vercel AI SDK conventions. Use when creating new components in packages/elements/src or when the user asks to add a new component to ai-elements.
+compatible-tools: [claude, codex]
+category: ui
+test-prompts:
+  - "add AI chat component"
+  - "ai-elements 컴포넌트 추가"
+  - "build chat interface"
 ---
 
 # AI Elements

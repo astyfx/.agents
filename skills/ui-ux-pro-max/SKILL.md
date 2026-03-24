@@ -2,6 +2,13 @@
 name: ui-ux-pro-max
 description: "Comprehensive design guide for web and mobile applications with 67 styles, 96 color palettes, 57 font pairings, 99 UX guidelines, and 25 chart types across 13 technology stacks. Use when designing, building, or reviewing UI/UX for landing pages, dashboards, SaaS, e-commerce, or any web/mobile interface. Triggers on UI, UX, design, style, layout, landing page, color, typography, glassmorphism, minimal, professional."
 allowed-tools: Bash
+compatible-tools: [claude]
+category: ui
+test-prompts:
+  - "design system recommendations"
+  - "color palette 추천"
+  - "UI style guide"
+  - "디자인 시스템"
 ---
 
 # ui-ux-pro-max

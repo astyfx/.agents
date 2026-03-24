@@ -5,6 +5,13 @@ license: MIT
 metadata:
   author: vercel
   version: "1.0.0"
+compatible-tools: [claude, codex]
+category: ui
+test-prompts:
+  - "React performance optimization"
+  - "Next.js best practices"
+  - "번들 최적화"
+  - "re-render 줄이기"
 ---
 
 # Vercel React Best Practices

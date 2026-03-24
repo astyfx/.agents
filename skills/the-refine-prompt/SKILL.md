@@ -1,6 +1,13 @@
 ---
 name: the-refine-prompt
 description: Refine a user's rough, ambiguous, or under-specified prompt into a clearer, more professional instruction for another AI. Use aggressively when the user asks to improve, polish, rewrite, tighten, clarify, structure, professionalize, sharpen, or optimize a prompt, task brief, handoff, request, system prompt, or agent instruction, and also when the user gives a fuzzy idea-dump rather than a clear execution directive. Best for turning rough intent into a prompt with explicit goal, scope, constraints, deliverables, assumptions, and success criteria.
+compatible-tools: [claude, codex]
+category: planning
+test-prompts:
+  - "improve this prompt"
+  - "이 프롬프트 다듬어줘"
+  - "help me structure this spec"
+  - "프롬프트 정리해줘"
 ---
 
 # The Refine Prompt Skill
