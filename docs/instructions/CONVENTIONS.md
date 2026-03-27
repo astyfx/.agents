@@ -67,6 +67,18 @@ Also:
 - Do not silently swallow errors
 - Add short intent comments only where logic is non-obvious
 
+## Comments
+
+- **Explain why, not what** — comment the intent or constraint, not a restatement of the code
+- **Don't comment self-evident code** — `// increment counter` above `count++` adds noise
+- Use standard tags consistently:
+  - `// TODO: <what> — <why>` for known gaps (include a brief reason)
+  - `// FIXME: <what>` for known bugs that need a follow-up
+  - `// HACK: <what> — <why>` when a workaround trades correctness for pragmatism
+- **Public API / exported functions**: add a brief doc comment (JSDoc / docstring) describing the contract — inputs, return value, and any thrown errors
+- **Internal helpers**: skip the doc comment unless the signature alone is unclear
+- Remove commented-out code before merging; use git history instead
+
 ## Testing
 
 - New feature: include happy path, failure path, and edge case coverage
