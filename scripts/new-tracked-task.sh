@@ -15,8 +15,10 @@ SESSION_SLUG="$1"
 FEATURE_SLUG="$2"
 TASK_SLUG="$3"
 TODAY="$(date +%Y-%m-%d)"
+OWNER="${HARNESS_OWNER:-${USER:-unknown}}"
 SESSION_DIR="tracking/sessions/${TODAY}_${SESSION_SLUG}"
 TASK_DIR="${SESSION_DIR}/features/${FEATURE_SLUG}/tasks/${TASK_SLUG}"
+PROGRESS_FILE="claude-progress.txt"
 
 mkdir -p "${TASK_DIR}"
 
@@ -27,6 +29,10 @@ cat > "${TASK_DIR}/plan.md" <<EOF
 ## Scope
 
 TODO: describe what this task covers.
+
+## Task Path
+
+${TASK_DIR}
 
 ## Assumptions
 
@@ -64,7 +70,7 @@ cat > "${TASK_DIR}/tasks.md" <<EOF
 
 - [ ] TODO: first task
 
-Owner: jacob.kim
+Owner: ${OWNER}
 EOF
 
 # execution-log.md
@@ -100,9 +106,64 @@ TODO: anything unresolved.
 ## Next Actions
 
 TODO: what to do next.
+
+## Auto Snapshot
+
+TODO: maintained by stop-time automation when available.
 EOF
+
+python3 - <<'PYEOF' "${PROGRESS_FILE}" "${TASK_DIR}"
+import re
+import sys
+from pathlib import Path
+
+progress_file = Path(sys.argv[1])
+task_dir = sys.argv[2]
+
+template = f"""# Progress
+
+## Task
+TODO: describe the overall goal.
+
+## Tracking Task Path
+{task_dir}
+
+## Status
+Discover
+
+## Last Completed Step
+Task scaffold created.
+
+## Next Action
+Fill in tracking/{task_dir.split('tracking/', 1)[-1]}/plan.md and start work.
+
+## Open Questions
+None yet.
+
+## Changed Files
+None yet.
+
+## Notes
+Created by scripts/new-tracked-task.sh
+"""
+
+if not progress_file.exists():
+    progress_file.write_text(template, encoding="utf-8")
+    sys.exit(0)
+
+text = progress_file.read_text(encoding="utf-8")
+pattern = re.compile(r"^## Tracking Task Path\s*\n.*?(?=^## |\Z)", flags=re.MULTILINE | re.DOTALL)
+replacement = f"## Tracking Task Path\n{task_dir}\n"
+if pattern.search(text):
+    updated = pattern.sub(replacement, text)
+else:
+    updated = text.rstrip() + "\n\n" + replacement
+progress_file.write_text(updated, encoding="utf-8")
+PYEOF
 
 echo "Created tracking task at: ${TASK_DIR}"
 echo ""
 echo "Files created:"
 ls "${TASK_DIR}/"
+echo ""
+echo "Progress file linked to task path: ${PROGRESS_FILE}"

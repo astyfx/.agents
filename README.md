@@ -5,6 +5,7 @@ Unified home for Claude and Codex configuration.
 ## Layout
 
 - `AGENTS.md`: shared cross-agent operating guidance.
+- `ARCHITECTURE.md`: authoritative guide to the harness structure and execution flow.
 - `CLAUDE.md`: Claude-specific guidance when working inside the `.agents` repository.
 - `docs/instructions/CONVENTIONS.md`: shared engineering conventions.
 - `docs/instructions/LIBRARIES.md`: preferred libraries and dependency policy.
@@ -25,6 +26,7 @@ The intended steady-state layout is:
 - `~/.claude` as a symlink to `~/.agents/claude`
 - `~/.codex` as a symlink to `~/.agents/codex`
 - `~/.agents/AGENTS.md` as the canonical shared policy
+- `~/.agents/ARCHITECTURE.md` as the structure and flow reference for harness maintenance
 - thin Claude/Codex bridge files in the runtime directories for agent-specific entry
 
 ## Bootstrap

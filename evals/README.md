@@ -13,8 +13,10 @@ Benchmark tasks for measuring agent (Claude and Codex) performance on representa
 1. Pick a task from `tasks/`.
 2. Open it and read the Input Prompt section.
 3. Give that exact prompt to the agent you are testing (Claude or Codex).
-4. After the agent finishes, score the result using the rubric below.
-5. Save results to `results/YYYY-MM-DD_<agent>_<task-id>.md`.
+4. Create a result file with `bash scripts/new-eval-result.sh <agent> <task-id>`.
+5. After the agent finishes, score the result using the rubric below.
+6. Save notes in the created result file.
+7. Use `python3 scripts/summarize-evals.py` to see the current aggregate view.
 
 ## Scoring Rubric
 
@@ -33,7 +35,8 @@ Each result file records:
 
 ## Result File Template
 
-Create one file per run at `results/YYYY-MM-DD_<agent>_<task-id>.md`:
+Preferred path: `bash scripts/new-eval-result.sh <agent> <task-id>`.
+This creates `results/YYYY-MM-DD_<agent>_<task-id>.md` with the template below:
 
 ```markdown
 # Result — Task <id> — <agent> — <date>
@@ -61,3 +64,8 @@ notes: |
 - After modifying hooks or AGENTS.md
 - After upgrading agent version
 - When you notice repeated failure patterns in real work
+
+## Utility Scripts
+
+- `scripts/new-eval-result.sh` — scaffold a result file with the expected fields
+- `scripts/summarize-evals.py` — summarize runs by agent, pass rate, rework, verification quality, and policy compliance

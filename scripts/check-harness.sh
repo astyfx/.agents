@@ -33,10 +33,16 @@ echo ""
 
 echo "--- Policy files ---"
 check "AGENTS.md exists" "[[ -f '${REPO_DIR}/AGENTS.md' ]]"
+check "ARCHITECTURE.md exists" "[[ -f '${REPO_DIR}/ARCHITECTURE.md' ]]"
+check "CHANGELOG.md exists" "[[ -f '${REPO_DIR}/CHANGELOG.md' ]]"
 check "CONVENTIONS.md exists" "[[ -f '${REPO_DIR}/docs/instructions/CONVENTIONS.md' ]]"
 check "LIBRARIES.md exists" "[[ -f '${REPO_DIR}/docs/instructions/LIBRARIES.md' ]]"
 check "TRACKING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/TRACKING.md' ]]"
 check "ENGINEERING_GROWTH.md exists" "[[ -f '${REPO_DIR}/docs/instructions/ENGINEERING_GROWTH.md' ]]"
+check "ROUTING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/ROUTING.md' ]]"
+check "AGENTS.md references ARCHITECTURE.md" "grep -q 'ARCHITECTURE.md' '${REPO_DIR}/AGENTS.md'"
+check "AGENTS.md references evals/README.md" "grep -q 'evals/README.md' '${REPO_DIR}/AGENTS.md'"
+check "AGENTS.md references learnings/" "grep -q 'learnings/' '${REPO_DIR}/AGENTS.md'"
 
 echo ""
 echo "--- Hook scripts ---"
@@ -44,10 +50,17 @@ check "pre-commit-lint.sh" "[[ -f '${REPO_DIR}/scripts/hooks/pre-commit-lint.sh'
 check "pre-write-secrets.sh" "[[ -f '${REPO_DIR}/scripts/hooks/pre-write-secrets.sh' ]]"
 check "post-write-format.sh" "[[ -f '${REPO_DIR}/scripts/hooks/post-write-format.sh' ]]"
 check "on-stop-handoff.sh" "[[ -f '${REPO_DIR}/scripts/hooks/on-stop-handoff.sh' ]]"
+check "Claude settings wire pre-commit hook" "grep -q 'pre-commit-lint.sh' '${REPO_DIR}/claude/settings.json'"
+check "Claude settings wire secret hook" "grep -q 'pre-write-secrets.sh' '${REPO_DIR}/claude/settings.json'"
+check "Claude settings wire format hook" "grep -q 'post-write-format.sh' '${REPO_DIR}/claude/settings.json'"
+check "Claude settings wire stop handoff hook" "grep -q 'on-stop-handoff.sh' '${REPO_DIR}/claude/settings.json'"
+check "Claude secret hook covers Edit" "grep -q '\"matcher\": \"Edit\"' '${REPO_DIR}/claude/settings.json'"
 
 echo ""
 echo "--- Utility scripts ---"
 check "new-tracked-task.sh" "[[ -f '${REPO_DIR}/scripts/new-tracked-task.sh' ]]"
+check "new-eval-result.sh" "[[ -f '${REPO_DIR}/scripts/new-eval-result.sh' ]]"
+check "summarize-evals.py" "[[ -f '${REPO_DIR}/scripts/summarize-evals.py' ]]"
 
 echo ""
 echo "--- Skills ---"
@@ -74,6 +87,7 @@ done
 echo ""
 echo "--- Evals ---"
 warn "evals/ directory" "[[ -d '${REPO_DIR}/evals' ]]"
+warn "evals/README.md" "[[ -f '${REPO_DIR}/evals/README.md' ]]"
 if [[ -d "${REPO_DIR}/evals/tasks" ]]; then
   EVAL_COUNT=$(ls "${REPO_DIR}/evals/tasks/"*.md 2>/dev/null | wc -l | tr -d ' ')
   echo "  ${EVAL_COUNT} eval tasks found"
@@ -87,6 +101,16 @@ echo "  ${SUBAGENT_COUNT} subagents defined"
 echo ""
 echo "--- Learnings ---"
 warn "learnings/ directory" "[[ -d '${REPO_DIR}/learnings' ]]"
+
+echo ""
+echo "--- Progress file ---"
+if [[ -f "${REPO_DIR}/claude-progress.txt" ]]; then
+  check "claude-progress.txt has Tracking Task Path" "grep -q '^## Tracking Task Path$' '${REPO_DIR}/claude-progress.txt'"
+  check "claude-progress.txt has Next Action" "grep -q '^## Next Action$' '${REPO_DIR}/claude-progress.txt'"
+else
+  echo "~ claude-progress.txt not present (warning)"
+  ((WARNINGS++)) || true
+fi
 
 echo ""
 echo "--- Symlinks ---"

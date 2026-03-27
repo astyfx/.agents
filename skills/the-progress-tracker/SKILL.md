@@ -34,6 +34,9 @@ Cross-session continuity via a portable progress file. Any agent reads and write
 ## Task
 <one-paragraph description of the overall goal>
 
+## Tracking Task Path
+<path to the active tracking task directory, e.g. tracking/sessions/.../tasks/...>
+
 ## Status
 <current phase: Discover | Plan | Implement | Verify | Handoff>
 
@@ -57,6 +60,7 @@ Cross-session continuity via a portable progress file. Any agent reads and write
 - This file is NOT committed (add to `.gitignore` if not already there).
 - It is a working scratch file, not a permanent record.
 - Permanent record lives in `tracking/sessions/.../handoff.md`.
+- `Tracking Task Path` should point to the task directory, not directly to `handoff.md`.
 - Keep it under 30 lines. Compress old entries instead of appending indefinitely.
 
 ## Workflow: Session Start (Resuming)
@@ -64,6 +68,7 @@ Cross-session continuity via a portable progress file. Any agent reads and write
 1. Check if `./claude-progress.txt` exists.
 2. If it exists: read it and produce a structured briefing:
    - Current status and phase
+   - Active tracking task path
    - What was last completed (do not redo this)
    - What to do next (start here)
    - Open questions that need a decision before proceeding
@@ -76,6 +81,7 @@ Update `./claude-progress.txt` at each significant milestone:
 - Phase transition (Discover → Plan, Plan → Implement, etc.)
 - Completion of a file or module
 - When an open question gets resolved
+- When the active tracking task path changes
 
 Keep updates minimal — just change the relevant fields.
 
@@ -84,7 +90,8 @@ Keep updates minimal — just change the relevant fields.
 Before ending the session:
 1. Update `./claude-progress.txt` with final status, last completed step, and next action.
 2. If a tracking task exists, update `tracking/.../handoff.md` as the permanent record.
-3. The progress file captures "where to pick up"; the handoff.md captures "what was done and why".
+3. Make sure `Tracking Task Path` still points to the active task before ending the session.
+4. The progress file captures "where to pick up"; the handoff.md captures "what was done and why".
 
 ## Cross-Agent Compatibility
 
@@ -97,5 +104,6 @@ This skill is compatible with both Claude and Codex because:
 
 A session handoff is complete when:
 - `claude-progress.txt` reflects the current state accurately.
+- `Tracking Task Path` points to the correct active task.
 - The next action is specific enough that a different agent can pick it up cold.
 - Open questions are explicitly listed (not buried in chat history).

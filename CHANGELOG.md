@@ -3,6 +3,31 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-03-25 — Harness Hardening Pass
+
+Focused hardening pass after the v2 expansion.
+
+### Added
+- **Eval operations scripts**:
+  - `scripts/new-eval-result.sh` to scaffold result files
+  - `scripts/summarize-evals.py` to aggregate pass rate, rework, and policy compliance
+- **Progress/task link support** in `claude-progress.txt` via `Tracking Task Path`
+
+### Changed
+- **`ARCHITECTURE.md`** rewritten as the authoritative harness structure guide with current flow diagrams
+- **`AGENTS.md`** now requires future harness work to read and update `ARCHITECTURE.md`
+- **`pre-write-secrets.sh`** strengthened from filename-only blocking to content- and tracked-file-aware checks
+- **Claude hooks** now protect both `Write` and `Edit` for secret-sensitive changes
+- **`on-stop-handoff.sh`** now attempts durable handoff sync when an active tracking task is known
+- **`new-tracked-task.sh`** no longer hardcodes the owner and can seed/update `claude-progress.txt`
+- **`check-harness.sh`** now validates more semantic wiring instead of only file presence
+- **`evals/README.md`** now documents the result scaffolding and summary workflow
+
+### Decision Notes
+- No new skills or subagents were added in this pass
+- The focus was wiring, enforcement, and operability rather than more surface area
+- `ARCHITECTURE.md` is now the required reference doc for future harness maintenance
+
 ## 2026-03-24 — Harness Evolution v2
 
 Major upgrade: added enforcement layer, evals, 4 new skills, learnings, subagents, and platform docs.

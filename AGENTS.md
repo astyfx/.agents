@@ -39,6 +39,13 @@ Central policy hub for all agents (Claude, Codex, etc.).
 - Treat work as substantial when it spans multiple files, changes behavior across components, introduces or refactors a feature, requires phased execution, or couples code and docs/process updates.
 - For small one-file fixes, quick questions, or isolated doc edits, formal tracking artifacts are optional unless the user asks for them.
 
+## Harness Maintenance
+
+- Before changing the harness itself under `~/.agents/` — policy, hooks, skills, subagents, evals, learnings, tracking flow, or runtime bridges — read `~/.agents/ARCHITECTURE.md` first.
+- If a harness change affects structure, execution flow, invariants, or directory responsibilities, update `~/.agents/ARCHITECTURE.md` in the same change.
+- For major harness changes, also update `~/.agents/CHANGELOG.md`.
+- Keep `AGENTS.md` minimal; prefer putting harness-specific flow detail in `ARCHITECTURE.md`, `ROUTING.md`, `evals/README.md`, or skill docs.
+
 ## Prompt Routing Default
 
 - When the user is still shaping work (PRDs, specs, planning docs, fuzzy ideas) rather than requesting immediate execution, use `~/.agents/skills/the-refine-prompt/SKILL.md`.
@@ -53,6 +60,11 @@ Central policy hub for all agents (Claude, Codex, etc.).
 | `~/.agents/docs/instructions/LIBRARIES.md` | Preferred libraries and dependency selection — **follow before adding dependencies** |
 | `~/.agents/docs/instructions/TRACKING.md` | Plan/phase/task artifact structure and lifecycle — **follow for substantial work** |
 | `~/.agents/docs/instructions/ENGINEERING_GROWTH.md` | Coaching rules for agentic engineering skill development — **apply per-task** |
+| `~/.agents/ARCHITECTURE.md` | Authoritative guide to the harness structure, layer responsibilities, and execution flow — **read before changing the harness itself** |
+| `~/.agents/docs/instructions/ROUTING.md` | Subagent spawn rules and single-agent/default boundaries — **follow when changing orchestration** |
+| `~/.agents/evals/README.md` | Benchmark workflow, scoring rubric, and result handling — **use when validating harness changes** |
+| `~/.agents/learnings/` | Generic, transferable engineering knowledge — **update only with reusable learnings, not project-specific facts** |
+| `~/.agents/CHANGELOG.md` | Human-written summary of major harness changes — **update for major harness evolution** |
 | `~/.agents/CLAUDE.md` | Claude-specific settings (applies only inside the `.agents` workspace) |
 | `~/.agents/skills/`, `~/.agents/subagents/` | Shared reusable assets |
 

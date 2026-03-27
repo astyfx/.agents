@@ -1,6 +1,11 @@
 ---
 name: the-build-fixer
-description: Diagnose and fix build failures, TypeScript errors, CI failures, and dependency issues. Use when the user pastes error output from tsc, bun build, npm run build, vitest, eslint, or CI logs, or says "빌드 실패", "CI failed", "tsc error", "build is broken", "fix this error". Applies the failure recovery loop: classify → isolate → minimal fix → verify.
+description: >-
+  Diagnose and fix build failures, TypeScript errors, CI failures, and
+  dependency issues. Use when the user pastes error output from tsc, bun build,
+  npm run build, vitest, eslint, or CI logs, or says "빌드 실패", "CI failed",
+  "tsc error", "build is broken", "fix this error". Applies the failure
+  recovery loop: classify → isolate → minimal fix → verify.
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:
