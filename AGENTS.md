@@ -41,10 +41,11 @@ Central policy hub for all agents (Claude, Codex, etc.).
 
 ## Harness Maintenance
 
-- Before changing the harness itself under `~/.agents/` — policy, hooks, skills, subagents, evals, learnings, tracking flow, or runtime bridges — read `~/.agents/ARCHITECTURE.md` first.
+- Before changing the harness itself under `~/.agents/` — policy, hooks, skills, subagents, evals, learnings, tracking flow, or runtime bridges — read `~/.agents/ARCHITECTURE.md` and `~/.agents/ROADMAP.md` first.
 - If a harness change affects structure, execution flow, invariants, or directory responsibilities, update `~/.agents/ARCHITECTURE.md` in the same change.
 - For major harness changes, also update `~/.agents/CHANGELOG.md`.
 - Keep `AGENTS.md` minimal; prefer putting harness-specific flow detail in `ARCHITECTURE.md`, `ROUTING.md`, `evals/README.md`, or skill docs.
+- When initializing agent config for a new project, use `~/.agents/scripts/init-repo.sh`.
 
 ## Prompt Routing Default
 
@@ -64,6 +65,7 @@ Central policy hub for all agents (Claude, Codex, etc.).
 | `~/.agents/docs/instructions/ROUTING.md` | Subagent spawn rules and single-agent/default boundaries — **follow when changing orchestration** |
 | `~/.agents/evals/README.md` | Benchmark workflow, scoring rubric, and result handling — **use when validating harness changes** |
 | `~/.agents/learnings/` | Generic, transferable engineering knowledge — **update only with reusable learnings, not project-specific facts** |
+| `~/.agents/ROADMAP.md` | Living evolution plan with phases, architecture decisions, and priority — **read before starting harness work** |
 | `~/.agents/CHANGELOG.md` | Human-written summary of major harness changes — **update for major harness evolution** |
 | `~/.agents/CLAUDE.md` | Claude-specific settings (applies only inside the `.agents` workspace) |
 | `~/.agents/skills/`, `~/.agents/subagents/` | Shared reusable assets |

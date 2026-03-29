@@ -3,6 +3,50 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-03-29 — Codex Parity & Expansion (v3)
+
+Major expansion driven by OpenAI Codex use cases analysis, filtered through SaaS engineer/manager role.
+
+### Architecture Decisions
+- **AD-1: Global vs Per-Repo Split** — `.agents` stays global; per-repo config scaffolded via `init-repo.sh`
+- **AD-2: Codex Parity v2** — assumes Codex subagent/plugin support; hook wiring section added to `codex/AGENTS.md`
+- **AD-3: Role-Based Skill Audit** — prioritized skills for SaaS frontend/backend engineer & manager workflow
+
+### Added
+- **ROADMAP.md**: living evolution plan with phases, architecture decisions, and priorities
+- **scripts/init-repo.sh**: per-repo scaffolding (`.claude/`, `.codex/`, override templates, optional tracking/CI)
+- **8 new skills**:
+  - `the-pr-reviewer` (review): automated PR review with GitHub integration
+  - `the-improvement-loop` (workflow): scored iterative refinement
+  - `the-codebase-mapper` (workflow): module maps, request flows, onboarding guides
+  - `the-refactoring-planner` (workflow): large-scale refactoring and product separation plans
+  - `the-figma-to-code` (ui): Figma MCP → code with visual verification loop
+  - `the-slack-to-task` (workflow): Slack conversations → tracked tasks + Jira
+  - `the-api-migrator` (workflow): API/dependency migration with TDD
+  - `the-data-analyst` (workflow): dataset analysis, visualization, insight reports
+- **2 new subagents**:
+  - `planner`: architecture planning for refactoring/separation
+  - `qa-engineer`: test case generation from specs/PRs
+- **9 new eval tasks**: 11-pr-auto-review through 19-data-analysis
+
+### Changed
+- **ARCHITECTURE.md**: added Per-Repo model section, Codex Parity Table v2, init-repo in directory responsibilities
+- **AGENTS.md**: added ROADMAP.md to document map and harness maintenance rules
+- **codex/AGENTS.md**: added hook wiring section (v2) and subagent definitions section
+- **ROUTING.md**: unified Claude/Codex spawn syntax, added planner and qa-engineer spawn rules
+- **check-harness.sh**: validates ROADMAP.md, init-repo.sh presence and executability
+- **skills/INDEX.md**: updated with all 19 skills
+
+### Tested
+- `init-repo.sh` verified on `~/workspace/stave` and `~/workspace/agentize`
+- All harness health checks pass
+
+### Decision Notes
+- All phases (0–4) from ROADMAP.md delivered in a single session
+- Skills designed for cross-agent parity (Claude + Codex compatible where possible)
+- Per-repo init tested on real projects to validate scaffolding
+- Memory system initialized with user role and evolution plan context
+
 ## 2026-03-25 — Harness Hardening Pass
 
 Focused hardening pass after the v2 expansion.

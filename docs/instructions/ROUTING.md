@@ -20,8 +20,9 @@ Use `subagents/researcher/` when the **Discover phase** involves:
 
 The researcher returns a structured report. The main session reads the report and implements.
 
-**How to spawn** (Claude): use the `subagents/researcher/AGENT.md` agent definition.
-**How to spawn** (Codex): create a new task with restricted scope — Read/Grep only, no Write.
+**How to spawn**:
+- Claude: use the `subagents/researcher/AGENT.md` agent definition via the Agent tool.
+- Codex: spawn a subagent referencing `~/.agents/subagents/researcher/AGENT.md`. Restrict tools to Read/Glob/Grep/Bash (read-only).
 
 ## Spawn a Reviewer Subagent
 
@@ -34,7 +35,37 @@ Use `subagents/reviewer/` when the **Verify phase** would benefit from independe
 The reviewer has no context of implementation decisions — it reads the code cold.
 This catches issues the implementer is blind to because they know why they wrote it that way.
 
-**How to spawn**: provide the list of changed files and the verification.md path.
+**How to spawn**:
+- Claude: use the `subagents/reviewer/AGENT.md` agent definition via the Agent tool. Provide the list of changed files and the verification.md path.
+- Codex: spawn a subagent referencing `~/.agents/subagents/reviewer/AGENT.md`. Restrict tools to Read/Glob/Grep only (no Write/Edit/Bash).
+
+## Spawn a Planner Subagent
+
+Use `subagents/planner/` when the **Plan phase** involves large-scale architectural decisions:
+- Refactoring spans > 10 files across > 3 directories
+- Module extraction or product separation is being planned
+- The implementer needs a dependency partition analysis before starting
+- Scope is ambiguous and needs structured decomposition
+
+The planner returns an architecture plan with Mermaid diagrams and migration phases.
+
+**How to spawn**:
+- Claude: use the `subagents/planner/AGENT.md` agent definition via the Agent tool.
+- Codex: spawn a subagent referencing `~/.agents/subagents/planner/AGENT.md`. Restrict tools to Read/Glob/Grep/Bash (read-only).
+
+## Spawn a QA Engineer Subagent
+
+Use `subagents/qa-engineer/` when the **Verify phase** needs comprehensive test coverage planning:
+- A feature has complex business logic with multiple code paths
+- Security-sensitive code needs thorough coverage analysis
+- A PR touches > 5 files and the implementer wants coverage guidance
+- The team wants a structured test plan before implementation
+
+The QA engineer returns a test plan — it does not write test code.
+
+**How to spawn**:
+- Claude: use the `subagents/qa-engineer/AGENT.md` agent definition via the Agent tool.
+- Codex: spawn a subagent referencing `~/.agents/subagents/qa-engineer/AGENT.md`. Restrict tools to Read/Glob/Grep/Bash (read-only).
 
 ## Do Not Spawn a Subagent
 
