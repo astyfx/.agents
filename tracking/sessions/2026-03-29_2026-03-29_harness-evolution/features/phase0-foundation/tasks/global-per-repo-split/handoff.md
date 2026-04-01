@@ -22,37 +22,11 @@ and routing docs for Codex parity assumptions.
 
 ## Auto Snapshot
 
-- Timestamp: 2026-03-29_131701
+- Timestamp: 2026-03-30_001708
 - Working Directory: /Users/jacob.kim/.agents
-- Snapshot File: /Users/jacob.kim/.agents/claude/session-snapshots/2026-03-29_131701.md
+- Snapshot File: /Users/jacob.kim/.agents/claude/session-snapshots/2026-03-30_001708.md
 - Recent Git Status:
 ```text
- M AGENTS.md
- M ARCHITECTURE.md
- M CHANGELOG.md
- M docs/instructions/ROUTING.md
- M scripts/check-harness.sh
- M skills/INDEX.md
-?? ROADMAP.md
-?? evals/tasks/11-pr-auto-review.md
-?? evals/tasks/12-improvement-loop.md
-?? evals/tasks/13-codebase-onboarding.md
-?? evals/tasks/14-refactoring-plan.md
-?? evals/tasks/15-figma-to-code.md
-?? evals/tasks/16-slack-to-task.md
-?? evals/tasks/17-api-migration.md
-?? evals/tasks/18-qa-test-generation.md
-?? evals/tasks/19-data-analysis.md
-?? scripts/init-repo.sh
-?? skills/the-api-migrator/
-?? skills/the-codebase-mapper/
-?? skills/the-data-analyst/
-?? skills/the-figma-to-code/
-?? skills/the-improvement-loop/
-?? skills/the-pr-reviewer/
-?? skills/the-refactoring-planner/
-?? skills/the-slack-to-task/
-?? subagents/planner/
-?? subagents/qa-engineer/
-?? tracking/sessions/2026-03-29_2026-03-29_harness-evolution/
+ M tracking/sessions/2026-03-29_2026-03-29_harness-evolution/features/phase0-foundation/tasks/global-per-repo-split/handoff.md
 ```
+
