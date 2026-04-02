@@ -30,6 +30,7 @@ Central policy hub for all agents (Claude, Codex, etc.).
 ## Working in External Projects
 
 - When entering a workspace outside `~/.agents/`, first scan for existing conventions: `README`, `CONTRIBUTING`, `package.json`, `pyproject.toml`, `Cargo.toml`, `Makefile`, linter/formatter configs, CI workflows, and existing code style.
+- If the target project provides repo-local policy files, read them before falling back to this global policy: shared `./AGENTS.md` when present, and Claude-specific `./CLAUDE.md` or `./.claude/CLAUDE.md` when the active agent is Claude.
 - Respect the project's established patterns. Do not blindly overwrite them with this policy set.
 - Apply `~/.agents/` policies only where the project has no explicit convention or where the user instructs otherwise.
 - Check for project-level override files (`./CONVENTIONS.override.md`, `./LIBRARIES.override.md`) in the project root before falling back to this policy set.
@@ -67,7 +68,7 @@ Central policy hub for all agents (Claude, Codex, etc.).
 | `~/.agents/learnings/` | Generic, transferable engineering knowledge — **update only with reusable learnings, not project-specific facts** |
 | `~/.agents/ROADMAP.md` | Living evolution plan with phases, architecture decisions, and priority — **read before starting harness work** |
 | `~/.agents/CHANGELOG.md` | Human-written summary of major harness changes — **update for major harness evolution** |
-| `~/.agents/CLAUDE.md` | Claude-specific settings (applies only inside the `.agents` workspace) |
+| `~/.agents/CLAUDE.md` | Claude-specific behavioral rules - loaded globally via `~/.claude/CLAUDE.md` MANDATORY instruction, and auto-loaded inside the `.agents` workspace |
 | `~/.agents/skills/`, `~/.agents/subagents/` | Shared reusable assets |
 
 ## Runtime Directories

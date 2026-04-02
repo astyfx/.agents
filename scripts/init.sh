@@ -69,11 +69,13 @@ if [[ ! -f "${CLAUDE_DIR}/CLAUDE.md" ]]; then
   cat > "${CLAUDE_DIR}/CLAUDE.md" <<'EOF'
 # Claude Global Policy
 
-## Central Policy Reference
+## MANDATORY - Read before every session
 
-- All agent policies are defined in `~/.agents/AGENTS.md`.
-- Always read and follow `~/.agents/AGENTS.md` as the canonical policy source, regardless of which workspace you are working in.
-- This file (`~/.claude/CLAUDE.md`) is the global entry point that ensures the central policy is applied everywhere.
+Before responding to any user message:
+1. **Read `~/.agents/AGENTS.md`** - canonical shared policy
+2. **Read `~/.agents/CLAUDE.md`** - Claude-specific behavioral guidance
+
+Apply both as global instructions, supplemented by any project-specific context.
 EOF
 fi
 
@@ -92,11 +94,11 @@ if [[ ! -f "${CODEX_DIR}/AGENTS.md" ]]; then
 
 This runtime directory is not a source-of-truth policy location.
 
-Use `../AGENTS.md` as the canonical policy for work under `CODEX_HOME`.
-Treat the instructions in `../AGENTS.md` as fully incorporated here by reference.
+Use `~/.agents/AGENTS.md` as the canonical policy for work under `CODEX_HOME`.
+Treat the instructions in `~/.agents/AGENTS.md` as fully incorporated here by reference.
 
 If a future local `AGENTS.md` in this runtime directory conflicts with the root file,
-`../AGENTS.md` wins unless the user explicitly instructs otherwise.
+`~/.agents/AGENTS.md` wins unless the user explicitly instructs otherwise.
 EOF
 fi
 

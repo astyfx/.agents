@@ -36,7 +36,7 @@ It is trying to make them behave similarly at the workflow level.
                                 │ interpreted by
 ┌───────────────────────────────▼────────────────────────────────────┐
 │                      Entry / Bridge Layer                          │
-│  claude/CLAUDE.md  -> points Claude back to AGENTS.md              │
+│  claude/CLAUDE.md  -> thin bridge; reads AGENTS.md + CLAUDE.md     │
 │  codex/AGENTS.md   -> points Codex back to AGENTS.md + invariants  │
 └───────────────────────────────┬────────────────────────────────────┘
                                 │ enforced by
@@ -163,7 +163,7 @@ Assumes Codex supports subagents and plugins as of 2026-03.
 
 | Concern | Claude | Codex |
 |---|---|---|
-| Shared policy | `claude/CLAUDE.md` -> `AGENTS.md` | `codex/AGENTS.md` -> `AGENTS.md` |
+| Shared policy | `claude/CLAUDE.md` -> `AGENTS.md` + `CLAUDE.md` | `codex/AGENTS.md` -> `AGENTS.md` |
 | Commit validation | Hook | Hook + hard invariant as safety net |
 | Secret protection | Hook | Hook + hard invariant as safety net |
 | Formatting | Hook | Hook + hard invariant as safety net |
@@ -211,6 +211,7 @@ This means:
 - Teammates without `~/.agents/` still get useful project context from `.claude/CLAUDE.md`.
 - Your personal hooks fire everywhere via the global config — no per-repo duplication needed.
 - Personal per-repo overrides go in `settings.local.json` (gitignored automatically).
+- When a project also ships repo-local policy files, those are consulted before global defaults: `AGENTS.md` for shared rules, plus `CLAUDE.md` or `.claude/CLAUDE.md` for Claude-specific guidance.
 
 ### What stays global (here)
 

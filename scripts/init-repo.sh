@@ -99,6 +99,11 @@ write_if_missing "${PROJECT_DIR}/.claude/CLAUDE.md" "# ${PROJECT_NAME}
      This file is read by Claude Code for all team members.
      Do NOT put personal config here — use settings.local.json instead. -->
 
+## Policy Layer
+
+- If this repository has an \`AGENTS.md\`, treat it as the shared project policy.
+- This file is Claude-specific supplemental guidance.
+
 ## Tech Stack
 
 <!-- Example:
