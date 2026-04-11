@@ -7,40 +7,36 @@ set -euo pipefail
 
 INPUT="$(cat)"
 
-python3 - <<'PYEOF' "$INPUT"
-import sys
-import json
-import re
+perl -MJSON::PP - "$INPUT" <<'PERL'
+use strict;
+use warnings;
+use JSON::PP qw(decode_json);
 
-payload_str = sys.argv[1]
+my $payload_str = shift @ARGV // q{};
+my $payload = eval { decode_json($payload_str) };
+exit 0 if !$payload || ref($payload) ne 'HASH';
 
-try:
-    payload = json.loads(payload_str)
-except json.JSONDecodeError:
-    sys.exit(0)
+my $tool_input = $payload->{tool_input};
+exit 0 if ref($tool_input) ne 'HASH';
 
-command = payload.get("tool_input", {}).get("command", "")
+my $command = $tool_input->{command} // q{};
+exit 0 if $command !~ /\bgit\s+commit\b/;
 
-if "git commit" not in command:
-    sys.exit(0)
+if ($command !~ /-m\s+["']([^"']+)["']/) {
+    exit 0;
+}
 
-# Extract commit message from -m "..." or -m '...'
-msg_match = re.search(r'-m\s+["\']([^"\']+)["\']', command)
-if not msg_match:
-    # Could be a heredoc or other form — allow it through
-    sys.exit(0)
+my $msg = $1;
+my $pattern = qr/^(?:feat|fix|refactor|chore|docs|test|perf|ci|build|revert)(?:\(.+\))?: .+/;
 
-msg = msg_match.group(1)
+if ($msg =~ $pattern) {
+    exit 0;
+}
 
-# Validate Conventional Commits pattern
-pattern = r'^(feat|fix|refactor|chore|docs|test|perf|ci|build|revert)(\(.+\))?: .+'
-if re.match(pattern, msg):
-    sys.exit(0)
-else:
-    print(f"[pre-commit-lint] Commit message does not follow Conventional Commits format.")
-    print(f"  Got: {msg}")
-    print(f"  Expected format: <type>(<scope>): <subject>")
-    print(f"  Valid types: feat, fix, refactor, chore, docs, test, perf, ci, build, revert")
-    print(f"  Example: feat(auth): add OAuth2 login support")
-    sys.exit(2)
-PYEOF
+print "[pre-commit-lint] Commit message does not follow Conventional Commits format.\n";
+print "  Got: $msg\n";
+print "  Expected format: <type>(<scope>): <subject>\n";
+print "  Valid types: feat, fix, refactor, chore, docs, test, perf, ci, build, revert\n";
+print "  Example: feat(auth): add OAuth2 login support\n";
+exit 2;
+PERL

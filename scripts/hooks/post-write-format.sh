@@ -6,14 +6,19 @@
 
 INPUT="$(cat)"
 
-FILE_PATH="$(python3 - <<PYEOF "$INPUT"
-import sys, json
-try:
-    payload = json.loads(sys.argv[1])
-    print(payload.get("tool_input", {}).get("file_path", ""))
-except Exception:
-    print("")
-PYEOF
+FILE_PATH="$(perl -MJSON::PP - "$INPUT" <<'PERL'
+use strict;
+use warnings;
+use JSON::PP qw(decode_json);
+
+my $payload_str = shift @ARGV // q{};
+my $payload = eval { decode_json($payload_str) };
+if ($payload && ref($payload) eq 'HASH' && ref($payload->{tool_input}) eq 'HASH') {
+    my $tool_input = $payload->{tool_input};
+    my $file_path = $tool_input->{file_path} // $tool_input->{path} // q{};
+    print $file_path;
+}
+PERL
 )"
 
 if [[ -z "$FILE_PATH" ]]; then

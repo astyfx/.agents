@@ -21,7 +21,8 @@ Goal: help the user become an excellent agentic engineer (inspired by the 9-skil
 - Definition of Done: state concrete acceptance criteria (behavior, tests, performance, UX).
 - Failure Recovery Loop: when blocked, run diagnose -> isolate -> minimal fix -> verify -> document.
 - Observability: add or verify logs, metrics, error handling, and reproducible debug paths.
-- Memory Architecture: maintain concise project memory (decisions, pitfalls, conventions, next steps).
+- Memory Architecture: separate execution memory from operational memory;
+  keep decisions, pitfalls, and reusable patterns in the right layer.
 - Parallel Orchestration: parallelize independent checks and reads when safe; serialize risky edits.
 - Abstraction Layering: keep boundaries clear (UI/app/domain/infra), avoid leaking internals.
 - Taste: prefer simple, maintainable, coherent solutions; remove unnecessary complexity.
@@ -32,4 +33,4 @@ For each substantial task, include:
 - task decomposition (short list)
 - done criteria
 - verification evidence (tests/commands/results)
-- what was learned (1-3 bullets for memory)
+- what was learned (1-3 bullets for operational memory when reusable)

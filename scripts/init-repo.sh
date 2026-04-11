@@ -2,7 +2,7 @@
 # init-repo.sh — scaffold per-repo agent config for team-friendly use
 #
 # Usage:
-#   bash ~/.agents/scripts/init-repo.sh <project-path> [--with-tracking] [--with-ci]
+#   bash ~/.agents/scripts/init-repo.sh <project-path> [--with-execution] [--with-ci]
 #
 # Design principle:
 #   All generated files are TEAM-FRIENDLY — they contain no personal paths (~/.agents/)
@@ -26,7 +26,7 @@ if [[ $# -lt 1 ]]; then
 Usage: bash ~/.agents/scripts/init-repo.sh <project-path> [options]
 
 Options:
-  --with-tracking   Create tracking/ directory for task artifacts
+  --with-execution  Create execution/ directory for lightweight task records
   --with-ci         Create .github/workflows/ with PR review template
 
 Generated files (all team-committable):
@@ -38,22 +38,22 @@ Generated files (all team-committable):
 
 Personal config (gitignored automatically):
   .claude/settings.local.json   Personal overrides (created only if needed)
-  claude-progress.txt           Cross-session agent state
+  work-handoff.md              Cross-session handoff scratch state
 
 Example:
-  bash ~/.agents/scripts/init-repo.sh ~/workspace/my-project --with-tracking
+  bash ~/.agents/scripts/init-repo.sh ~/workspace/my-project --with-execution
 USAGE
   exit 1
 fi
 
 PROJECT_DIR="$(cd "$1" 2>/dev/null && pwd || echo "$1")"
-WITH_TRACKING=false
+WITH_EXECUTION=false
 WITH_CI=false
 
 shift
 for arg in "$@"; do
   case "$arg" in
-    --with-tracking) WITH_TRACKING=true ;;
+    --with-execution) WITH_EXECUTION=true ;;
     --with-ci)       WITH_CI=true ;;
     *) echo "Unknown option: $arg"; exit 1 ;;
   esac
@@ -199,17 +199,17 @@ These take precedence over workspace-level defaults.
 - Migration plan: N/A
 - Rollback plan: N/A"
 
-# --- Optional: tracking ---
+# --- Optional: execution memory ---
 
-if [[ "$WITH_TRACKING" == "true" ]]; then
+if [[ "$WITH_EXECUTION" == "true" ]]; then
   echo ""
-  echo "=== Tracking (team) ==="
-  if [[ -d "${PROJECT_DIR}/tracking" ]]; then
-    echo "  skip: tracking/ (already exists)"
+  echo "=== Execution Memory (team) ==="
+  if [[ -d "${PROJECT_DIR}/execution" ]]; then
+    echo "  skip: execution/ (already exists)"
   else
-    mkdir -p "${PROJECT_DIR}/tracking/sessions"
-    CREATED+=("${PROJECT_DIR}/tracking/sessions")
-    echo "  create: tracking/sessions/"
+    mkdir -p "${PROJECT_DIR}/execution/sessions"
+    CREATED+=("${PROJECT_DIR}/execution/sessions")
+    echo "  create: execution/sessions/"
   fi
 fi
 
@@ -260,7 +260,7 @@ ADDITIONS=()
 # Personal agent runtime files that should never be committed
 PERSONAL_PATTERNS=(
   "# Agent personal/runtime state (auto-added by init-repo.sh)"
-  "claude-progress.txt"
+  "work-handoff.md"
   ".claude/settings.local.json"
   ".claude/.claude.json"
   ".claude/history.jsonl"

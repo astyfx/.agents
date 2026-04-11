@@ -1,68 +1,121 @@
-#!/usr/bin/env python3
-"""summarize-evals.py — summarize eval result files under evals/results/."""
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Cwd qw(abs_path);
+use File::Basename qw(dirname);
+use File::Spec;
 
-from __future__ import annotations
+my $repo_dir = dirname(dirname(abs_path(__FILE__)));
+my $results_dir = File::Spec->catdir($repo_dir, 'evals', 'results');
 
-from collections import Counter, defaultdict
-from pathlib import Path
-import sys
+sub parse_result {
+    my ($path) = @_;
+    my %data;
 
+    open my $fh, '<', $path or die "Failed to read $path: $!";
+    while (my $line = <$fh>) {
+        chomp $line;
+        next if $line =~ /^#/;
+        next if $line !~ /^([A-Za-z0-9_]+):\s*(.*)$/;
+        $data{$1} = $2;
+    }
+    close $fh;
 
-REPO_DIR = Path(__file__).resolve().parent.parent
-RESULTS_DIR = REPO_DIR / "evals" / "results"
+    return \%data;
+}
 
+sub avg {
+    my ($values) = @_;
+    return '-' if !@{$values};
 
-def parse_result(path: Path) -> dict[str, str]:
-    data: dict[str, str] = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if ":" not in line or line.startswith("#"):
-            continue
-        key, value = line.split(":", 1)
-        data[key.strip()] = value.strip()
-    return data
+    my $sum = 0;
+    $sum += $_ for @{$values};
+    return sprintf '%.2f', $sum / @{$values};
+}
 
+sub trim {
+    my ($value) = @_;
+    $value //= q{};
+    $value =~ s/^\s+//;
+    $value =~ s/\s+$//;
+    return $value;
+}
 
-def avg(values: list[float]) -> str:
-    if not values:
-        return "-"
-    return f"{sum(values) / len(values):.2f}"
+opendir my $dh, $results_dir or die "Failed to read $results_dir: $!";
+my @files = sort grep { /\.md\z/ && -f File::Spec->catfile($results_dir, $_) } readdir $dh;
+closedir $dh;
 
+if (!@files) {
+    print "No eval results found.\n";
+    exit 0;
+}
 
-def main() -> int:
-    files = sorted(RESULTS_DIR.glob("*.md"))
-    if not files:
-        print("No eval results found.")
-        return 0
+my %by_agent;
+my %by_type;
+my $contextualized_runs = 0;
+my $decision_linked_runs = 0;
+for my $filename (@files) {
+    my $path = File::Spec->catfile($results_dir, $filename);
+    my $parsed = parse_result($path);
+    my $agent = $parsed->{agent} // 'unknown';
+    push @{$by_agent{$agent}}, $parsed;
 
-    by_agent: dict[str, list[dict[str, str]]] = defaultdict(list)
-    for path in files:
-        parsed = parse_result(path)
-        agent = parsed.get("agent", "unknown")
-        by_agent[agent].append(parsed)
+    my $eval_type = trim($parsed->{eval_type});
+    $by_type{$eval_type}++ if $eval_type ne q{};
 
-    print(f"Eval results found: {len(files)}")
-    print("")
-    print("| Agent | Runs | Pass | Partial | Fail | Avg Rework | Verify Yes | Policy Yes |")
-    print("|---|---:|---:|---:|---:|---:|---:|---:|")
+    my $change_under_test = trim($parsed->{change_under_test});
+    my $decision_target = trim($parsed->{decision_target});
+    $contextualized_runs++ if $eval_type ne q{} || $change_under_test ne q{} || $decision_target ne q{};
+    $decision_linked_runs++ if $decision_target ne q{};
+}
 
-    for agent in sorted(by_agent):
-        runs = by_agent[agent]
-        pass_counts = Counter(run.get("pass", "").lower() for run in runs)
-        verify_yes = sum(1 for run in runs if run.get("verification_quality", "").lower() == "yes")
-        policy_yes = sum(1 for run in runs if run.get("policy_compliance", "").lower() == "yes")
-        rework_values = []
-        for run in runs:
-            value = run.get("rework_count", "").strip()
-            if value.isdigit():
-                rework_values.append(float(value))
-        print(
-            f"| {agent} | {len(runs)} | {pass_counts.get('yes', 0)} | "
-            f"{pass_counts.get('partial', 0)} | {pass_counts.get('no', 0)} | "
-            f"{avg(rework_values)} | {verify_yes} | {policy_yes} |"
-        )
+print 'Eval results found: ' . scalar(@files) . "\n\n";
+print "| Agent | Runs | Pass | Partial | Fail | Avg Rework | Verify Yes | Policy Yes |\n";
+print "|---|---:|---:|---:|---:|---:|---:|---:|\n";
 
-    return 0
+for my $agent (sort keys %by_agent) {
+    my @runs = @{$by_agent{$agent}};
+    my %pass_counts = (
+        yes => 0,
+        partial => 0,
+        no => 0,
+    );
+    my $verify_yes = 0;
+    my $policy_yes = 0;
+    my @rework_values;
 
+    for my $run (@runs) {
+        my $pass = lc($run->{pass} // q{});
+        $pass_counts{$pass}++ if exists $pass_counts{$pass};
 
-if __name__ == "__main__":
-    sys.exit(main())
+        $verify_yes++ if lc($run->{verification_quality} // q{}) eq 'yes';
+        $policy_yes++ if lc($run->{policy_compliance} // q{}) eq 'yes';
+
+        my $value = $run->{rework_count} // q{};
+        push @rework_values, $value + 0 if $value =~ /^\d+$/;
+    }
+
+    print '| ' . $agent
+      . ' | ' . scalar(@runs)
+      . ' | ' . $pass_counts{yes}
+      . ' | ' . $pass_counts{partial}
+      . ' | ' . $pass_counts{no}
+      . ' | ' . avg(\@rework_values)
+      . ' | ' . $verify_yes
+      . ' | ' . $policy_yes
+      . " |\n";
+}
+
+print "\n";
+print 'Contextualized runs: ' . $contextualized_runs . ' / ' . scalar(@files) . "\n";
+print 'Decision-linked runs: ' . $decision_linked_runs . ' / ' . scalar(@files) . "\n";
+
+if (%by_type) {
+    print "\n| Eval Type | Runs |\n";
+    print "|---|---:|\n";
+    for my $eval_type (sort keys %by_type) {
+        print '| ' . $eval_type . ' | ' . $by_type{$eval_type} . " |\n";
+    }
+}
+
+exit 0;

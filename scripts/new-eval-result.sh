@@ -39,6 +39,9 @@ cat > "${RESULT_FILE}" <<EOF
 
 task_id: ${TASK_ID}
 agent: ${AGENT}
+eval_type:
+change_under_test:
+decision_target:
 pass:
 rework_count:
 verification_quality:

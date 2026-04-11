@@ -3,8 +3,8 @@
 Living document for `.agents` harness evolution.
 Updated by humans and agents. Read this before starting harness work.
 
-**Last updated**: 2026-03-29
-**Current phase**: All initial phases complete. Ready for real-world usage and iteration.
+**Last updated**: 2026-04-08
+**Current phase**: Phase 5 complete: operating-model reboot finalized on `execution/`.
 
 ---
 
@@ -17,6 +17,19 @@ whose work includes:
 - Internal tooling (stave, agentize)
 - Team-level tooling (Linear-like, agent orchestration workflows)
 - Large-scale refactoring and product separation
+
+All initial build-out phases were completed, but the next constraint is no
+longer missing surface area. The operating loop itself needed reassessment:
+`learnings/` was static, `evals/` was not feeding decisions, and the roadmap
+had to govern active iteration again instead of only recording completed
+construction work.
+
+The first implementation slice of that reassessment is now underway:
+- thin-core context-loading rules
+- operational memory scaffolding under `memory/`
+- a troubleshooting-first capture model
+- an initial harness scorecard baseline
+- removal of the `python3` dependency from tracked-task handoff seeding
 
 ---
 
@@ -32,8 +45,8 @@ Projects get their own config via a scaffolding script.
 | AGENTS.md (canonical policy) | `.claude/CLAUDE.md` (project context + global pointer) |
 | Generic skills (TDD, code-review, etc.) | `CONVENTIONS.override.md` |
 | Generic subagents (researcher, reviewer) | `LIBRARIES.override.md` |
-| Enforcement hooks (commit, secrets, format) | `tracking/` (project-specific tasks) |
-| Learnings (generic eng knowledge) | `claude-progress.txt` (project working state) |
+| Enforcement hooks (commit, secrets, format) | `execution/` (project-specific tasks) |
+| Operational memory (patterns, troubleshooting, decisions) | `work-handoff.md` (project working state) |
 | Eval framework | `.github/workflows/` (project CI) |
 | CONVENTIONS.md, LIBRARIES.md (defaults) | Project-specific hooks/settings |
 | ROADMAP.md, CHANGELOG.md | Codebase map (generated per-repo) |
@@ -64,7 +77,7 @@ Priority assessment for SaaS frontend/backend engineer & manager:
 | the-improvement-loop (NEW) | P1 | Scored iteration pattern — quality, perf, coverage |
 | the-api-migrator (NEW) | P2 | Dependency upgrades, API version migrations |
 | the-figma-to-code (NEW) | P2 | Figma MCP → code with visual verification |
-| the-slack-to-task (NEW) | P2 | Manager workflow: Slack thread → tracked task + Jira |
+| the-slack-thread-worker (NEW) | P2 | Slack thread → task extraction, Jira prep, or end-to-end execution |
 | the-data-analyst (NEW) | P3 | Data analysis & reporting — less frequent need |
 
 Subagent additions:
@@ -73,6 +86,18 @@ Subagent additions:
 |---|---|---|
 | planner (NEW) | P1 | Architecture planning for refactoring/separation — structured output |
 | qa-engineer (NEW) | P2 | Spec → test cases, regression coverage |
+
+### AD-4: Thin Core, Thick On-Demand Context
+
+The default prompt surface should stay minimal. Durable detail should move into
+indexed, on-demand modules such as skills, playbooks, troubleshooting guides,
+and operational memory.
+
+**Rationale**:
+- Lower token overhead for everyday work
+- Better separation between always-on policy and situational guidance
+- Easier cross-agent parity because the contract is artifact-based, not
+  monolithic-prompt-based
 
 ---
 
@@ -88,7 +113,7 @@ Subagent additions:
    - Creates `.codex/AGENTS.md` (project context + global delegate)
    - Creates `CONVENTIONS.override.md` template
    - Creates `LIBRARIES.override.md` template
-   - `--with-tracking` flag: creates `tracking/` directory
+   - `--with-execution` flag: creates `execution/` directory
    - `--with-ci` flag: creates `.github/workflows/` with PR review template
 2. Update `codex/AGENTS.md` — add hook wiring section (matching Claude's model)
 3. Update `ARCHITECTURE.md` — add per-repo layer, update parity table for v2
@@ -153,19 +178,19 @@ Subagent additions:
    - Playwright screenshot → visual comparison checklist
    - Iteration loop until visual match
    - Compatible: Claude, Codex (if MCP available)
-2. `skills/the-slack-to-task/SKILL.md`
+2. `skills/the-slack-thread-worker/SKILL.md`
    - Slack MCP → thread content extraction
    - Task decomposition with acceptance criteria
-   - new-tracked-task.sh integration
-   - Jira issue creation via Atlassian MCP
-   - Compatible: Claude (requires Slack MCP)
+   - Jira/resource prep and optional Stave registration
+   - optional repo execution, verification, and PR creation
+   - Compatible: Claude, Codex
 3. `skills/the-api-migrator/SKILL.md`
    - Audit current usage (grep + AST-level scan)
    - Breaking change mapping (changelog/migration guide parsing)
    - TDD-first migration (uses the-tdd)
    - Verification (uses the-build-fixer for error recovery)
    - Compatible: Claude, Codex
-4. Eval tasks: `15-figma-to-code.md`, `16-slack-to-task.md`, `17-api-migration.md`
+4. Eval tasks: `15-figma-to-code.md`, `16-slack-thread-worker.md`, `17-api-migration.md`
 
 ### Phase 4: Multi-Role Expansion & Analytics
 
@@ -185,6 +210,58 @@ Subagent additions:
 3. Update `ROUTING.md` with qa-engineer spawn rules
 4. Eval tasks: `18-qa-test-generation.md`, `19-data-analysis.md`
 
+### Phase 5: Operating Model Reassessment (Complete)
+
+**Goal**: Reorganize the harness around a thinner core, clearer memory layers,
+and an active improvement loop that compounds through real use.
+
+**Tracked plan**:
+- `execution/sessions/2026-04-07_harness-reassessment/features/operating-model/tasks/reboot-plan/plan.md`
+
+**Planned deliverables**:
+1. Thin-core prompt reduction
+   - Move bulky default guidance behind index-first routing where possible
+   - Define a context-budget rule for future docs and skills
+2. Memory model redesign
+   - Promote `execution/` as the durable execution-memory path
+   - Replace or restructure `learnings/` into a maintained operational memory
+     system
+   - Add recurring-failure and troubleshooting capture
+3. Workflow and integration playbooks
+   - Turn high-value MCP/tool flows into reusable operating playbooks
+4. Active improvement loop
+   - Require real eval runs for significant harness changes
+   - Add a lightweight harness scorecard tied to roadmap decisions
+5. Adoption and migration cleanup
+   - Update docs, scripts, and repo-init flows to match the new model
+
+**Initial slice delivered (2026-04-07)**:
+1. `docs/instructions/CONTEXT_LOADING.md`
+   - defines thin-core and index-first loading rules
+2. `memory/`
+   - scaffolds decisions, troubleshooting, playbooks, patterns, and scorecards
+3. `scripts/new-task.sh`
+   - no longer depends on `python3` to seed or update `work-handoff.md`
+4. Core docs
+   - now define `execution/` as execution memory and `memory/` as operational memory
+5. Harness scorecard baseline
+   - records the reboot starting point for future comparison
+
+**Final outcome (2026-04-08)**:
+- `execution/` is the only durable task-state root used by the harness
+- `scripts/new-task.sh` and `scripts/init-repo.sh --with-execution` are the
+  canonical scaffolding path
+- `memory/` now contains 7 active playbooks and 2 decision records
+- `evals/results/` now contains 4 real eval runs with aggregate pass coverage
+- the active init, hook, scaffolding, and eval-summary path is python-free
+
+**Why this phase exists**:
+- Tracking was successfully reduced, but that only removed paperwork
+- Learnings still do not grow naturally
+- Evals exist but are not yet steering evolution
+- The user needs the harness to support engineering, management, documentation,
+  communication, and integrations as a compounding system
+
 ---
 
 ## Sustainability Mechanisms
@@ -192,7 +269,7 @@ Subagent additions:
 ### How future sessions find this plan
 1. **ROADMAP.md** (this file) — referenced from AGENTS.md Document Map
 2. **CHANGELOG.md** — records what was actually delivered per phase
-3. **Memory** — `project_harness_evolution.md` points to this file
+3. **Memory** — operational memory records and scorecards point back to this file
 4. **check-harness.sh** — validates ROADMAP.md exists and is referenced
 
 ### How to update this roadmap
@@ -214,3 +291,4 @@ Subagent additions:
 | Phase 2: Comprehension | ✅ | 2026-03-29 |
 | Phase 3: Integration | ✅ | 2026-03-29 |
 | Phase 4: Expansion | ✅ | 2026-03-29 |
+| Phase 5: Operating Model Reassessment | ✅ | 2026-04-08 |

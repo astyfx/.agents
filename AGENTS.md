@@ -14,6 +14,20 @@ Central policy hub for all agents (Claude, Codex, etc.).
 - **Agent responses**: Korean by default (explanations, status updates, direct answers). Switch only when the user explicitly asks for another language.
 - **Code, comments, commit messages, branch names, PR titles/descriptions, documentation**: English. Follow the conventions in each project or in `~/.agents/docs/instructions/CONVENTIONS.md`.
 
+## Response Style
+
+- Follow `~/.agents/docs/instructions/RESPONSE_STYLE.md` for default brevity and clarity rules.
+- This style guidance does not override the language policy above.
+
+## Context Loading
+
+- Keep the always-on prompt surface thin. By default, rely on this file plus
+  `~/.agents/docs/instructions/RESPONSE_STYLE.md`.
+- Load deeper guidance only when the task needs it. Follow
+  `~/.agents/docs/instructions/CONTEXT_LOADING.md`.
+- If guidance is useful only for a subset of tasks, move it into a targeted
+  doc, skill, playbook, or memory record instead of expanding the core prompt.
+
 ## Security & Sensitive Data
 
 - Never commit or expose secrets: `.env`, API keys, credentials, tokens, private keys.
@@ -40,11 +54,25 @@ Central policy hub for all agents (Claude, Codex, etc.).
 - Treat work as substantial when it spans multiple files, changes behavior across components, introduces or refactors a feature, requires phased execution, or couples code and docs/process updates.
 - For small one-file fixes, quick questions, or isolated doc edits, formal tracking artifacts are optional unless the user asks for them.
 
+## Memory Model
+
+- `execution/` is the default execution-memory root for active work.
+- `work-handoff.md` is cross-session scratch state.
+- `memory/` is operational memory: patterns, troubleshooting, playbooks,
+  decisions, and scorecards.
+- `learnings/` is archived historical reference material; do not add new
+  entries there by default.
+
 ## Harness Maintenance
 
-- Before changing the harness itself under `~/.agents/` — policy, hooks, skills, subagents, evals, learnings, tracking flow, or runtime bridges — read `~/.agents/ARCHITECTURE.md` and `~/.agents/ROADMAP.md` first.
+- Before changing the harness itself under `~/.agents/` — policy, hooks,
+  skills, subagents, evals, memory, execution-memory flow, or runtime bridges — read
+  `~/.agents/ARCHITECTURE.md` and `~/.agents/ROADMAP.md` first.
 - If a harness change affects structure, execution flow, invariants, or directory responsibilities, update `~/.agents/ARCHITECTURE.md` in the same change.
 - For major harness changes, also update `~/.agents/CHANGELOG.md`.
+- If a harness change affects prompt-loading or memory boundaries, update
+  `~/.agents/docs/instructions/CONTEXT_LOADING.md` and the relevant `memory/`
+  records in the same change.
 - Keep `AGENTS.md` minimal; prefer putting harness-specific flow detail in `ARCHITECTURE.md`, `ROUTING.md`, `evals/README.md`, or skill docs.
 - When initializing agent config for a new project, use `~/.agents/scripts/init-repo.sh`.
 
@@ -54,22 +82,18 @@ Central policy hub for all agents (Claude, Codex, etc.).
 - Do not force refinement for direct, concrete execution requests (bug fixes with logs, targeted code changes, clear debugging).
 - See the skill file for detailed routing rules.
 
-## Document Map & Core Rules
+## Core Docs
 
-| Document | Purpose |
-|----------|---------|
-| `~/.agents/docs/instructions/CONVENTIONS.md` | Coding, git, PR, testing, logging, documentation conventions — **follow for all implementation** |
-| `~/.agents/docs/instructions/LIBRARIES.md` | Preferred libraries and dependency selection — **follow before adding dependencies** |
-| `~/.agents/docs/instructions/TRACKING.md` | Plan/phase/task artifact structure and lifecycle — **follow for substantial work** |
-| `~/.agents/docs/instructions/ENGINEERING_GROWTH.md` | Coaching rules for agentic engineering skill development — **apply per-task** |
-| `~/.agents/ARCHITECTURE.md` | Authoritative guide to the harness structure, layer responsibilities, and execution flow — **read before changing the harness itself** |
-| `~/.agents/docs/instructions/ROUTING.md` | Subagent spawn rules and single-agent/default boundaries — **follow when changing orchestration** |
-| `~/.agents/evals/README.md` | Benchmark workflow, scoring rubric, and result handling — **use when validating harness changes** |
-| `~/.agents/learnings/` | Generic, transferable engineering knowledge — **update only with reusable learnings, not project-specific facts** |
-| `~/.agents/ROADMAP.md` | Living evolution plan with phases, architecture decisions, and priority — **read before starting harness work** |
-| `~/.agents/CHANGELOG.md` | Human-written summary of major harness changes — **update for major harness evolution** |
-| `~/.agents/CLAUDE.md` | Claude-specific behavioral rules - loaded globally via `~/.claude/CLAUDE.md` MANDATORY instruction, and auto-loaded inside the `.agents` workspace |
-| `~/.agents/skills/`, `~/.agents/subagents/` | Shared reusable assets |
+- `~/.agents/docs/instructions/CONVENTIONS.md` — implementation conventions
+- `~/.agents/docs/instructions/RESPONSE_STYLE.md` — response brevity and clarity
+- `~/.agents/docs/instructions/LIBRARIES.md` — dependency selection defaults
+- `~/.agents/docs/instructions/TRACKING.md` — execution-memory lifecycle
+- `~/.agents/docs/instructions/ROUTING.md` — subagent routing rules
+- `~/.agents/docs/instructions/CONTEXT_LOADING.md` — thin-core loading rules
+- `~/.agents/ARCHITECTURE.md` — harness structure and responsibilities
+- `~/.agents/ROADMAP.md` — active harness evolution plan
+- `~/.agents/evals/README.md` — evaluation workflow and scoring
+- `~/.agents/memory/` — operational memory and durable harness knowledge
 
 ## Runtime Directories
 

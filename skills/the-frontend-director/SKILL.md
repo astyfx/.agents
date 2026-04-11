@@ -1,6 +1,6 @@
 ---
 name: the-frontend-director
-description: Build production-grade frontend interfaces for dashboards, admin panels, settings screens, onboarding flows, product pages, landing-page redesigns, and desktop-style Electron UI with strong product design judgment. Use this skill when the user asks to build, redesign, modernize, polish, or rethink a component, page, flow, or interface where layout, hierarchy, interaction, responsiveness, accessibility, or visual UX materially matter; follow the existing repo's framework and design system first, otherwise default to mainstream modern product-stack patterns. Skip this skill for tiny CSS tweaks or logic-only fixes unless the user explicitly wants UI polish, redesign, or a stronger frontend result.
+description: Build production-grade frontend interfaces for dashboards, admin panels, settings screens, onboarding flows, product pages, landing-page redesigns, and desktop-style Electron UI with strong product design judgment. Use this skill when the user asks to build, redesign, modernize, polish, or rethink a component, page, flow, or interface where layout, hierarchy, interaction, responsiveness, accessibility, or visual UX materially matter. Prefer existing-repo UI improvement, dashboard/admin surfaces, and Figma-backed implementation. Default to a minimal, refined product style closer to Linear or Sentry than Jira or AWS. Skip this skill for tiny CSS tweaks or logic-only fixes unless the user explicitly wants UI polish, redesign, or a stronger frontend result.
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:
@@ -8,6 +8,8 @@ test-prompts:
   - "컴포넌트 만들어줘"
   - "design this page"
   - "admin panel 만들어줘"
+  - "Linear 같은 느낌으로 정리해줘"
+  - "Sentry처럼 깔끔하게 다듬어줘"
 ---
 
 # The Frontend Director
@@ -15,12 +17,30 @@ test-prompts:
 Use this skill for design-sensitive frontend implementation, especially product UI.
 It is optimized for app surfaces first, not just marketing pages.
 
+## Default Taste Profile
+
+Unless the user says otherwise, bias toward this taste profile:
+
+- product UI over marketing spectacle
+- minimal and refined over loud and expressive
+- strong hierarchy and readability over decorative variety
+- existing repo improvement and dashboard/admin work over greenfield art direction
+- Linear/Sentry-style clarity and restraint over Jira/AWS-style clutter
+
+Anti-goals by default:
+
+- dated enterprise UI
+- excessive color usage
+- typography or layouts that reduce readability
+- busy chrome, noisy cards, and scattered visual emphasis
+
 ## Trigger Boundary
 
 Use this skill when the task involves:
 - new or heavily revised components, pages, dashboards, settings panels, tables, forms, onboarding, admin screens, command surfaces, or desktop-style app shells
 - meaningful UI or UX decisions about layout, hierarchy, interaction patterns, information density, navigation, states, responsiveness, accessibility, or polish
 - Electron or desktop-web UI built with web technology
+- Figma-backed implementation that still needs product-judgment adaptation inside a repo
 
 Do not force this skill for:
 - tiny spacing, color, copy, or alignment tweaks with no real design judgment
@@ -34,11 +54,12 @@ Unless the user explicitly asks for polish, redesign, or a better frontend resul
 1. Detect whether the task is in an existing repo or greenfield work.
 2. If an existing repo is present, inspect and follow its framework, design system, component patterns, tokens, spacing, motion, and constraints before inventing anything new.
 3. If the implementation goal is already clear, ask little or nothing and proceed.
-4. If the work is greenfield or under-specified, give a brief direction first:
+4. If a Figma reference exists, use it as the visual source but still adapt it to the repo's product language and readability bar. Prefer `the-figma-to-code` for extraction when available.
+5. If the work is greenfield or under-specified, give a brief direction first:
    - `Direction`: one-sentence visual and product thesis
    - `Key choices`: layout, density, interaction, tone
    - `Questions`: only 2-3 questions that materially change the design
-5. Then implement real code, not just suggestions.
+6. Then implement real code, not just suggestions.
 
 ## Default Stack When No Repo Direction Exists
 
@@ -63,6 +84,7 @@ Branch by context:
 Do not make every interface loud. Make it intentional.
 Future-facing usually means precision, depth, confident motion, and deliberate contrast, not automatic neon sci-fi styling.
 For app, dashboard, admin, and desktop surfaces, clarity and workflow come before showmanship.
+Default to `Precision mode` unless the user clearly asks for stronger expression.
 
 ## Product UI Heuristics
 
@@ -70,10 +92,11 @@ For app surfaces:
 - prioritize hierarchy, scanning speed, workflows, and task completion
 - design clear loading, empty, error, success, disabled, and selected states
 - use layout structure before adding decorative cards everywhere
-- support dense views when the product benefits from it
+- support dense views when the product benefits from it, but keep density orderly
 - make tables, filters, forms, navigation, and detail panels feel cohesive
 - prefer utility copy over marketing copy
 - make interactions feel fast and trustworthy
+- keep emphasis concentrated so only the most important controls or states pull attention
 
 For desktop-style and Electron interfaces:
 - respect windowed app patterns: sidebars, toolbars, inspectors, split panes, dialogs, sheets, resizable regions, and keyboard-first interactions when relevant
@@ -89,7 +112,10 @@ For marketing or showcase pages:
 
 - avoid generic AI aesthetics and interchangeable SaaS templates
 - avoid default purple-on-white gradients, generic glassmorphism, and overused safe font stacks unless the repo already uses them
+- avoid Jira/AWS-like visual sprawl: too many panels, too many emphasis colors, and too much chrome competing at once
 - choose typography, spacing, color, and motion as a coherent system
+- keep the palette restrained; one accent family is usually enough
+- prioritize legible fonts, strong contrast, and stable alignment before adding flair
 - use CSS variables or theme tokens when appropriate
 - prefer a small number of high-impact visual ideas over many weak effects
 - match implementation complexity to the intended visual result

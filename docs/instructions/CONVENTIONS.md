@@ -59,6 +59,13 @@ Also:
 - explicitly mark breaking changes
 - run a self-review checklist before requesting review
 
+## End-to-End Verification
+
+- Verify every user-reachable path touched by a change, not only the reported scenario.
+- When async state, cleanup, or lifecycle transitions are involved, check the forward path, reverse path, rapid reversal, and concurrent path.
+- Do not keep optimizations that let producer and consumer state disagree across paths.
+- For the reusable path-tracing checklist and common reversible-state failure modes, see `memory/patterns/e2e-path-verification-and-reversible-state.md`.
+
 ## Code Quality
 
 - Prefer small, single-purpose functions
@@ -66,6 +73,19 @@ Also:
 - Validate inputs at boundaries (API/IPC/file I/O)
 - Do not silently swallow errors
 - Add short intent comments only where logic is non-obvious
+
+### Pre-Commit Quality Gate
+
+Before committing a multi-file implementation, run this checklist against all changed files:
+
+1. **DRY**: repeated new patterns should become helpers or constants when reuse is already real
+2. **Module boundary**: keep layer-specific details behind exported helpers or constants
+3. **Symmetry**: paired operations must stay symmetric in ordering, cleanup, and error handling
+4. **Naming**: remove temporary names and make new state or lifecycle variables self-explanatory
+5. **Dead code**: remove imports, functions, and types made unused by the change
+6. **Verification**: trace state transitions, cleanup ordering, and follow-up operations end-to-end before commit
+
+For the detailed reversible-state checklist, use `memory/patterns/e2e-path-verification-and-reversible-state.md`.
 
 ## Comments
 

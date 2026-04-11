@@ -73,7 +73,10 @@ After applying the fix:
 
 ### Step 5 — Document
 
-If the project has an active tracking task, append to `execution-log.md`:
+If the project has an active tracking task, document the fix in the task
+record. By default, add it to `handoff.md` under `Progress`, `Verification`, or
+`Notes`. If the task already uses expanded tracking and has `execution-log.md`,
+append there instead:
 ```
 [fix] <error class>: <root cause in one line> — resolved by <fix summary>
 ```

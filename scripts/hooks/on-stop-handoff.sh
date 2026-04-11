@@ -10,22 +10,21 @@ SNAPSHOT_FILE="${SNAPSHOT_DIR}/${TIMESTAMP}.md"
 
 CURRENT_PWD="$(pwd)"
 GIT_STATUS="$(git status --short 2>/dev/null || echo "not a git repo")"
-PROGRESS_FILE="${CURRENT_PWD}/claude-progress.txt"
+WORK_HANDOFF_FILE="${CURRENT_PWD}/work-handoff.md"
+STATE_FILE=""
 TRACKING_TASK_PATH=""
 
-if [[ -f "${PROGRESS_FILE}" ]]; then
-  TRACKING_TASK_PATH="$(python3 - <<'PYEOF' "${PROGRESS_FILE}"
-import re
-import sys
-from pathlib import Path
+if [[ -f "${WORK_HANDOFF_FILE}" ]]; then
+  STATE_FILE="${WORK_HANDOFF_FILE}"
+fi
 
-progress_path = Path(sys.argv[1])
-text = progress_path.read_text(encoding="utf-8")
-match = re.search(r"^## Tracking Task Path\s*\n(.+?)\s*$", text, flags=re.MULTILINE)
-if match:
-    print(match.group(1).strip())
-PYEOF
-)"
+if [[ -n "${STATE_FILE}" ]]; then
+  TRACKING_TASK_PATH="$(perl -0ne '
+    if (/^## Active Task Path\s*\n([^\n]+)\s*$/m) {
+      print $1;
+      exit 0;
+    }
+  ' "${STATE_FILE}")"
 fi
 
 cat > "${SNAPSHOT_FILE}" <<EOF
@@ -37,7 +36,10 @@ stopped
 ## Working Directory
 ${CURRENT_PWD}
 
-## Tracking Task Path
+## Scratch File
+${STATE_FILE:-none}
+
+## Active Task Path
 ${TRACKING_TASK_PATH:-unknown}
 
 ## Recent Git Status
@@ -52,36 +54,51 @@ if [[ -n "${TRACKING_TASK_PATH}" ]]; then
 
   if [[ -d "${HANDOFF_BASE}" && -f "${HANDOFF_BASE}/handoff.md" ]]; then
     HANDOFF_FILE="${HANDOFF_BASE}/handoff.md"
-    python3 - <<'PYEOF' "${HANDOFF_FILE}" "${TIMESTAMP}" "${CURRENT_PWD}" "${SNAPSHOT_FILE}" "${GIT_STATUS}"
-import re
-import sys
-from pathlib import Path
+    TIMESTAMP="${TIMESTAMP}" \
+    CURRENT_PWD="${CURRENT_PWD}" \
+    SNAPSHOT_FILE="${SNAPSHOT_FILE}" \
+    GIT_STATUS="${GIT_STATUS}" \
+      perl - "${HANDOFF_FILE}" <<'PERL'
+use strict;
+use warnings;
 
-handoff_file = Path(sys.argv[1])
-timestamp = sys.argv[2]
-working_dir = sys.argv[3]
-snapshot_file = sys.argv[4]
-git_status = sys.argv[5]
+my $handoff_file = shift @ARGV;
+exit 0 if !defined $handoff_file || $handoff_file eq q{};
 
-section = f"""## Auto Snapshot
+local $/;
+open my $fh, '<', $handoff_file or exit 0;
+my $text = <$fh>;
+close $fh;
 
-- Timestamp: {timestamp}
-- Working Directory: {working_dir}
-- Snapshot File: {snapshot_file}
+my $timestamp = $ENV{TIMESTAMP} // q{};
+my $working_dir = $ENV{CURRENT_PWD} // q{};
+my $snapshot_file = $ENV{SNAPSHOT_FILE} // q{};
+my $git_status = $ENV{GIT_STATUS} // q{};
+
+my $section = <<"EOF";
+## Auto Snapshot
+
+- Timestamp: $timestamp
+- Working Directory: $working_dir
+- Snapshot File: $snapshot_file
 - Recent Git Status:
 ```text
-{git_status}
+$git_status
 ```
-"""
+EOF
 
-text = handoff_file.read_text(encoding="utf-8")
-pattern = re.compile(r"^## Auto Snapshot\s*\n.*?(?=^## |\Z)", flags=re.MULTILINE | re.DOTALL)
-if pattern.search(text):
-    updated = pattern.sub(section + "\n", text)
-else:
-    updated = text.rstrip() + "\n\n" + section + "\n"
-handoff_file.write_text(updated, encoding="utf-8")
-PYEOF
+my $updated = $text;
+if ($updated =~ /^## Auto Snapshot\s*\n.*?(?=^## |\z)/ms) {
+    $updated =~ s/^## Auto Snapshot\s*\n.*?(?=^## |\z)/$section\n/ms;
+} else {
+    $updated =~ s/\s*\z/\n\n/;
+    $updated .= $section . "\n";
+}
+
+open my $out, '>', $handoff_file or exit 0;
+print {$out} $updated;
+close $out;
+PERL
   fi
 fi
 

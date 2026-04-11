@@ -36,7 +36,7 @@ The reviewer has no context of implementation decisions — it reads the code co
 This catches issues the implementer is blind to because they know why they wrote it that way.
 
 **How to spawn**:
-- Claude: use the `subagents/reviewer/AGENT.md` agent definition via the Agent tool. Provide the list of changed files and the verification.md path.
+- Claude: use the `subagents/reviewer/AGENT.md` agent definition via the Agent tool. Provide the list of changed files and the destination artifact path (`verification.md` if present, otherwise `handoff.md`).
 - Codex: spawn a subagent referencing `~/.agents/subagents/reviewer/AGENT.md`. Restrict tools to Read/Glob/Grep only (no Write/Edit/Bash).
 
 ## Spawn a Planner Subagent

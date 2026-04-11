@@ -14,7 +14,8 @@ The reviewer is called during the **Verify phase** after implementation is compl
 1. Read the changed files as a fresh reviewer (no prior context of implementation decisions)
 2. Apply the `the-code-reviewer` skill's six-axis review framework
 3. Produce a prioritized review report
-4. Save the report to the task's `verification.md`
+4. Save the report to the task's verification artifact (`verification.md` if it
+   exists, otherwise the task `handoff.md`)
 
 ## Tool Restrictions
 
@@ -28,7 +29,8 @@ The reviewer does not fix issues. It reports them. The implementer (or the user)
 When spawning this subagent, provide:
 - The list of files that were changed
 - The task description (what was implemented and why)
-- The path to the tracking task's `verification.md` where the report should be saved
+- The path to the tracking task artifact where the report should be saved
+  (`verification.md` or `handoff.md`)
 
 Note: since this subagent cannot Write, the output should be captured and written by the orchestrating agent.
 

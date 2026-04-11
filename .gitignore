@@ -6,6 +6,7 @@ __pycache__/
 codex/
 claude/
 migration-backups/
-
-# Cross-session progress scratch file (not committed — use tracking/ for permanent records)
 claude-progress.txt
+
+# Cross-session handoff scratch files (not committed — use execution/ for permanent records)
+work-handoff.md

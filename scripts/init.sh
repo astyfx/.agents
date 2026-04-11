@@ -25,45 +25,68 @@ if [[ ! -f "${CLAUDE_DIR}/settings.json" ]]; then
   printf '{}\n' > "${CLAUDE_DIR}/settings.json"
 fi
 
-python3 - <<'PYEOF' "${CLAUDE_DIR}/settings.json"
-import json
-import sys
-from pathlib import Path
+perl -MJSON::PP - "${CLAUDE_DIR}/settings.json" <<'PERL'
+use strict;
+use warnings;
+use JSON::PP qw(decode_json);
 
-settings_path = Path(sys.argv[1])
-try:
-    data = json.loads(settings_path.read_text(encoding="utf-8"))
-except Exception:
-    data = {}
+my $settings_path = shift @ARGV;
+my $data = {};
 
-hooks = data.setdefault("hooks", {})
-pre = hooks.setdefault("PreToolUse", [])
-post = hooks.setdefault("PostToolUse", [])
-stop = hooks.setdefault("Stop", [])
+if (open my $fh, '<', $settings_path) {
+    local $/;
+    my $raw = <$fh>;
+    close $fh;
 
+    my $decoded = eval { decode_json($raw) };
+    $data = $decoded if $decoded && ref($decoded) eq 'HASH';
+}
 
-def ensure_hook(bucket, matcher, command):
-    for entry in bucket:
-        if matcher is not None and entry.get("matcher") != matcher:
-            continue
-        for hook in entry.get("hooks", []):
-            if hook.get("type") == "command" and hook.get("command") == command:
-                return
-    entry = {"hooks": [{"type": "command", "command": command}]}
-    if matcher is not None:
-        entry["matcher"] = matcher
-    bucket.append(entry)
+$data->{hooks} = {} if ref($data->{hooks}) ne 'HASH';
+for my $bucket_name (qw(PreToolUse PostToolUse Stop)) {
+    $data->{hooks}{$bucket_name} = [] if ref($data->{hooks}{$bucket_name}) ne 'ARRAY';
+}
 
+sub ensure_hook {
+    my ($bucket, $matcher, $command) = @_;
 
-ensure_hook(pre, "Bash", "bash ~/.agents/scripts/hooks/pre-commit-lint.sh")
-ensure_hook(pre, "Write", "bash ~/.agents/scripts/hooks/pre-write-secrets.sh")
-ensure_hook(pre, "Edit", "bash ~/.agents/scripts/hooks/pre-write-secrets.sh")
-ensure_hook(post, "Write", "bash ~/.agents/scripts/hooks/post-write-format.sh")
-ensure_hook(post, "Edit", "bash ~/.agents/scripts/hooks/post-write-format.sh")
-ensure_hook(stop, None, "bash ~/.agents/scripts/hooks/on-stop-handoff.sh")
+    for my $entry (@{$bucket}) {
+        next if ref($entry) ne 'HASH';
+        if (defined $matcher) {
+            next if (($entry->{matcher} // q{}) ne $matcher);
+        }
+        next if ref($entry->{hooks}) ne 'ARRAY';
 
-settings_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-PYEOF
+        for my $hook (@{$entry->{hooks}}) {
+            next if ref($hook) ne 'HASH';
+            return if (($hook->{type} // q{}) eq 'command' && ($hook->{command} // q{}) eq $command);
+        }
+    }
+
+    my $entry = {
+        hooks => [
+            {
+                type => 'command',
+                command => $command,
+            },
+        ],
+    };
+    $entry->{matcher} = $matcher if defined $matcher;
+    push @{$bucket}, $entry;
+}
+
+ensure_hook($data->{hooks}{PreToolUse}, 'Bash', 'bash ~/.agents/scripts/hooks/pre-commit-lint.sh');
+ensure_hook($data->{hooks}{PreToolUse}, 'Write', 'bash ~/.agents/scripts/hooks/pre-write-secrets.sh');
+ensure_hook($data->{hooks}{PreToolUse}, 'Edit', 'bash ~/.agents/scripts/hooks/pre-write-secrets.sh');
+ensure_hook($data->{hooks}{PostToolUse}, 'Write', 'bash ~/.agents/scripts/hooks/post-write-format.sh');
+ensure_hook($data->{hooks}{PostToolUse}, 'Edit', 'bash ~/.agents/scripts/hooks/post-write-format.sh');
+ensure_hook($data->{hooks}{Stop}, undef, 'bash ~/.agents/scripts/hooks/on-stop-handoff.sh');
+
+my $json = JSON::PP->new->ascii->pretty->canonical->encode($data);
+open my $out, '>', $settings_path or die "Failed to write $settings_path: $!";
+print {$out} $json;
+close $out;
+PERL
 
 if [[ ! -f "${CLAUDE_DIR}/CLAUDE.md" ]]; then
   cat > "${CLAUDE_DIR}/CLAUDE.md" <<'EOF'
@@ -102,15 +125,8 @@ If a future local `AGENTS.md` in this runtime directory conflicts with the root 
 EOF
 fi
 
-python3 - <<'PYEOF' "${CODEX_DIR}/AGENTS.md"
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-text = path.read_text(encoding="utf-8")
-
-if "## Invariants (enforce unconditionally — no exceptions)" not in text:
-    invariants = """
+if ! grep -q "## Invariants (enforce unconditionally — no exceptions)" "${CODEX_DIR}/AGENTS.md"; then
+  cat >> "${CODEX_DIR}/AGENTS.md" <<'EOF'
 
 ## Invariants (enforce unconditionally — no exceptions)
 
@@ -136,13 +152,12 @@ the user how to proceed.
 - Do not skip this step. Format before considering the edit complete.
 
 ### Session Handoff
-- When stopping work on any task tracked under `tracking/`, update the task's
+- When stopping work on any task tracked under `execution/`, update the task's
   `handoff.md` with current status, last completed step, and next action
   before finishing the session.
-- If `claude-progress.txt` exists, keep `Tracking Task Path` current so the durable handoff target is unambiguous.
-"""
-    path.write_text(text.rstrip() + invariants + "\n", encoding="utf-8")
-PYEOF
+- If `work-handoff.md` exists, keep `Active Task Path` current so the durable handoff target is unambiguous.
+EOF
+fi
 
 mkdir -p "${REPO_DIR}/migration-backups"
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slack Thread Worker"
+  short_description: "Read a Slack thread, prepare work, implement it, and open a PR."
+  default_prompt: "Use $the-slack-thread-worker to read this Slack thread and choose the right mode: extract tasks, prepare Jira/resource context, or implement the requested change and open a PR."

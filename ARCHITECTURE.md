@@ -11,9 +11,9 @@ It is designed to keep these stable across tools:
 
 - shared policy
 - shared skills
-- shared tracking artifacts
+- shared execution-memory artifacts
 - shared eval tasks
-- shared generic learnings
+- shared operational memory
 
 It is not trying to make Claude and Codex internally identical.
 It is trying to make them behave similarly at the workflow level.
@@ -61,9 +61,10 @@ It is trying to make them behave similarly at the workflow level.
                                 │ persists into
 ┌───────────────────────────────▼────────────────────────────────────┐
 │                    Artifact / Memory Layer                         │
-│  tracking/       -> per-task audit trail                           │
-│  claude-progress.txt -> cross-session working scratch              │
-│  learnings/      -> generic reusable engineering knowledge         │
+│  execution/      -> default execution memory for active tasks      │
+│  work-handoff.md -> cross-session handoff scratch                  │
+│  memory/         -> patterns, troubleshooting, playbooks, ADRs     │
+│  learnings/      -> archived historical notes                      │
 │  evals/results/  -> benchmark run history                          │
 └───────────────────────────────┬────────────────────────────────────┘
                                 │ bootstrapped and checked by
@@ -83,8 +84,8 @@ User request
   -> AGENTS.md selects core docs / skills / routing defaults
   -> enforcement layer blocks bad commits, secret writes, missing formatting
   -> agent executes work
-  -> tracking artifacts record plan / tasks / verification / handoff
-  -> progress file enables resume
+  -> execution artifacts record durable task state and optional deep plans
+  -> work handoff file enables resume and leftover-work transfer
   -> evals can measure whether harness changes improved outcomes
 ```
 
@@ -97,19 +98,21 @@ User request
 | `ROADMAP.md` | Living evolution plan with phases and decisions | Read before harness work; update when phases change |
 | `CHANGELOG.md` | Human-written harness change log | Update for major harness evolution |
 | `docs/instructions/CONVENTIONS.md` | Implementation conventions | Applies broadly |
-| `docs/instructions/TRACKING.md` | Required tracking lifecycle | Applies to substantial work |
+| `docs/instructions/TRACKING.md` | Lightweight tracking lifecycle | Applies to substantial work |
+| `docs/instructions/CONTEXT_LOADING.md` | Thin-core prompt loading rules | Keeps default context small |
 | `docs/instructions/ROUTING.md` | Subagent routing rules | Orchestration-specific |
 | `skills/` | Reusable portable procedures | Primary context injection layer |
 | `subagents/` | Reusable agent role definitions | Use sparingly and intentionally |
-| `tracking/` | Per-task persistent execution record | Durable, task-specific |
-| `learnings/` | Generic reusable engineering lessons | Not project-specific memory |
+| `execution/` | Default execution-memory task records | Active task state and handoff only |
+| `memory/` | Operational memory | Patterns, troubleshooting, playbooks, decisions, scorecards |
+| `learnings/` | Archived historical notes | Readable older reusable notes |
 | `evals/tasks/` | Benchmark prompts | Stable task corpus |
 | `evals/results/` | Run results | Compare Claude vs Codex over time |
 | `scripts/hooks/` | Claude enforcement scripts | Mechanical invariants |
-| `scripts/new-tracked-task.sh` | Tracking scaffolder | Seeds task folders and progress linkage |
+| `scripts/new-task.sh` | Execution-memory scaffolder | Seeds lite or expanded task folders and work-handoff linkage |
 | `scripts/new-eval-result.sh` | Eval result scaffolder | Creates result markdown files |
 | `scripts/summarize-evals.py` | Eval aggregation | Summarizes benchmark history |
-| `scripts/init-repo.sh` | Per-repo agent config scaffolder | Creates bridge files, override templates, optional tracking/CI |
+| `scripts/init-repo.sh` | Per-repo agent config scaffolder | Creates bridge files, override templates, optional execution/CI |
 | `scripts/check-harness.sh` | Harness health validator | Checks structure and wiring |
 | `claude/` | Claude runtime state + bridge config | Symlink target for `~/.claude` |
 | `codex/` | Codex runtime state + bridge config | Symlink target for `~/.codex` |
@@ -132,30 +135,45 @@ User request
 
 ## Artifact Rules
 
-### tracking/
+### execution/
 
+- Execution memory only
 - Durable, task-specific, structured
 - Required for substantial work
-- Source of truth for plan / phases / tasks / verification / handoff
+- Defaults to a single canonical `handoff.md` task record
+- Can grow optional `plan.md`, `verification.md`, or `execution-log.md` when
+  the work justifies them
 
-### claude-progress.txt
+### work-handoff.md
 
 - Temporary cross-session scratch file in the active project root
-- Holds current task, status, next action, and `Tracking Task Path`
+- Holds the objective, current status, remaining work, recommended next actions,
+  nice-to-have follow-ups, and `Active Task Path`
 - Helps runtime hooks and skills locate the durable tracking task
 - Never committed
+- Replaced the earlier `claude-progress.txt` protocol; that file is no longer
+  read or produced
+
+### memory/
+
+- Operational memory for cross-task reuse
+- Houses patterns, troubleshooting records, playbooks, durable decisions, and
+  scorecards
+- Should grow through real work and retrospectives, not by speculative
+  note-taking
+- Curated by default; not a raw-source or transcript-ingestion layer
 
 ### learnings/
 
-- Only generic, transferable engineering knowledge
-- No project-specific diary entries
-- Good examples: testing patterns, TS pitfalls, architecture heuristics
+- Legacy compatibility lane for older reusable notes
+- Archive-only by default while `memory/` becomes the primary durable layer
 
 ### evals/
 
 - `tasks/` contains benchmark prompts
 - `results/` contains run records
 - Scripts scaffold and summarize results, but human judgment still matters
+- Runs should stay selective and decision-linked, not become routine task logs
 
 ## Cross-Agent Parity Table (v2)
 
@@ -171,10 +189,10 @@ Assumes Codex supports subagents and plugins as of 2026-03.
 | Subagent routing | Shared `ROUTING.md` | Shared `ROUTING.md` |
 | Subagent spawn | Agent tool + AGENT.md | Native subagent + AGENT.md |
 | MCP / Plugins | settings.json MCP servers | Plugin config (equivalent) |
-| Durable tracking | Shared `tracking/` | Shared `tracking/` |
-| Progress scratch | Shared `claude-progress.txt` format | Shared `claude-progress.txt` format |
+| Durable execution memory | Shared `execution/` | Shared `execution/` |
+| Progress scratch | Shared `work-handoff.md` format | Shared `work-handoff.md` format |
 | Evals | Shared `evals/` | Shared `evals/` |
-| Learnings | Shared `learnings/` | Shared `learnings/` |
+| Operational memory | Shared `memory/` | Shared `memory/` |
 | Per-repo init | Shared `scripts/init-repo.sh` | Shared `scripts/init-repo.sh` |
 
 ## Harness Maintenance Rules
@@ -216,7 +234,7 @@ This means:
 ### What stays global (here)
 
 - Canonical policy (AGENTS.md)
-- Generic skills, subagents, learnings
+- Generic skills, subagents, operational memory
 - Enforcement hooks (in global `~/.claude/settings.json`)
 - Default conventions and library preferences
 - Eval framework, ROADMAP, CHANGELOG
@@ -228,23 +246,23 @@ This means:
 - `.codex/AGENTS.md` — project context + base conventions
 - `CONVENTIONS.override.md` — team-agreed convention overrides
 - `LIBRARIES.override.md` — team-agreed library overrides
-- `tracking/` — project-specific task tracking (optional)
+- `execution/` — default project-specific execution memory (optional)
 - `.github/workflows/` — project CI (optional)
 
 ### What is gitignored (personal, per-repo)
 
 - `.claude/settings.local.json` — personal overrides
-- `claude-progress.txt` — personal agent working state
+- `work-handoff.md` — personal agent handoff scratch state
 - `.claude/.claude.json`, `.claude/history.jsonl`, etc. — runtime state
 
 ### Per-repo init flow
 
 ```text
-scripts/init-repo.sh <project-path> [--with-tracking] [--with-ci]
+scripts/init-repo.sh <project-path> [--with-execution] [--with-ci]
   -> creates team-friendly .claude/CLAUDE.md, .codex/AGENTS.md (no personal paths)
   -> creates .claude/settings.json (empty team permissions, no hooks)
   -> creates override templates (CONVENTIONS, LIBRARIES)
-  -> optionally scaffolds tracking/ and CI workflows
+  -> optionally scaffolds execution/ and CI workflows
   -> updates .gitignore with personal/runtime patterns
 ```
 

@@ -163,10 +163,16 @@ Each phase must be:
 
 If the user approves the plan, auto-generate tracking artifacts:
 
-1. Create a tracked task per phase using `scripts/new-tracked-task.sh`
-2. Populate `plan.md` with the scope analysis
-3. Populate `phases.md` with the migration phases
-4. Populate `tasks.md` with the checklist items
+1. Create a tracked task per phase using `scripts/new-task.sh`
+   - Use the default lite mode for smaller phases
+   - Use `--mode expanded` when the phase needs a deeper execution plan or long
+     verification trail
+2. Populate the task `handoff.md` with the approved scope, migration phases,
+   and immediate next actions
+3. Add `plan.md` only if the refactor is large enough to need a self-contained,
+   multi-session execution plan
+4. Add `verification.md` only when the validation evidence is too long for the
+   main task record
 
 ## Output Format
 
