@@ -120,12 +120,29 @@ Check:
 
 Do not ship a general feature wired only on one adapter unless the change is explicitly provider-specific.
 
+### 4. Async function result passed without await to serializer
+
+```typescript
+// BAD — attachSession is async, Promise serializes as {}
+case "terminal.attach-session":
+  await respond(request.id, terminalRuntime.attachSession(request.params));
+  // respond() calls JSON.stringify(Promise) → {} → renderer gets { ok: undefined }
+
+// GOOD — await the async call before passing to respond
+case "terminal.attach-session":
+  await respond(request.id, await terminalRuntime.attachSession(request.params));
+```
+
+TypeScript may not catch this at generic serializer boundaries. Do not rely on the compiler to reject a bare `Promise` being handed to `respond()`, IPC writers, or JSON serialization.
+When adding a dispatch case or changing a function from sync to async, grep for `async function` in the runtime and ensure every async call is `await`ed at the dispatch site.
+
 ## Guardrails
 
 - never trust TypeScript alone on IPC work
 - never rename a discriminant in only one file
 - never add a field to a renderer request without touching Zod
 - never stop at `window.api` when the main schema is stricter
+- never pass an async function result to a serializer without `await` — `JSON.stringify(Promise)` is `{}`
 
 ## Verification
 
@@ -142,4 +159,3 @@ Return:
 - missing sync points
 - provider symmetry status
 - verification completed vs still required
-

@@ -3,6 +3,39 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-04-12 — IPC Async Dispatch Failure Mode Captured
+
+Promoted a real serializer-boundary bug into durable harness guidance instead of
+leaving it only in runtime-local memory.
+
+### Changed
+- **`skills/the-ipc-schema-sync/SKILL.md`** keeps the async-without-await
+  serializer failure mode, but now phrases the TypeScript caveat more
+  accurately
+
+### Added
+- **`memory/troubleshooting/async-dispatch-promise-serialization.md`** as a
+  reusable troubleshooting record for Promise values crossing IPC serializers
+
+## 2026-04-11 — Dead Code Detection Skill Added
+
+Added a dedicated maintenance skill for evidence-based dead code discovery and
+cleanup.
+
+### Changed
+- **`skills/INDEX.md`** now lists `the-dead-code-detector` as the dead-code
+  and stale-path audit surface
+
+### Added
+- **`skills/the-dead-code-detector/SKILL.md`** with trigger phrases for dead
+  code, unused files, unused exports, stale feature flags, and legacy path
+  cleanup
+
+### Decision Notes
+- Trigger guidance lives in the skill frontmatter and body instead of
+  expanding root policy, keeping `AGENTS.md` minimal while still making the
+  skill discoverable at the right times
+
 ## 2026-04-11 — Frontend Director Taste Tuning
 
 Tuned the default frontend implementation skill to match the user's preferred
@@ -15,6 +48,9 @@ product taste more closely.
   repo improvement, dashboard/admin work, and Figma-backed implementation
 - **`skills/the-frontend-director/SKILL.md`** now treats dated enterprise UI,
   excessive color, and readability regressions as default anti-goals
+- **`skills/the-frontend-director/SKILL.md`** now sharpens the default product
+  stance around calm information density, restrained accents, and sober
+  typography instead of generic enterprise sprawl
 - **`skills/INDEX.md`** now describes the skill with the narrower product-UI
   focus
 

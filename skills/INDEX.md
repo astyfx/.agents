@@ -7,7 +7,7 @@ Auto-maintained by `the-skill-creator`. Update this file when adding, removing, 
 | the-refine-prompt | planning | claude, codex | rough prompts, fuzzy ideas, spec refinement |
 | the-skill-creator | workflow | claude, codex | create/update/evaluate skills |
 | find-skills | workflow | claude, codex | discover existing skills for a domain or task |
-| the-frontend-director | ui | claude, codex | minimal product UI, repo-bound improvements, dashboard/admin, Figma-aware implementation |
+| the-frontend-director | ui | claude, codex | Linear/Sentry-leaning product UI, repo-bound improvements, dashboard/admin, Figma-aware implementation |
 | ai-elements | ui | claude, codex | AI chat interface components |
 | electron-best-practices | workflow | claude, codex | Electron + React app architecture, IPC, security, packaging, testing |
 | shadcn-ui | ui | claude, codex | shadcn component generation, alias reconciliation, token-safe UI work |
@@ -21,6 +21,7 @@ Auto-maintained by `the-skill-creator`. Update this file when adding, removing, 
 | the-tdd | workflow | claude, codex | test-driven development, TDD cycle |
 | the-api-migrator | workflow | claude, codex | API/dependency upgrade, migration audit and execution |
 | the-build-fixer | workflow | claude, codex | build failures, TypeScript errors, CI fixes |
+| the-dead-code-detector | workflow | claude, codex | dead code, unused files/exports, stale paths, evidence-based cleanup |
 | the-codebase-mapper | workflow | claude, codex | codebase analysis, module map, onboarding guide |
 | the-data-analyst | workflow | claude, codex | dataset analysis, visualization, insight reports |
 | the-figma-to-code | ui | claude, codex | Figma design to production code with visual verification |

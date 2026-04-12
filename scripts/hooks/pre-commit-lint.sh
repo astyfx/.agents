@@ -22,11 +22,16 @@ exit 0 if ref($tool_input) ne 'HASH';
 my $command = $tool_input->{command} // q{};
 exit 0 if $command !~ /\bgit\s+commit\b/;
 
-if ($command !~ /-m\s+["']([^"']+)["']/) {
+my $msg;
+if ($command =~ /-m\s+"\$\(cat\s+<<'?EOF'?\n\s*(.+)/s) {
+    $msg = $1;
+    $msg =~ s/\n.*//s;
+} elsif ($command =~ /-m\s+["']([^"'\n]+)["']/) {
+    $msg = $1;
+} else {
     exit 0;
 }
-
-my $msg = $1;
+$msg =~ s/\s+$//;
 my $pattern = qr/^(?:feat|fix|refactor|chore|docs|test|perf|ci|build|revert)(?:\(.+\))?: .+/;
 
 if ($msg =~ $pattern) {
