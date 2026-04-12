@@ -6,7 +6,8 @@ __pycache__/
 codex/
 claude/
 migration-backups/
-claude-progress.txt
+.stave/
+.skill-lock.json
 
 # Cross-session handoff scratch files (not committed — use execution/ for permanent records)
 work-handoff.md

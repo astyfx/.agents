@@ -19,8 +19,33 @@ CODEX_DIR="${REPO_DIR}/codex"
 BACKUP_ROOT="${REPO_DIR}/migration-backups/${TIMESTAMP}"
 
 mkdir -p "${CLAUDE_DIR}" "${CODEX_DIR}"
+mkdir -p "${REPO_DIR}/migration-backups"
 
-# Clean baseline files (do not import from existing local settings).
+if [[ -L "${HOME_DIR}/.claude" ]]; then
+  rm "${HOME_DIR}/.claude"
+elif [[ -d "${HOME_DIR}/.claude" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  rsync -a "${HOME_DIR}/.claude/" "${CLAUDE_DIR}/"
+  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy"
+elif [[ -e "${HOME_DIR}/.claude" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy-file"
+fi
+
+if [[ -L "${HOME_DIR}/.codex" ]]; then
+  rm "${HOME_DIR}/.codex"
+elif [[ -d "${HOME_DIR}/.codex" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  rsync -a "${HOME_DIR}/.codex/" "${CODEX_DIR}/"
+  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy"
+elif [[ -e "${HOME_DIR}/.codex" ]]; then
+  mkdir -p "${BACKUP_ROOT}"
+  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy-file"
+fi
+
+# Merge migrated settings first, then apply the required defaults so reruns on
+# machines with existing ~/.claude or ~/.codex do not silently lose hooks or
+# invariants.
 if [[ ! -f "${CLAUDE_DIR}/settings.json" ]]; then
   printf '{}\n' > "${CLAUDE_DIR}/settings.json"
 fi
@@ -157,30 +182,6 @@ the user how to proceed.
   before finishing the session.
 - If `work-handoff.md` exists, keep `Active Task Path` current so the durable handoff target is unambiguous.
 EOF
-fi
-
-mkdir -p "${REPO_DIR}/migration-backups"
-
-if [[ -L "${HOME_DIR}/.claude" ]]; then
-  rm "${HOME_DIR}/.claude"
-elif [[ -d "${HOME_DIR}/.claude" ]]; then
-  mkdir -p "${BACKUP_ROOT}"
-  rsync -a "${HOME_DIR}/.claude/" "${CLAUDE_DIR}/"
-  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy"
-elif [[ -e "${HOME_DIR}/.claude" ]]; then
-  mkdir -p "${BACKUP_ROOT}"
-  mv "${HOME_DIR}/.claude" "${BACKUP_ROOT}/.claude.legacy-file"
-fi
-
-if [[ -L "${HOME_DIR}/.codex" ]]; then
-  rm "${HOME_DIR}/.codex"
-elif [[ -d "${HOME_DIR}/.codex" ]]; then
-  mkdir -p "${BACKUP_ROOT}"
-  rsync -a "${HOME_DIR}/.codex/" "${CODEX_DIR}/"
-  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy"
-elif [[ -e "${HOME_DIR}/.codex" ]]; then
-  mkdir -p "${BACKUP_ROOT}"
-  mv "${HOME_DIR}/.codex" "${BACKUP_ROOT}/.codex.legacy-file"
 fi
 
 ln -s "${CLAUDE_DIR}" "${HOME_DIR}/.claude"

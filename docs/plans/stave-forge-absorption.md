@@ -89,7 +89,7 @@ Stave는 이미 상당수를 품고 있다:
    - 새 worktree workspace 생성 제안 (또는 현재 workspace 선택)
    - Implement 모드로 전환
    - Plan 내용을 system context로 주입
-3. Plan artifact를 workspace에 저장 (`.stave/plans/`)
+3. Plan artifact를 workspace-local host state에 저장 (`.stave/context/plans/` 등 host-owned plan store, committed source files와 분리)
 4. Plan history 브라우징 UI (v0.0.32의 workspace plan history persistence 확장)
 
 **Forge 대응**: Forge의 plan-first 기본값 + sandbox 실행.
