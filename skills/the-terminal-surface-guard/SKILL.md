@@ -1,6 +1,6 @@
 ---
 name: the-terminal-surface-guard
-description: Prevent terminal and PTY surface regressions in Electron desktop apps by enforcing shell/runtime separation, keep-alive safety, focus recovery, resize discipline, and bounded async runtime behavior. Use when changing terminal UI, dock or panel shells, PTY session lifecycle, terminal focus, resize, transcript replay, or host-service terminal runtime code.
+description: Prevent terminal and PTY surface regressions in Electron desktop apps by enforcing shell/runtime separation, attach-detach lifecycle discipline, session restore safety, viewport recovery, and bounded async runtime behavior. Use when changing terminal UI, dock or panel shells, PTY session lifecycle, terminal focus, resize, transcript replay, session resume across workspace or app restarts, slot or attachment identity, native session IDs, or host-service terminal runtime code.
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:
@@ -19,9 +19,21 @@ Treat the integrated terminal as a platform boundary, not a normal panel.
 - changing PTY lifecycle, slot reuse, or delivery mode
 - touching terminal focus or keyboard behavior
 - changing resize handling or transcript replay
+- changing reattach, restore, backlog hydration, or viewport recovery
+- changing `slotKey`, `attachmentId`, or `nativeSessionId` flow
 - editing host-service terminal runtime code
 
 Do not use this skill for generic text editors or non-PTY output panes.
+
+## Three-Layer Model
+
+Treat terminal work as three layers with explicit ownership:
+
+- PTY session lifecycle: host-service or backend runtime
+- I/O transport and restore gating: renderer hooks plus IPC contract
+- viewport rendering: Ghostty or xterm instance lifecycle in the renderer
+
+Do not collapse these into one hook or component just because the UI looks simple.
 
 ## Shell / Runtime Split
 
@@ -43,6 +55,25 @@ Keep runtime hooks or services responsible for:
 - push/poll buffering
 
 Do not let shell components own PTY lifecycle.
+
+## Restore Contract
+
+The restore path should stay explicit:
+
+1. create or locate the session identity
+2. attach to the active session
+3. hydrate canonical state (`screenState`, backlog, transcript, or equivalent)
+4. resume live stream delivery
+
+Guardrails:
+
+- renderer unmount should usually detach, not kill
+- explicit tab close or workspace teardown is what kills PTY state
+- restore should use a host snapshot or bounded backlog as the source of truth, not stale DOM state
+- hidden CLI surfaces should rebuild their renderer and reattach later; hidden dock surfaces may keep the renderer alive only when the surface model explicitly allows it
+- workspace switch and app restart should not create duplicate sessions for the same slot
+
+If a change blurs attach, restore, and resume into one opaque effect, assume regressions are likely.
 
 ## Keep-Alive Contract
 
@@ -68,6 +99,14 @@ useEffect(() => {
 
 Visibility belongs in session gating, not bootstrap identity.
 
+## Identity Rules
+
+- `slotKey` is a shared helper contract, not an ad hoc string
+- `attachmentId` exists to prevent stale detach or stale resume from tearing down the active viewer
+- `nativeSessionId` is part of restart and provider-resume behavior; if it changes shape or persistence, follow the IPC chain all the way through
+
+When adding session metadata, verify that dock and CLI flows agree on identity semantics.
+
 ## Focus Cascade
 
 Preferred focus recovery order:
@@ -89,11 +128,13 @@ If focus is timing-sensitive, use a small RAF retry path. Do not scatter ad hoc 
 ## Runtime Hardening Rules
 
 - bounded output buffers only
+- bounded transcript persistence and deferred flush work only
 - explicit abort or cancellation path for long-lived async work
 - no fire-and-forget async on mutable session state
 - no unhandled rejection in host-service or main
 - no heavy PTY or stream work in Electron main when a worker or host-service can own it
 - no broad broadcast when workspace- or session-targeted delivery is enough
+- no resume path that can unlock stream delivery before restore state is applied
 
 ## Session Gating
 
@@ -112,6 +153,7 @@ Review the nearest equivalents of:
 
 - runtime hook or adapter
 - shell chrome component
+- restore or hydration hook
 - terminal styling helper
 - store restore semantics
 - renderer-to-main terminal contract
@@ -125,14 +167,26 @@ Review the nearest equivalents of:
 3. Verify focus still works.
 4. Resize aggressively and verify no freeze or stale PTY geometry.
 5. Confirm hidden surfaces did not create duplicate sessions.
+6. Reattach or reopen a session and verify scrollback plus visible viewport restore correctly.
+7. If the change touches persistence, restart the app and verify the session resumes with the expected identity and backlog.
+
+## Reference Stance
+
+Patterns worth borrowing from stronger terminal implementations:
+
+- explicit lifecycle boundaries and restore phases
+- clear identity separation for UI slot vs runtime session vs attachment
+- restore-specific verification instead of only happy-path typing checks
+
+For Stave-like architectures, prefer server-side snapshot or backlog restore with source-side gating over ad hoc client-only event ordering hacks unless the transport boundary proves otherwise.
 
 ## Output
 
 Return:
 
 - shell/runtime ownership status
+- restore and identity risks
 - keep-alive risks
 - focus or resize risks
 - runtime hardening gaps
 - verification completed vs still required
-

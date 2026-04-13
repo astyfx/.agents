@@ -3,6 +3,26 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-04-13 — Stave Terminal And IPC Skill Refit
+
+Retuned the Stave-facing safety skills around the actual terminal and IPC
+failure modes observed in recent terminal-session work.
+
+### Changed
+- **`skills/the-terminal-surface-guard/SKILL.md`** now emphasizes
+  attach-detach-restore-resume sequencing, session identity (`slotKey`,
+  `attachmentId`, `nativeSessionId`), and app-restart or workspace-restore
+  verification
+- **`skills/the-ipc-schema-sync/SKILL.md`** now distinguishes provider IPC from
+  terminal host-service IPC and explicitly covers terminal/session fields that
+  must travel through protocol, schemas, preload, window typing, renderer
+  hooks, and tests
+
+### Decision Notes
+- The refit was grounded in recent Stave commits around terminal reattach,
+  scrollback restore, viewport recovery, and session resume, plus external
+  Electron and xterm references for IPC bridge and terminal-state boundaries
+
 ## 2026-04-12 — IPC Async Dispatch Failure Mode Captured
 
 Promoted a real serializer-boundary bug into durable harness guidance instead of
