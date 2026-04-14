@@ -19,6 +19,26 @@ Central policy hub for all agents (Claude, Codex, etc.).
 - Follow `~/.agents/docs/instructions/RESPONSE_STYLE.md` for default brevity and clarity rules.
 - This style guidance does not override the language policy above.
 
+## Behavioral Principles
+
+These shared coding-behavior defaults are adapted from
+`forrestchang/andrej-karpathy-skills`
+(https://github.com/forrestchang/andrej-karpathy-skills), which packages
+Karpathy-inspired guidance for common LLM coding pitfalls. Keep this
+attribution in place so future sessions can quickly reassess whether this
+adaptation still earns always-on status. These principles guide execution after
+user instructions and hard safety invariants.
+
+- Think before coding: state assumptions, surface ambiguity, and push back when
+  a simpler or safer path is better.
+- Simplicity first: implement the minimum code that solves the requested
+  problem; avoid speculative flexibility and one-off abstractions.
+- Surgical changes: keep diffs traceable to the request, match local style, and
+  only clean up dead code created by your own change unless asked.
+- Goal-driven execution: define concrete success criteria, prefer regression
+  tests or verifiable checks for bug fixes and behavior changes, and loop until
+  verified.
+
 ## Context Loading
 
 - Keep the always-on prompt surface thin. By default, rely on this file plus
