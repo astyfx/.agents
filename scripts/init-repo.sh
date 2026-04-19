@@ -2,7 +2,7 @@
 # init-repo.sh — scaffold per-repo agent config for team-friendly use
 #
 # Usage:
-#   bash ~/.agents/scripts/init-repo.sh <project-path> [--with-execution] [--with-ci]
+#   bash ~/.agents/scripts/init-repo.sh <project-path> [--with-execution] [--with-ci] [--with-ralph-codex]
 #
 # Design principle:
 #   All generated files are TEAM-FRIENDLY — they contain no personal paths (~/.agents/)
@@ -28,6 +28,7 @@ Usage: bash ~/.agents/scripts/init-repo.sh <project-path> [options]
 Options:
   --with-execution  Create execution/ directory for lightweight task records
   --with-ci         Create .github/workflows/ with PR review template
+  --with-ralph-codex  Scaffold repo-local Ralph loop assets for Codex
 
 Generated files (all team-committable):
   .claude/CLAUDE.md             Project context for Claude
@@ -35,6 +36,7 @@ Generated files (all team-committable):
   .codex/AGENTS.md              Project context for Codex
   CONVENTIONS.override.md       Team convention overrides
   LIBRARIES.override.md         Team library overrides
+  scripts/ralph/*               Optional Codex Ralph loop assets
 
 Personal config (gitignored automatically):
   .claude/settings.local.json   Personal overrides (created only if needed)
@@ -49,12 +51,14 @@ fi
 PROJECT_DIR="$(cd "$1" 2>/dev/null && pwd || echo "$1")"
 WITH_EXECUTION=false
 WITH_CI=false
+WITH_RALPH_CODEX=false
 
 shift
 for arg in "$@"; do
   case "$arg" in
     --with-execution) WITH_EXECUTION=true ;;
     --with-ci)       WITH_CI=true ;;
+    --with-ralph-codex) WITH_RALPH_CODEX=true ;;
     *) echo "Unknown option: $arg"; exit 1 ;;
   esac
 done
@@ -248,6 +252,13 @@ jobs:
       #     npx claude-code --skill the-pr-reviewer --pr \${{ github.event.pull_request.number }}"
 fi
 
+# --- Optional: Codex Ralph loop scaffold ---
+
+if [[ "$WITH_RALPH_CODEX" == "true" ]]; then
+  echo ""
+  bash "${HARNESS_DIR}/scripts/scaffold-ralph-codex.sh" "${PROJECT_DIR}"
+fi
+
 # =============================================================================
 # GITIGNORE — ensure personal/runtime files are excluded
 # =============================================================================
@@ -312,6 +323,9 @@ echo "  LIBRARIES.override.md         Team library overrides"
 if [[ "$WITH_CI" == "true" ]]; then
   echo "  .github/workflows/            CI workflow templates"
 fi
+if [[ "$WITH_RALPH_CODEX" == "true" ]]; then
+  echo "  scripts/ralph/                Codex Ralph loop assets"
+fi
 echo ""
 echo "Personal config (gitignored — handled by your global ~/.claude/ settings):"
 echo "  Hooks, MCP servers, plugins → ~/.claude/settings.json (global, auto-applied)"
@@ -320,4 +334,10 @@ echo ""
 echo "Next steps:"
 echo "  1. Edit .claude/CLAUDE.md — add project context, tech stack, key commands"
 echo "  2. Edit CONVENTIONS.override.md — add team convention overrides"
-echo "  3. Commit the generated files so your teammates benefit too"
+if [[ "$WITH_RALPH_CODEX" == "true" ]]; then
+  echo "  3. Copy scripts/ralph/prd.json.example to scripts/ralph/prd.json"
+  echo "  4. Fill in project-specific checks in scripts/ralph/CODEX.md"
+  echo "  5. Commit the generated files so your teammates benefit too"
+else
+  echo "  3. Commit the generated files so your teammates benefit too"
+fi

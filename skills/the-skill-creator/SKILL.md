@@ -1,6 +1,6 @@
 ---
 name: the-skill-creator
-description: Create, rewrite, evaluate, and tighten reusable skills. Use whenever the user wants to turn a workflow into a skill, merge or improve existing skills, refine skill triggering/frontmatter, add scripts/references/assets, or test whether a skill actually performs better. For new skills created with this skill, default the folder name and frontmatter name to the-<slug> unless the user explicitly asks for another name.
+description: "Create, rewrite, evaluate, and tighten reusable skills. Use whenever the user wants to turn a workflow into a skill, merge or improve existing skills, refine skill triggering/frontmatter, add scripts/references/assets, or test whether a skill actually performs better. For new skills created with this skill, default the folder name and frontmatter name to the-SLUG unless the user explicitly asks for another name."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:
@@ -8,96 +8,130 @@ test-prompts:
   - "새 스킬 만들어줘"
   - "turn this workflow into a skill"
   - "스킬 업데이트해줘"
+  - "이 스킬 트리거가 잘 안 걸려, 개선해줘"
 ---
 
 # The Skill Creator
 
-Build skills that are small, reusable, and worth triggering.
+Build skills that are small, trigger-clear, and worth loading.
 
-## Local Defaults
+## Scope
 
-- Put new skills in the active skill root:
-  - first choice: a skill directory explicitly named by the user
-  - otherwise: the repo-local `skills/` folder if the task is project-specific
-  - otherwise: the user's configured global skill folder
-  - if still ambiguous, ask one concise question
-- Treat `SKILL.md` as the source of truth.
-- Do not create auxiliary docs like `README.md`, `CHANGELOG.md`, or install notes unless the user explicitly asks.
-- Create optional folders only when they will be used:
-  - `scripts/` for deterministic or repeated work
-  - `references/` for detailed material that should be loaded on demand
-  - `assets/` for templates or output resources
-- Only create `agents/openai.yaml` if the target environment actually uses UI metadata. Skip it by default unless there is evidence it is needed.
-- Match the user's language and jargon level. If the user is speaking Korean, default to Korean in the conversation. Keep skill files concise and usually in English unless the user wants otherwise.
+- New skill creation.
+- Rewriting, merging, or tightening existing skills.
+- Fixing triggering (frontmatter) or bloat (body length).
+- Adding scripts, references, or assets only when they save repeated work.
+- Forward-testing a skill via realistic prompts, not demo prompts.
 
-## Naming Rule
+## Progressive Disclosure
 
-- For new skills created with this skill, default the directory name and frontmatter `name` to `the-<slug>`.
-- Keep the slug short, lowercase, and hyphenated.
-- If the user is updating an existing skill, preserve the current name unless they explicitly ask for a rename.
+Skills load on demand, so each artifact has a budget:
 
-## Working Stance
+1. **Tier 1 — discovery**: `name` + `description` only. The harness matches these against the user prompt. If they miss, the body never loads.
+2. **Tier 2 — body**: `SKILL.md` body is read when the skill triggers. Keep it lean and procedural. Link out for anything heavy.
+3. **Tier 3 — on-demand**: `scripts/`, `references/`, `assets/` load only when the body tells the agent to read or execute them.
 
-- Extract as much intent as possible from the current conversation, pasted drafts, or existing files before asking questions.
-- If the user already has a draft skill, start from diagnosis and iteration instead of restarting from zero.
-- Make reasonable assumptions and move forward. Ask only the questions that materially change the design.
-- Assume the model is already capable. Add only the information that meaningfully improves reliability, triggering, or workflow fit.
+Write for that budget. If content is not needed every trigger, push it to Tier 3.
+
+## Anti-list
+
+Do not create any of these unless the user explicitly asks:
+
+- `README.md`, `INSTALLATION.md`, `QUICK_REFERENCE.md`, `CHANGELOG.md`
+- `agents/openai.yaml` or other UI metadata files
+- Placeholder empty folders (`scripts/`, `references/`, `assets/`)
+- Multiple overlapping sample files that duplicate body content
+- `.gitkeep` in folders with real files
+
+`SKILL.md` is the source of truth. Everything else exists only if it pulls its weight.
+
+## Naming
+
+- Folder name equals frontmatter `name`.
+- Lowercase letters, digits, hyphens only. Max 64 chars.
+- New skills default to `the-SLUG`. Keep the slug short and intent-shaped (`the-build-fixer`, `the-pr-reviewer`).
+- Prefer a verb-led phrase in the description's first sentence (`Diagnose and fix...`, `Turn a Slack thread into...`).
+- Tool-namespace only when the skill is tool-specific (`vercel-react-best-practices` is fine because it targets one vendor's guidelines). Otherwise keep names tool-agnostic.
+- If updating an existing skill, preserve the name unless the user asks for a rename.
+
+## Degrees of Freedom
+
+Choose how prescriptive the skill should be before drafting the body:
+
+- **High freedom (heuristic)** — reviewing, brainstorming, code smell hunting. Give principles and rationale, not steps.
+- **Medium freedom (patterned)** — common workflows with variant paths. Give the default path and call out forks.
+- **Low freedom (scripted)** — fragile procedures, API calls, formatting requirements. Give strict steps or delegate to `scripts/`.
+
+A too-loose skill underperforms on deterministic jobs; a too-tight skill fights with real context. Pick the minimum that keeps the job reliable.
 
 ## Creation Flow
 
-1. Capture the job to be done.
-2. Identify trigger contexts, expected outputs, examples, edge cases, dependencies, and success criteria.
-3. Decide the degree of freedom:
-   - high freedom for heuristic guidance
-   - medium freedom for preferred patterns with some variation
-   - low freedom for fragile workflows that need scripts or strict sequencing
-4. Plan the minimal file set.
-5. Draft or revise `SKILL.md`, especially the frontmatter description.
-6. Add scripts, references, or assets only if they save repeated work or reduce failure modes.
-7. Validate with realistic prompts when the task is objectively testable.
-8. Iterate from failures without overfitting to a tiny prompt set.
-9. Package, commit, or publish only if the user asks.
+1. **Clarify the job.** One sentence: who triggers this, with what input, to produce what output.
+2. **Scaffold** with the helper:
+   ```
+   python3 ~/.agents/skills/the-skill-creator/scripts/init_skill.py the-SLUG \
+     --description "trigger-shaped description" \
+     --resources scripts,references \
+     --test-prompts "prompt 1" "prompt 2"
+   ```
+   Use `--no-the-prefix` only for ports of third-party skills.
+3. **Decide freedom level** (above) and pick the body structure:
+   - workflow-based (step 1 → 2 → 3)
+   - task-based (task A, task B, task C)
+   - reference (spec or standards)
+   - capabilities-based (integrated feature map)
+4. **Write frontmatter first.** The `description` is the only Tier-1 surface; it must name the job, the triggers, and the inputs. Slightly assertive, not keyword-stuffed.
+5. **Write a lean body.** Cut anything the agent already knows. Keep rationale over shouting.
+6. **Add Tier-3 files only if used.**
+   - `scripts/` — deterministic work that would otherwise be rewritten per run.
+   - `references/` — long specs, tables, or schemas the body should link to, not inline.
+   - `assets/` — templates the skill outputs or copies.
+7. **Validate.**
+   ```
+   python3 ~/.agents/skills/the-skill-creator/scripts/quick_validate.py <skill-dir>
+   ```
+   Use `--strict-naming` for new skills to enforce `the-` prefix.
+8. **Forward-test** with realistic prompts (see next section).
+9. **Sync.** The Claude `PostToolUse` and Codex `SessionStart` hooks run `~/.agents/scripts/sync-skills.sh` automatically. Run it manually only if you need the symlink farm rebuilt right now.
+10. **Update `~/.agents/skills/INDEX.md`** with the new entry.
 
-## Writing Rules
+## Forward Testing
 
-- Skill names use lowercase letters, digits, and hyphens only.
-- The frontmatter `description` is the main trigger surface. It must include:
-  - what the skill does
-  - when to use it
-  - concrete contexts or phrases that should trigger it
-- Make the description slightly assertive so the skill does not undertrigger, but do not stuff unrelated keywords.
-- Keep the body lean. Put bulky examples, schemas, or domain detail in `references/`.
-- Prefer rationale over rigid shouting. If you feel tempted to write a wall of `ALWAYS` or `NEVER`, explain the reason instead.
-- Avoid duplicating the same material across `SKILL.md` and bundled references.
-- Do not create placeholder files or empty resource directories "just in case."
+Don't trust a skill until a fresh-context agent triggers it on realistic prompts.
 
-## Evaluation Guidance
-
-- If the skill has objectively testable outputs, propose 2 to 5 realistic prompts and define what success looks like.
-- Compare against a useful baseline when it helps:
-  - no skill
-  - the previous skill version
-  - a simpler prompt-only approach
-- Review process quality, not just final output. If the skill causes repeated script-writing, wasted reasoning, or awkward detours, either trim the prompt or bundle the repeated logic into `scripts/`.
-- Generalize from failures. Do not hardcode brittle instructions that only rescue one test case.
-- If the work is subjective, use a lighter evaluation loop with representative prompts and direct user feedback instead of pretending it is numerically benchmarkable.
+- Collect 3-5 prompts that represent the real trigger surface, in the languages the user will actually use.
+- Run each through a new agent session (e.g. an `Explore` or `general-purpose` subagent) and check:
+  1. Did the skill fire at all?
+  2. Did it fire at the right time, or did a nearer-surface tool win?
+  3. Did the body actually guide the work, or did the agent ignore it?
+- If triggering fails, fix the description first. Rewriting the body rarely fixes Tier-1 miss.
+- If triggering works but the body wastes tokens, push bulk detail into `references/` and reference it on demand.
+- Do not overfit to a 3-prompt set. Look for the shape of the failures, not the exact wording.
 
 ## Updating Existing Skills
 
-- Read the current skill first and find the real bottleneck:
-  - weak triggering
-  - bloated context
-  - missing deterministic tooling
-  - unclear workflow steps
-  - poor fit for the user's actual prompts
-- Tighten frontmatter before rewriting the whole body if the main issue is that the skill is not firing or is firing too late.
-- If the same helper code keeps appearing across runs, write it once and bundle it.
-- Keep what already works. Change the smallest thing that fixes the real failure.
+Find the real bottleneck before rewriting:
+
+- **Not firing** → tighten `description` triggers.
+- **Firing too late** → add concrete phrases and file types it should match on.
+- **Body bloat** → move long examples, tables, or specs into `references/`.
+- **Repeated boilerplate** → bundle it into `scripts/`.
+- **Unclear workflow** → restructure as numbered steps or a capability table.
+
+Change the smallest thing that fixes the real failure. Don't refactor what already works.
+
+## Evaluation Guidance
+
+- Objective output (code generation, parsing, deterministic tasks): run 2-5 realistic prompts, compare against the previous skill version, a simpler prompt, or no skill at all.
+- Subjective output (writing, planning, judgment): use a lighter feedback loop with the user, not synthetic scores.
+- Look for process quality too: if the skill causes the agent to write the same helper every run, the helper belongs in `scripts/`.
+- Generalize from failure patterns; never hardcode a rescue for a single test case.
 
 ## Done Definition
 
-- The folder structure is minimal and intentional.
-- `SKILL.md` is concise and trigger-clear.
-- Optional resources are actually referenced and useful.
-- The skill has been sanity-checked on realistic prompts, or the lack of evals is a conscious choice because the task is subjective.
-- `skills/INDEX.md` is updated to include the new skill (name, category, compatible-tools, trigger summary).
+- Folder contains only what is used. No empty `scripts/`, no unreferenced `references/`.
+- Frontmatter validates clean (`quick_validate.py`).
+- `description` names the job and the trigger phrases explicitly.
+- Body is the minimum guidance that makes the skill reliable at its freedom level.
+- At least one forward-test run confirms the skill fires on realistic prompts, or the user has accepted that the task is too subjective to benchmark.
+- `~/.agents/skills/INDEX.md` reflects the change.
