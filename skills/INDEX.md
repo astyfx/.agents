@@ -19,6 +19,8 @@ Auto-maintained by `the-skill-creator`. Update this file when adding, removing, 
 | the-ipc-schema-sync | safety | claude, codex | IPC payload chains, Zod schema sync, provider event parity |
 | the-react-effect-guardrail | safety | claude, codex | useEffect/useRef anti-patterns, stale closures, cleanup discipline |
 | the-tdd | workflow | claude, codex | test-driven development, TDD cycle |
+| the-ralph-prd | workflow | claude, codex | PRD generation and prd.json conversion for Ralph autonomous loop |
+| the-ralph-loop | workflow | claude, codex | Ralph loop setup and execution for Claude or Codex, fresh-context autonomous iteration |
 | the-api-migrator | workflow | claude, codex | API/dependency upgrade, migration audit and execution |
 | the-build-fixer | workflow | claude, codex | build failures, TypeScript errors, CI fixes |
 | the-dead-code-detector | workflow | claude, codex | dead code, unused files/exports, stale paths, evidence-based cleanup |
@@ -30,3 +32,11 @@ Auto-maintained by `the-skill-creator`. Update this file when adding, removing, 
 | the-refactoring-planner | workflow | claude, codex | large-scale refactoring, module extraction, product separation |
 | the-slack-thread-worker | workflow | claude, codex | Slack thread to task extraction, Jira/resource prep, or end-to-end execution + PR |
 | the-pr-reviewer | review | claude, codex | automated PR review, GitHub integration |
+| the-design-cloner | ui | claude, codex | faithful clone of Figma/website/library designs with token extraction and side-by-side verification |
+| the-provider-router | architecture | claude, codex | Stave Auto / provider routing design reference and change discipline for extensions and redesigns |
+| the-agent-cli | cli | claude, codex | design CLIs called by LLM agents — JSON output, exit-code contract, idempotency, NDJSON streaming |
+| the-cli-designer | cli | claude, codex | design human-facing CLIs — subcommand taxonomy, help output, error UX, shell completion |
+| the-tui-designer | cli | claude, codex | build interactive terminal UIs with Ink — layout, focus, input, non-TTY fallback, signal handling |
+| the-agent-tool-schema | cli | claude, codex | one schema drives CLI parser, help, and Anthropic/OpenAI/MCP tool definitions |
+| the-subprocess-orchestrator | cli | claude, codex | spawn/kill-tree/timeout/backpressure/PTY discipline for child processes |
+| the-cli-packaging | cli | claude, codex | package CLI as signed binary, cross-platform targets, Homebrew/npm distribution, release pipeline |

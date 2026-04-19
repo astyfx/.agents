@@ -1,6 +1,16 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
+description: "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities. Use when the user is looking for functionality that might exist as an installable skill, wants to browse the skills ecosystem, or asks what skills are available."
+compatible-tools: [claude, codex]
+category: discovery
+test-prompts:
+  - "find a skill for X"
+  - "스킬 찾아줘"
+  - "is there a skill that can help with..."
+  - "what skills are available"
+  - "어떤 스킬이 있어?"
+  - "install a skill for data analysis"
+  - "스킬 설치해줘"
 ---
 
 # Find Skills
