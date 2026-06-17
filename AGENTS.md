@@ -11,7 +11,7 @@ Central policy hub for all agents (Claude, Codex, etc.).
 
 ## Language Policy
 
-- **Agent responses**: Korean by default (explanations, status updates, direct answers). Switch only when the user explicitly asks for another language.
+- **Agent responses**: Korean by default, including explanations, status updates, direct answers, and the final user-facing answer. Switch only when the user explicitly asks for another language.
 - **Code, comments, commit messages, branch names, PR titles/descriptions, documentation**: English. Follow the conventions in each project or in `~/.agents/docs/instructions/CONVENTIONS.md`.
 
 ## Response Style
@@ -80,8 +80,6 @@ user instructions and hard safety invariants.
 - `work-handoff.md` is cross-session scratch state.
 - `memory/` is operational memory: patterns, troubleshooting, playbooks,
   decisions, and scorecards.
-- `learnings/` is archived historical reference material; do not add new
-  entries there by default.
 
 ## Harness Maintenance
 
@@ -101,6 +99,17 @@ user instructions and hard safety invariants.
 - When the user is still shaping work (PRDs, specs, planning docs, fuzzy ideas) rather than requesting immediate execution, use `~/.agents/skills/the-refine-prompt/SKILL.md`.
 - Do not force refinement for direct, concrete execution requests (bug fixes with logs, targeted code changes, clear debugging).
 - See the skill file for detailed routing rules.
+
+## Orchestration Default
+
+- Default to a single agent. Escalate only as far as the task needs: built-in
+  `Explore`/`Plan`/`general-purpose` agents, then a custom `subagents/*`
+  definition, then a multi-agent `Workflow`, then scheduled/background/remote.
+- Prefer built-in agent types over custom subagents; use a custom subagent only
+  for a fixed output contract or a hard tool restriction.
+- Multi-agent `Workflow`s are opt-in only (user typed `ultracode`, asked for one,
+  or a skill/command triggers it).
+- Full decision spectrum: `~/.agents/docs/instructions/ROUTING.md`.
 
 ## Core Docs
 

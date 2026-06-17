@@ -3,6 +3,80 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-06-17 — Platform Re-Alignment (Phase 6)
+
+Realigned the documented harness model with the actual runtime and current
+platform capabilities after ~2 months of policy/architecture drift, and removed
+patterns that constrained model capability on non-code work.
+
+### Added
+- **`memory/playbooks/workflows-and-orchestration.md`** — `Workflow` authoring
+  and quality patterns (pipeline default, adversarial verify, loop-until-dry),
+  with the opt-in rule.
+- **`memory/playbooks/scheduled-and-background-agents.md`** — `/loop`,
+  `/schedule`, `ScheduleWakeup`, `CronCreate`, background `Bash`, and
+  `isolation: remote/worktree`, including cache-window cadence guidance.
+- **`memory/playbooks/connectors-and-plugins.md`** — hosted connector
+  (ToolSearch/deferred) vs. local MCP vs. Codex marketplace plugin model, with a
+  per-agent inventory.
+
+### Changed
+- **`docs/instructions/ROUTING.md`** rewritten as a full orchestration spectrum:
+  single agent -> built-in `Explore`/`Plan`/`general-purpose` -> custom subagent
+  -> `Workflow` -> scheduled/background/remote.
+- **`CLAUDE.md` Output rules** reframed from an always-on "code first / no inline
+  prose" global into task-shaped defaults, so planning/analysis/doc work is no
+  longer forced into a code-first shape (capability de-constraint).
+- **`subagents/{researcher,planner}/AGENT.md`** now defer to built-in
+  `Explore`/`Plan` first and relax an over-narrow read-only Bash allowlist;
+  `subagents/README.md` documents the built-in-first rule.
+- **`ARCHITECTURE.md`** — enforcement model now matches `claude/settings.json`
+  1:1; parity table v2 -> v3 (Workflows, scheduled/remote, plugins, Codex
+  guardian approval, goals/memories, computer-use); new MCP/Connectors/Plugins
+  section.
+- **`codex/AGENTS.md`** + **`scripts/init.sh`** — note guardian-subagent approval
+  review; init now seeds `post-skill-sync` hook and `effortLevel`/
+  `skipAutoPermissionPrompt`/`permissions.defaultMode` baselines.
+- **`AGENTS.md`** — added an Orchestration Default pointer to ROUTING.md.
+- Connector wording in `the-figma-to-code` / `the-pr-reviewer` skills modernized
+  to connector-via-ToolSearch.
+
+### Backfill (2026-04-14 .. 2026-04-19)
+- **2026-04-19** — Skill portfolio expanded for the Stave agentic IDE + CLI
+  cluster; cross-tool skill sync + Ralph loop integration (`post-skill-sync`
+  hook, `the-ralph-loop`, `the-ralph-prd`).
+- **2026-04-14** — Added attributed behavioral principles (Karpathy-inspired) to
+  core policy in `AGENTS.md`.
+
+### Quality audit cleanup (2026-06-17 follow-on)
+
+A second sweep for dead weight, low quality, and redundancy.
+
+- **Removed** `learnings/` (8 files) — self-declared archive, never a load
+  target, generic; scrubbed all active-doc references.
+- **Removed** the `find-skills` skill (off-strategy: built around installing
+  external public skills); skill count 37 -> 36.
+- **Renamed** `scripts/summarize-evals.py` -> `.pl` (it was always Perl) and
+  documented the Perl + `JSON::PP` runtime dependency (`INIT.md`, init health check).
+- **Added** `scripts/scorecard.sh` — scorecards are now generated, not
+  hand-written; saved a current snapshot and retired the stale 2026-04 ones to
+  historical baselines.
+- **Marked the eval suite dormant** (`evals/README.md`, ROADMAP) — 4 codex-only
+  results, tasks 11-19 unfed, no Claude runs; "19 tasks" no longer implies an
+  active benchmark.
+- **Archived** `docs/plans/*-forge-*.md` to `docs/plans/archive/` (superseded,
+  orphaned).
+- **Repositioned** `the-code-reviewer` (shared six-axis rubric vs. built-in
+  `/code-review`) and `shadcn-ui` (component mechanics + cross-links) instead of
+  deleting — both are load-bearing references.
+- **Normalized** vestigial imported frontmatter in `electron-best-practices` and
+  `vercel-react-best-practices`; reconciled `skills/INDEX.md` categories.
+- **Developed further**: `the-figma-to-code` (per-repo stack + boundary vs
+  design-cloner), `vercel-react-best-practices` (apply-during-review workflow),
+  `ai-elements` (scope grounding).
+- Deleted the untracked `migration-backups/20260415-222957/` (~58MB, stale
+  credential) from disk.
+
 ## 2026-04-13 — Stave Terminal And IPC Skill Refit
 
 Retuned the Stave-facing safety skills around the actual terminal and IPC

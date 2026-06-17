@@ -1,7 +1,7 @@
 # .agents: Forge-Inspired Role & Workflow Analysis
 
 Date: 2026-04-03
-Status: Draft
+Status: Superseded (2026-06-17) — the role-separation and orchestration ideas here are now delivered via built-in agent types + the `Workflow` tool; see ROADMAP Phase 6 (Platform Re-Alignment) and `docs/instructions/ROUTING.md`. Retained for historical context.
 Scope: `.agents` harness (`~/.agents`)
 
 ## Premise

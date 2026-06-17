@@ -1,7 +1,7 @@
 # Stave: Forge-Inspired Feature Absorption Plan
 
 Date: 2026-04-03
-Status: Draft
+Status: Superseded (2026-06-17) — superseded by the platform's native multi-agent orchestration (`Workflow` tool) and scheduling primitives; see ROADMAP Phase 6 (Platform Re-Alignment). Retained for historical context.
 Scope: Stave GUI host (`~/workspace/stave`)
 
 ## Premise

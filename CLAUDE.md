@@ -8,6 +8,10 @@ Claude-specific behavioral rules. Read globally via the MANDATORY instruction in
 - This file supplements `./AGENTS.md` with Claude-specific behavioral guidance.
 - When working in external projects, this file is read via the MANDATORY instruction rather than auto-loaded.
 
+## Response Language
+
+- Follow `./AGENTS.md` language policy for all user-facing output, including the final answer.
+
 ## Approach
 
 - Think before acting. Read existing files before writing code.
@@ -21,8 +25,15 @@ Claude-specific behavioral rules. Read globally via the MANDATORY instruction in
 
 ## Output
 
-- Return code first. Explanation after, only if non-obvious.
-- No inline prose. Use comments sparingly - only where logic is unclear.
+Match the output shape to the task; do not force one shape onto every task.
+
+- For code-delivery tasks: return the code first, explanation after and only
+  where non-obvious. Use comments sparingly - only where logic is unclear.
+- For planning, analysis, debugging write-ups, reviews, and docs: lead with the
+  reasoning or answer the task needs. Prose is the correct output here - do not
+  suppress necessary explanation to satisfy a code-first or brevity rule.
+- Concise is the default, but never at the cost of accuracy or the nuance
+  required to make a good decision.
 - No boilerplate unless explicitly requested.
 
 ## Code Rules

@@ -11,6 +11,9 @@ Repeatable workflows for work that spans tools, systems, or agents.
 - [eval-run-scoring-and-scorecard-update.md](eval-run-scoring-and-scorecard-update.md)
 - [stave-task-resume-and-local-execution-bridge.md](stave-task-resume-and-local-execution-bridge.md)
 - [figma-design-to-implementation-and-visual-verification.md](figma-design-to-implementation-and-visual-verification.md)
+- [workflows-and-orchestration.md](workflows-and-orchestration.md)
+- [scheduled-and-background-agents.md](scheduled-and-background-agents.md)
+- [connectors-and-plugins.md](connectors-and-plugins.md)
 
 ## Next Candidates
 

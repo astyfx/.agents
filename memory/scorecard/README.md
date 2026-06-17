@@ -2,6 +2,20 @@
 
 Measured snapshots of harness health over time.
 
+## How snapshots are produced
+
+Snapshots are **generated, not hand-written** — hand-maintained counts drift
+instantly (the 2026-04 snapshots were all stale within weeks). Regenerate a
+current snapshot with:
+
+```bash
+bash scripts/scorecard.sh > memory/scorecard/$(date +%Y-%m-%d)-snapshot.md
+```
+
+`*-snapshot.md` files are generated; the older 2026-04 dated files are kept as
+historical baselines (point-in-time, not current). Do not hand-edit either —
+rerun the script.
+
 ## Goals
 
 - track whether prompt-loading changes are actually reducing overhead

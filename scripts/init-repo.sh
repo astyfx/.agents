@@ -107,6 +107,7 @@ write_if_missing "${PROJECT_DIR}/.claude/CLAUDE.md" "# ${PROJECT_NAME}
 
 - If this repository has an \`AGENTS.md\`, treat it as the shared project policy.
 - This file is Claude-specific supplemental guidance.
+- Follow the repository language policy for all user-facing output, including the final answer.
 
 ## Tech Stack
 
@@ -152,7 +153,8 @@ write_if_missing "${PROJECT_DIR}/.codex/AGENTS.md" "# ${PROJECT_NAME}
 
 - Use Conventional Commits (feat, fix, refactor, chore, docs, test)
 - Do not commit secrets or API keys to tracked files
-- Run the project formatter before considering edits complete"
+- Run the project formatter before considering edits complete
+- Follow the repository language policy for all user-facing output, including the final answer"
 
 # --- Convention and library overrides ---
 

@@ -10,6 +10,18 @@ Benchmark tasks for measuring agent (Claude and Codex) performance on representa
 - Keep a small set of decision-linked benchmark runs instead of turning evals
   into per-task journaling.
 
+## Status (2026-06): dormant
+
+The framework is complete (tasks, rubric, scripts, playbook) but **under-fed**:
+the 4 recorded results are all `codex`, all pre-2026-04-08, and several were
+real-work variants rather than the canned prompts. Tasks `11-19` were scaffolded
+per ROADMAP phases and have **no runs**. There is **no `claude` result**, so the
+Claude-vs-Codex comparison this suite promises is not yet backed by evidence.
+
+Treat "19 tasks" as available scaffolding, not an active benchmark suite. To
+revive: record at least one `claude` run per core task using the exact canned
+prompts. See `memory/scorecard/` (generated) for current counts.
+
 ## Default Stance
 
 - Do not run an eval for every normal task.
@@ -25,7 +37,7 @@ Benchmark tasks for measuring agent (Claude and Codex) performance on representa
 4. Create a result file with `bash scripts/new-eval-result.sh <agent> <task-id>`.
 5. After the agent finishes, score the result using the rubric below.
 6. Save notes in the created result file.
-7. Use `scripts/summarize-evals.py` to see the current aggregate view.
+7. Use `scripts/summarize-evals.pl` to see the current aggregate view.
 
 ## Scoring Rubric
 
@@ -33,7 +45,7 @@ Each result file records:
 
 | Field | Values | Notes |
 |---|---|---|
-| `task_id` | 01–10 | From task filename |
+| `task_id` | 01–19 | From task filename |
 | `agent` | claude, codex | Which agent ran the task |
 | `eval_type` | change_validation / workflow_baseline / routing_check / agent_comparison | Why this run exists |
 | `change_under_test` | freeform | What changed, if this is validating a harness or workflow change |
@@ -90,5 +102,5 @@ notes: |
 ## Utility Scripts
 
 - `scripts/new-eval-result.sh` — scaffold a result file with the expected fields
-- `scripts/summarize-evals.py` — summarize runs by agent, pass rate, rework,
+- `scripts/summarize-evals.pl` — summarize runs by agent, pass rate, rework,
   verification quality, policy compliance, and eval type coverage

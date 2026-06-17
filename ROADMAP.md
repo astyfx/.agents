@@ -3,8 +3,8 @@
 Living document for `.agents` harness evolution.
 Updated by humans and agents. Read this before starting harness work.
 
-**Last updated**: 2026-04-08
-**Current phase**: Phase 5 complete: operating-model reboot finalized on `execution/`.
+**Last updated**: 2026-06-17
+**Current phase**: Phase 6 in progress: platform re-alignment (orchestration, scheduling, connectors, parity v3, capability de-constraint).
 
 ---
 
@@ -54,16 +54,21 @@ Projects get their own config via a scaffolding script.
 **Rationale**: The harness should be portable across machines and not couple personal
 preferences into team repos. Per-repo config lets each project override what it needs.
 
-### AD-2: Codex Parity Model (v2)
+### AD-2: Codex Parity Model (v3)
 
-Assumes Codex now supports subagents and plugins.
+Both agents support subagents, plugins, multi-agent workflows, scheduling, and
+connectors. Parity is at the workflow level, not implementation detail. The
+canonical, current table lives in `ARCHITECTURE.md` ("Cross-Agent Parity Table
+(v3)"); this record keeps only the decision rationale and version history.
 
-| Concern | Before (v1) | After (v2) |
-|---|---|---|
-| Enforcement | Claude: hooks / Codex: invariants only | Both: hooks + invariants as safety net |
-| Subagents | Text references only for Codex | Both reference same AGENT.md definitions |
-| MCP/Plugins | Claude only (Figma, GitHub, Slack) | Both can wire equivalent plugins |
-| Routing | Identical ROUTING.md, different spawn syntax | Unified spawn syntax section |
+Version history:
+- **v1** — Codex enforcement was invariant-text only; subagents were text
+  references; MCP/plugins were Claude-only.
+- **v2** (2026-03) — assumed Codex gained subagents + plugins; unified routing.
+- **v3** (2026-06) — adds Workflows (multi-agent), scheduled/background/remote
+  agents, plugins/marketplaces, Codex guardian approval
+  (`approvals_reviewer=guardian_subagent`), goals/memories, and computer-use.
+  See ARCHITECTURE for the row-by-row mapping.
 
 ### AD-3: Role-Based Skill Audit
 
@@ -262,6 +267,58 @@ and an active improvement loop that compounds through real use.
 - The user needs the harness to support engineering, management, documentation,
   communication, and integrations as a compounding system
 
+### Phase 6: Platform Re-Alignment (2026-06)
+
+**Goal**: Realign the documented model with the actual runtime and current
+platform capabilities after ~2 months of drift, and remove patterns that
+constrained model capability — without thickening the always-on core.
+
+**Why this phase exists**:
+- The skills layer stayed fresh, but policy/architecture/orchestration docs
+  drifted from what the runtime now supports (Workflows, built-in agent types,
+  scheduling, hosted connectors, plugins, Codex guardian approval / gpt-5.5).
+- Some existing config actively limited the model: the always-on "code first /
+  no inline prose" output rule penalized non-code work, and custom subagents
+  shadowed the more capable built-in `Explore`/`Plan` types.
+
+**Deliverables (workstreams)**:
+- **A — Orchestration**: ROUTING.md rewritten to the full spectrum (single →
+  built-in → custom subagent → `Workflow` → scheduled/remote); subagents
+  repositioned built-in-first; `workflows-and-orchestration` playbook; AGENTS.md
+  Orchestration Default pointer.
+- **B — Scheduling/background/remote**: `scheduled-and-background-agents` playbook
+  with cache-window cadence rules.
+- **C — MCP/Connectors/Plugins**: ARCHITECTURE concept model (connector via
+  ToolSearch vs. local MCP vs. Codex marketplace); `connectors-and-plugins`
+  playbook; connector wording modernized in affected skills.
+- **D — Codex parity + enforcement**: parity table v2 → v3; enforcement model
+  matched 1:1 to `claude/settings.json`; guardian approval noted; init.sh seeds
+  new settings baselines.
+- **E — Doc coherence**: this Phase 6 entry, CHANGELOG backfill + entry,
+  CONTEXT_LOADING references, forge plans marked Superseded, check-harness
+  validates the new docs.
+- **F — Capability de-constraint**: CLAUDE.md output rules made task-shaped;
+  RESPONSE_STYLE brevity framing bounded by meaning; over-narrow subagent Bash
+  allowlist relaxed.
+
+**Follow-on quality audit (2026-06-17)** — a second sweep for dead weight / low
+quality, executed in the same phase:
+- Eval suite marked **dormant** (4 codex-only results, tasks 11-19 unfed, no
+  Claude runs); "19 tasks" no longer implies an active benchmark.
+- Scorecard converted to a **generated artifact** (`scripts/scorecard.sh`);
+  hand-written 2026-04 snapshots kept only as historical baselines.
+- `learnings/` retired (self-declared archive, never a load target, generic).
+- `docs/plans/*-forge-*.md` moved to `docs/plans/archive/` (superseded, orphaned).
+- `summarize-evals.py` renamed to `.pl` (it was always Perl); Perl runtime
+  dependency documented.
+- Skill cleanup: `find-skills` removed (off-strategy); `the-code-reviewer` and
+  `shadcn-ui` repositioned as shared rubric / reference rather than duplicates;
+  `electron-best-practices` frontmatter normalized.
+
+**Design constraints**: additive-first (extend files, do not break references);
+runtime state files are not source-of-truth (reflect facts in docs, do not
+hand-edit `config.toml`/`.claude.json`/caches/live `settings.json`).
+
 ---
 
 ## Sustainability Mechanisms
@@ -292,3 +349,4 @@ and an active improvement loop that compounds through real use.
 | Phase 3: Integration | ✅ | 2026-03-29 |
 | Phase 4: Expansion | ✅ | 2026-03-29 |
 | Phase 5: Operating Model Reassessment | ✅ | 2026-04-08 |
+| Phase 6: Platform Re-Alignment | 🔨 | 2026-06-17 |

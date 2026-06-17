@@ -64,7 +64,6 @@ It is trying to make them behave similarly at the workflow level.
 │  execution/      -> default execution memory for active tasks      │
 │  work-handoff.md -> cross-session handoff scratch                  │
 │  memory/         -> patterns, troubleshooting, playbooks, ADRs     │
-│  learnings/      -> archived historical notes                      │
 │  evals/results/  -> benchmark run history                          │
 └───────────────────────────────┬────────────────────────────────────┘
                                 │ bootstrapped and checked by
@@ -105,13 +104,12 @@ User request
 | `subagents/` | Reusable agent role definitions | Use sparingly and intentionally |
 | `execution/` | Default execution-memory task records | Active task state and handoff only |
 | `memory/` | Operational memory | Patterns, troubleshooting, playbooks, decisions, scorecards |
-| `learnings/` | Archived historical notes | Readable older reusable notes |
 | `evals/tasks/` | Benchmark prompts | Stable task corpus |
 | `evals/results/` | Run results | Compare Claude vs Codex over time |
 | `scripts/hooks/` | Claude enforcement scripts | Mechanical invariants |
 | `scripts/new-task.sh` | Execution-memory scaffolder | Seeds lite or expanded task folders and work-handoff linkage |
 | `scripts/new-eval-result.sh` | Eval result scaffolder | Creates result markdown files |
-| `scripts/summarize-evals.py` | Eval aggregation | Summarizes benchmark history |
+| `scripts/summarize-evals.pl` | Eval aggregation (Perl) | Summarizes benchmark history |
 | `scripts/init-repo.sh` | Per-repo agent config scaffolder | Creates bridge files, override templates, optional execution/CI |
 | `scripts/check-harness.sh` | Harness health validator | Checks structure and wiring |
 | `claude/` | Claude runtime state + bridge config | Symlink target for `~/.claude` |
@@ -121,17 +119,38 @@ User request
 
 ### Claude
 
-- `claude/settings.json` wires hooks into Claude tool events
-- `pre-commit-lint.sh` blocks bad commit messages before Bash commit commands run
-- `pre-write-secrets.sh` blocks suspicious secret writes on `Write` and `Edit`
-- `post-write-format.sh` formats supported source files after `Write` and `Edit`
-- `on-stop-handoff.sh` writes a runtime snapshot and syncs tracked handoff when task context is known
+`claude/settings.json` wires hooks into Claude tool events:
+
+| Event | Matcher | Hook(s) |
+|---|---|---|
+| `PreToolUse` | `Bash` | `pre-commit-lint.sh` — blocks non-Conventional commit messages before commit commands run |
+| `PreToolUse` | `Write`, `Edit` | `pre-write-secrets.sh` — blocks suspicious secret writes |
+| `PostToolUse` | `Write`, `Edit` | `post-write-format.sh` (formats supported source) + `post-skill-sync.sh` (keeps cross-tool skill copies in sync) |
+| `PostToolUse` | `*` | superset `notify.sh` (best-effort desktop/runtime notify, no-op when unset) |
+| `Stop` | — | `on-stop-handoff.sh` (runtime snapshot + tracked handoff sync) + superset `notify.sh` |
+| `UserPromptSubmit` | — | superset `notify.sh` |
+| `PostToolUseFailure` | `*` | superset `notify.sh` |
+| `PermissionRequest` | `*` | superset `notify.sh` |
+
+Non-hook settings that shape Claude's behavior:
+
+- `permissions.defaultMode: "auto"` — auto-approve permitted tool calls.
+- `skipAutoPermissionPrompt: true` — suppress the auto permission prompt.
+- `effortLevel: "xhigh"` — maximum reasoning effort (do not lower without reason;
+  this is a capability lever, not overhead).
+- `theme: "dark-daltonized"`.
+- `mcpServers` — local-only servers (currently `stave-local-mcp` over http).
+  Hosted claude.ai connectors are not listed here; see MCP, Connectors, and Plugins.
 
 ### Codex
 
-- No hook system is assumed
-- Equivalent invariants live in `codex/AGENTS.md`
-- Parity is achieved through outcome expectations, not matching implementation details
+- Hook-capable (`codex/hooks.json`), but parity is defined by outcome, not by
+  matching Claude's hook wiring detail.
+- Equivalent invariants live in `codex/AGENTS.md` (Conventional Commits, secret
+  protection, auto-formatting, session handoff).
+- Approval enforcement is runtime-driven: `approval_policy = "on-request"` with
+  `approvals_reviewer = "guardian_subagent"` (a guardian subagent reviews
+  flagged actions). See the parity table and `codex/AGENTS.md`.
 
 ## Artifact Rules
 
@@ -163,11 +182,6 @@ User request
   note-taking
 - Curated by default; not a raw-source or transcript-ingestion layer
 
-### learnings/
-
-- Legacy compatibility lane for older reusable notes
-- Archive-only by default while `memory/` becomes the primary durable layer
-
 ### evals/
 
 - `tasks/` contains benchmark prompts
@@ -175,9 +189,10 @@ User request
 - Scripts scaffold and summarize results, but human judgment still matters
 - Runs should stay selective and decision-linked, not become routine task logs
 
-## Cross-Agent Parity Table (v2)
+## Cross-Agent Parity Table (v3)
 
-Assumes Codex supports subagents and plugins as of 2026-03.
+Both agents support subagents, plugins, and richer orchestration. Parity is at
+the workflow level, not implementation detail.
 
 | Concern | Claude | Codex |
 |---|---|---|
@@ -185,15 +200,45 @@ Assumes Codex supports subagents and plugins as of 2026-03.
 | Commit validation | Hook | Hook + hard invariant as safety net |
 | Secret protection | Hook | Hook + hard invariant as safety net |
 | Formatting | Hook | Hook + hard invariant as safety net |
+| Approval review | `permissions.defaultMode` + `skipAutoPermissionPrompt` | `approval_policy=on-request` + `approvals_reviewer=guardian_subagent` |
 | Skill selection | Shared `skills/` | Shared `skills/` |
 | Subagent routing | Shared `ROUTING.md` | Shared `ROUTING.md` |
-| Subagent spawn | Agent tool + AGENT.md | Native subagent + AGENT.md |
-| MCP / Plugins | settings.json MCP servers | Plugin config (equivalent) |
+| Built-in agent types | `Explore`, `Plan`, `general-purpose` (prefer over custom) | native equivalents; falls back to `subagents/*` AGENT.md |
+| Custom subagent spawn | Agent tool + AGENT.md | Native subagent + AGENT.md |
+| Multi-agent workflows | `Workflow` tool (pipeline/parallel/agent, token budget); opt-in | native multi-agent orchestration; opt-in |
+| Scheduled / background / remote | `/loop`, `/schedule`, `ScheduleWakeup`, `CronCreate`, bg `Bash`, `isolation: remote/worktree` | native scheduling / background runs |
+| Connectors / MCP | hosted claude.ai connectors via ToolSearch/deferred; local `mcpServers` in settings.json | plugins via marketplaces (`openai-curated`, `openai-bundled`, `openai-primary-runtime`) |
+| Plugins / marketplace | `claude-plugins-official` (asana, context7, github, linear, playwright, serena, ...) | `slack`, `github`, `atlassian-rovo`, `browser`, `computer-use`, `sites`, documents/pdf/spreadsheets/presentations |
+| Computer use | via connector/plugin when available | `computer-use@openai-bundled` enabled |
+| Goals / memories | `memory/` + execution memory | native goals/memories + shared `memory/` |
 | Durable execution memory | Shared `execution/` | Shared `execution/` |
 | Progress scratch | Shared `work-handoff.md` format | Shared `work-handoff.md` format |
 | Evals | Shared `evals/` | Shared `evals/` |
 | Operational memory | Shared `memory/` | Shared `memory/` |
 | Per-repo init | Shared `scripts/init-repo.sh` | Shared `scripts/init-repo.sh` |
+
+## MCP, Connectors, and Plugins
+
+Two distinct wiring models; do not conflate them:
+
+- **Hosted connectors (claude.ai) load on demand.** The session auto-exposes
+  connector tools as *deferred* tools (named but schema-less). Fetch a schema
+  with `ToolSearch` before calling. Do not assume a connector is unavailable
+  without searching first; do not hand-wire these in `settings.json`.
+- **Local MCP servers are wired in `claude/settings.json` `mcpServers`.** This is
+  for servers running on the machine — currently only `stave-local-mcp` over http.
+- **Codex uses plugins from marketplaces**, not a settings.json MCP block:
+  `openai-curated` (slack, github, atlassian-rovo), `openai-bundled` (browser,
+  computer-use, sites), `openai-primary-runtime` (documents, pdf, spreadsheets,
+  presentations).
+- **Claude plugins** come from the `claude-plugins-official` marketplace (asana,
+  context7, discord, firebase, github, gitlab, greptile, linear, playwright,
+  serena, terraform, and more).
+
+Operational selection guidance (which connector/plugin per task, and the
+ToolSearch flow) lives in `memory/playbooks/connectors-and-plugins.md`. Runtime
+state files (`config.toml`, `.claude.json`, caches) are not source-of-truth
+policy; reflect facts in docs, do not hand-edit runtime state.
 
 ## Harness Maintenance Rules
 

@@ -1,6 +1,6 @@
 ---
 name: the-figma-to-code
-description: Convert Figma designs to production-ready code with visual verification. Use when the user says "피그마 구현해줘", "implement this Figma design", "디자인 코드로 변환", or provides a Figma URL/reference for implementation. Uses Figma MCP for design extraction and Playwright for visual comparison.
+description: Convert Figma designs to production-ready code with visual verification. Use when the user says "피그마 구현해줘", "implement this Figma design", "디자인 코드로 변환", or provides a Figma URL/reference for implementation. Uses a Figma connector for design extraction and Playwright for visual comparison.
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:
@@ -24,25 +24,29 @@ Figma design → production-ready code with visual verification loop.
 
 - The user wants UI built from scratch without a design reference (use the-frontend-director).
 - The user is asking about Figma tool usage, not code implementation.
+- Pixel-accurate cloning of an existing site/component library is the goal, not a design handoff (use the-design-cloner).
 
 ## Prerequisites
 
-- **Figma MCP**: configured in settings for design extraction (or Figma screenshot provided).
-- **Project framework**: React + Tailwind + shadcn/ui (default stack).
+- **Figma access**: a Figma connector tool — load its schema via `ToolSearch` on Claude, or use the Figma plugin on Codex — or a Figma screenshot provided. See `memory/playbooks/connectors-and-plugins.md`.
+- **Project framework**: match the target repo's stack, do not assume one.
+  React + Tailwind + shadcn/ui is the common default, but e.g. `dui` uses plain
+  CSS. `the-css-craft` documents the per-repo stacks (sbdashboard/stave/dui) —
+  consult it before choosing styling primitives.
 - **Playwright**: installed for visual verification (optional but recommended).
 
 ## Workflow
 
 ### Step 1 — Extract Design Specification
 
-If Figma MCP is available:
+If a Figma connector is available:
 1. Fetch the component/frame structure from Figma.
 2. Extract design tokens: colors, spacing, typography, border radius.
 3. Identify component hierarchy and layout (flex, grid, absolute).
 4. Note interactive states (hover, active, disabled, focus).
 5. List assets needed (icons, images).
 
-If Figma MCP is not available (screenshot provided):
+If no Figma connector is available (screenshot provided):
 1. Analyze the screenshot visually.
 2. Infer layout, spacing, colors, and typography.
 3. Ask the user to clarify ambiguous elements.

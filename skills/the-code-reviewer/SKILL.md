@@ -14,6 +14,14 @@ test-prompts:
 
 Structured code review across six axes with clear severity ratings.
 
+> **Relationship to the built-in `/code-review`.** For reviewing the *current
+> diff/working tree*, prefer the built-in `/code-review` skill — it runs this same
+> rubric and can post inline PR comments (`--comment`) or apply fixes (`--fix`).
+> This skill is the **shared six-axis rubric** that `subagents/reviewer`,
+> `the-pr-reviewer`, and `the-improvement-loop` reference; use it directly when
+> reviewing an arbitrary file/snippet, defining scoring dimensions, or running
+> under Codex (no built-in equivalent).
+
 ## Use This Skill When
 
 - The user shares code and asks for review, feedback, or bug-finding.

@@ -105,7 +105,15 @@ ensure_hook($data->{hooks}{PreToolUse}, 'Write', 'bash ~/.agents/scripts/hooks/p
 ensure_hook($data->{hooks}{PreToolUse}, 'Edit', 'bash ~/.agents/scripts/hooks/pre-write-secrets.sh');
 ensure_hook($data->{hooks}{PostToolUse}, 'Write', 'bash ~/.agents/scripts/hooks/post-write-format.sh');
 ensure_hook($data->{hooks}{PostToolUse}, 'Edit', 'bash ~/.agents/scripts/hooks/post-write-format.sh');
+ensure_hook($data->{hooks}{PostToolUse}, 'Write', 'bash ~/.agents/scripts/hooks/post-skill-sync.sh');
+ensure_hook($data->{hooks}{PostToolUse}, 'Edit', 'bash ~/.agents/scripts/hooks/post-skill-sync.sh');
 ensure_hook($data->{hooks}{Stop}, undef, 'bash ~/.agents/scripts/hooks/on-stop-handoff.sh');
+
+# Baseline non-hook defaults — only set when absent so migrated values are kept.
+$data->{effortLevel} = 'xhigh' unless defined $data->{effortLevel};
+$data->{skipAutoPermissionPrompt} = JSON::PP::true unless defined $data->{skipAutoPermissionPrompt};
+$data->{permissions} = {} if ref($data->{permissions}) ne 'HASH';
+$data->{permissions}{defaultMode} = 'auto' unless defined $data->{permissions}{defaultMode};
 
 my $json = JSON::PP->new->ascii->pretty->canonical->encode($data);
 open my $out, '>', $settings_path or die "Failed to write $settings_path: $!";
@@ -124,6 +132,7 @@ Before responding to any user message:
 2. **Read `~/.agents/CLAUDE.md`** - Claude-specific behavioral guidance
 
 Apply both as global instructions, supplemented by any project-specific context.
+User-facing responses must follow the language policy in `~/.agents/AGENTS.md`, including the final answer.
 EOF
 fi
 
@@ -147,6 +156,15 @@ Treat the instructions in `~/.agents/AGENTS.md` as fully incorporated here by re
 
 If a future local `AGENTS.md` in this runtime directory conflicts with the root file,
 `~/.agents/AGENTS.md` wins unless the user explicitly instructs otherwise.
+EOF
+fi
+
+if ! grep -q "## Response Language" "${CODEX_DIR}/AGENTS.md"; then
+  cat >> "${CODEX_DIR}/AGENTS.md" <<'EOF'
+
+## Response Language
+
+- Follow `~/.agents/AGENTS.md` language policy for all user-facing output, including the final answer in the `final` channel.
 EOF
 fi
 
@@ -181,6 +199,10 @@ the user how to proceed.
   `handoff.md` with current status, last completed step, and next action
   before finishing the session.
 - If `work-handoff.md` exists, keep `Active Task Path` current so the durable handoff target is unambiguous.
+
+### Approval Review (runtime-enforced)
+- Codex runs with `approval_policy = "on-request"` and `approvals_reviewer = "guardian_subagent"`: a guardian subagent reviews flagged actions before they proceed.
+- This is a runtime safety net, not a replacement for the invariants above — they remain the floor even when the guardian approves. Detailed model: `~/.agents/ARCHITECTURE.md`.
 EOF
 fi
 
@@ -216,6 +238,7 @@ echo "~/.codex -> \$HOME/.agents/codex"
 echo ""
 echo "=== Harness Health Check ==="
 HEALTH_OK=true
+perl -MJSON::PP -e 1 2>/dev/null && echo "✓ perl + JSON::PP" || { echo "✗ perl/JSON::PP missing (required by init + hooks)"; HEALTH_OK=false; }
 [[ -f "${REPO_DIR}/scripts/hooks/pre-commit-lint.sh" ]] && echo "✓ commit hook" || { echo "✗ commit hook missing"; HEALTH_OK=false; }
 [[ -f "${REPO_DIR}/scripts/hooks/pre-write-secrets.sh" ]] && echo "✓ secrets hook" || { echo "✗ secrets hook missing"; HEALTH_OK=false; }
 [[ -f "${REPO_DIR}/scripts/hooks/post-write-format.sh" ]] && echo "✓ format hook" || { echo "✗ format hook missing"; HEALTH_OK=false; }

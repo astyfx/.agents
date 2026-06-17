@@ -31,6 +31,7 @@ source ~/.profile
 ```bash
 echo "$CLAUDE_CONFIG_DIR"
 echo "$CODEX_HOME"
+perl -MJSON::PP -e 'print "perl + JSON::PP OK\n"'
 ```
 
 Expected:
@@ -45,6 +46,10 @@ Expected:
 - Existing `~/.claude` and `~/.codex` are migrated into `~/.agents` and then
   replaced with symlinks.
 - The script is idempotent and safe to re-run.
+- **Runtime dependency**: the bootstrap and several hooks use `perl` with the
+  `JSON::PP` module (the harness is Python-free, not dependency-free). `perl` +
+  `JSON::PP` ship with macOS and most Linux by default; if missing, install Perl
+  before running `init.sh`, or the settings merge in step 2 will fail.
 - Aside from their bridge policy files, `claude/` and `codex/` under this repo are
   treated as local runtime/state folders.
 - `~/.agents/AGENTS.md` is the canonical shared policy for all agents.

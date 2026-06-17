@@ -15,6 +15,12 @@ test-prompts:
 
 Installing AI Elements is straightforward and can be done in a couple of ways. You can use the dedicated CLI command for the fastest setup, or integrate via the standard shadcn/ui CLI if you've already adopted shadcn's workflow.
 
+> **Scope.** This skill is for *authoring components in the `ai-elements` library
+> package* (`packages/elements/src`) following its registry conventions. If you
+> only need to *use* ai-elements components inside an app, or build a chat UI
+> without that library, use `shadcn-ui` / `the-frontend-director` instead — this
+> skill will otherwise fire too broadly on generic "build chat interface" prompts.
+
 
 
 ## Quick Start

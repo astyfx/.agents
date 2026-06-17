@@ -10,7 +10,7 @@ Stable, reusable guidance that applies across multiple tasks or projects.
 
 - engineering heuristics that repeatedly prove correct
 - conventions that are too narrow for `AGENTS.md` but broadly reusable
-- distilled guidance migrated from legacy `learnings/*.md`
+- distilled guidance earned from real work and retrospectives
 
 ## Do Not Add Here
 

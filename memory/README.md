@@ -23,7 +23,6 @@ improve future work across sessions, projects, Claude, and Codex.
 - Use `execution/` for default execution memory tied to one active task.
 - Use `work-handoff.md` for session scratch state.
 - Use `memory/` only for knowledge that should compound across tasks.
-- `learnings/` remains readable as archived historical reference material.
 
 ## Non-Goals
 

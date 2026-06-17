@@ -10,14 +10,6 @@ test-prompts:
   - "how do I sign and notarize my Electron app"
   - "electron preload script 작성해줘"
   - "package my electron app with electron-forge"
-license: MIT
-metadata:
-  author: agent-skills
-  version: "1.0"
-  domain: development
-  type: utility
-  mode: assistive
-  compatibility: "Requires Deno for analysis scripts. Applicable to any Electron project using TypeScript and React."
 ---
 
 # Electron + React Best Practices

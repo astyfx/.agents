@@ -16,7 +16,7 @@ rolled into the harness evidence trail.
 
 - `evals/tasks/`
 - `scripts/new-eval-result.sh`
-- `scripts/summarize-evals.py`
+- `scripts/summarize-evals.pl`
 - `memory/scorecard/`
 - `work-handoff.md` and the active tracked `handoff.md` for multi-session work
 
@@ -35,16 +35,17 @@ rolled into the harness evidence trail.
    - `time_minutes`
 5. Write notes that map the observed behavior to the task success criteria and
    list any caveats.
-6. Run `scripts/summarize-evals.py` to refresh the aggregate view.
-7. If the aggregate evidence changed materially, add or update a scorecard
-   snapshot under `memory/scorecard/`.
+6. Run `scripts/summarize-evals.pl` to refresh the aggregate view.
+7. If the aggregate evidence changed materially, regenerate the scorecard
+   snapshot: `bash scripts/scorecard.sh > memory/scorecard/$(date +%Y-%m-%d)-snapshot.md`
+   (do not hand-write counts).
 8. Roll the new counts, remaining evidence gaps, and next eval candidates into
    `work-handoff.md` and the active tracked `handoff.md`.
 
 ## Expected Artifacts
 
 - a new `evals/results/*.md` file with filled scores
-- updated aggregate summary from `scripts/summarize-evals.py`
+- updated aggregate summary from `scripts/summarize-evals.pl`
 - a scorecard snapshot when the evidence meaningfully changes
 - synchronized handoff state
 
@@ -52,7 +53,7 @@ rolled into the harness evidence trail.
 
 - confirm the chosen task actually matches the run that was scored
 - make sure every required result field is filled
-- run `scripts/summarize-evals.py` successfully after writing the result
+- run `scripts/summarize-evals.pl` successfully after writing the result
 - if a scorecard snapshot was updated, verify the counts match the aggregate
 
 ## Rollback Notes

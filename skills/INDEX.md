@@ -1,15 +1,17 @@
 # Skills Index
 
-Auto-maintained by `the-skill-creator`. Update this file when adding, removing, or renaming a skill.
+Maintained alongside `the-skill-creator` (it scaffolds new rows). Update this
+file when adding, removing, or renaming a skill, and keep the Category column in
+sync with each skill's frontmatter `category`. `scripts/check-harness.sh`
+validates that names here match the actual skill set.
 
 | Name | Category | Compatible | Trigger Summary |
 |---|---|---|---|
 | the-refine-prompt | planning | claude, codex | rough prompts, fuzzy ideas, spec refinement |
 | the-skill-creator | workflow | claude, codex | create/update/evaluate skills |
-| find-skills | workflow | claude, codex | discover existing skills for a domain or task |
 | the-frontend-director | ui | claude, codex | Linear/Sentry-leaning product UI, repo-bound improvements, dashboard/admin, Figma-aware implementation |
 | ai-elements | ui | claude, codex | AI chat interface components |
-| electron-best-practices | workflow | claude, codex | Electron + React app architecture, IPC, security, packaging, testing |
+| electron-best-practices | development | claude, codex | Electron + React app architecture, IPC, security, packaging, testing |
 | shadcn-ui | ui | claude, codex | shadcn component generation, alias reconciliation, token-safe UI work |
 | vercel-react-best-practices | ui | claude, codex | React/Next.js performance optimization |
 | the-code-reviewer | review | claude, codex | code review, PR review, bug finding |
@@ -33,6 +35,7 @@ Auto-maintained by `the-skill-creator`. Update this file when adding, removing, 
 | the-slack-thread-worker | workflow | claude, codex | Slack thread to task extraction, Jira/resource prep, or end-to-end execution + PR |
 | the-pr-reviewer | review | claude, codex | automated PR review, GitHub integration |
 | the-design-cloner | ui | claude, codex | faithful clone of Figma/website/library designs with token extraction and side-by-side verification |
+| the-css-craft | ui | claude, codex | modern CSS craft, AI-slop prevention, reference fidelity for everyday UI work in sbdashboard/stave/dui |
 | the-provider-router | architecture | claude, codex | Stave Auto / provider routing design reference and change discipline for extensions and redesigns |
 | the-agent-cli | cli | claude, codex | design CLIs called by LLM agents — JSON output, exit-code contract, idempotency, NDJSON streaming |
 | the-cli-designer | cli | claude, codex | design human-facing CLIs — subcommand taxonomy, help output, error UX, shell completion |

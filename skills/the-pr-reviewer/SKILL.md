@@ -28,7 +28,7 @@ Fetches the PR diff, applies 6-axis code review, and posts results as PR comment
 
 ## Prerequisites
 
-- GitHub access: `gh` CLI authenticated, or GitHub MCP server configured.
+- GitHub access: `gh` CLI authenticated, or a GitHub connector/plugin (load its schema via `ToolSearch` on Claude, or use the GitHub plugin on Codex). See `memory/playbooks/connectors-and-plugins.md`.
 - Repository context: must be inside a git repo or provide owner/repo.
 
 ## Workflow

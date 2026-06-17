@@ -53,6 +53,15 @@ If the change touches colors, surfaces, or preset behavior:
 
 Do not treat a shadcn preset change as complete until theme sync is verified.
 
+## See Also
+
+This skill owns shadcn **component mechanics** (CLI, aliases, Radix composition).
+For broader work, compose with:
+
+- `the-css-craft` — modern CSS craft and AI-slop prevention for everyday UI.
+- `the-theme-token-sync` — the detailed theme-token drift verification this
+  skill defers to.
+
 ## Output
 
 Return:

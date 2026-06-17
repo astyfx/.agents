@@ -30,6 +30,12 @@ Everything else should be loaded because the task needs it, not by default.
   - for substantial work or multi-session execution
 - `docs/instructions/ROUTING.md`
   - when considering subagents or orchestration changes
+- `memory/playbooks/workflows-and-orchestration.md`
+  - when authoring or running a multi-agent `Workflow`
+- `memory/playbooks/scheduled-and-background-agents.md`
+  - when setting up scheduled, background, or remote agents
+- `memory/playbooks/connectors-and-plugins.md`
+  - when a task needs an external connector or plugin (Slack, GitHub, Figma, etc.)
 - `ARCHITECTURE.md` and `ROADMAP.md`
   - before changing the harness itself
 - `memory/`

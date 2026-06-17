@@ -1,10 +1,6 @@
 ---
 name: vercel-react-best-practices
 description: React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.
-license: MIT
-metadata:
-  author: vercel
-  version: "1.0.0"
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:
@@ -26,6 +22,18 @@ Reference these guidelines when:
 - Reviewing code for performance issues
 - Refactoring existing React/Next.js code
 - Optimizing bundle size or load times
+
+Applies to React/Next.js repos (e.g. sbdashboard, stave renderer). For a plain
+non-React surface, skip it.
+
+### How to apply during review or refactor
+
+1. Identify the change type (new component, data fetch, refactor) and pull the
+   matching `rules/<prefix>-*` files (e.g. `async-`, `bundle-`) from the reference tier.
+2. Use the highest-priority categories first (waterfalls, bundle) — they have the
+   most impact.
+3. Feed the relevant rules into `the-code-reviewer` (as the Performance axis) or
+   `the-refactoring-planner` (as constraints) rather than reviewing from memory.
 
 ## Rule Categories by Priority
 
