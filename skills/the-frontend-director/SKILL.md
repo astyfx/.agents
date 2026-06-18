@@ -58,7 +58,7 @@ Unless the user explicitly asks for polish, redesign, or a better frontend resul
 1. Detect whether the task is in an existing repo or greenfield work.
 2. If an existing repo is present, treat it as the default operating mode. Inspect and follow its framework, design system, component patterns, tokens, spacing, motion, and constraints before inventing anything new.
 3. If the implementation goal is already clear, ask little or nothing and proceed.
-4. If a Figma reference exists, use it as the visual source but still adapt it to the repo's product language, density, and readability bar. Prefer `the-figma-to-code` for extraction when available.
+4. If a Figma reference exists, use it as the visual source but still adapt it to the repo's product language, density, and readability bar. Prefer `the-design-cloner` for faithful extraction and verification when available.
 5. If the work is greenfield or under-specified, give a brief direction first:
    - `Direction`: one-sentence visual and product thesis
    - `Key choices`: layout, density, interaction, tone

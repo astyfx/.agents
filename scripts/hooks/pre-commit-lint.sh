@@ -38,10 +38,11 @@ if ($msg =~ $pattern) {
     exit 0;
 }
 
-print "[pre-commit-lint] Commit message does not follow Conventional Commits format.\n";
-print "  Got: $msg\n";
-print "  Expected format: <type>(<scope>): <subject>\n";
-print "  Valid types: feat, fix, refactor, chore, docs, test, perf, ci, build, revert\n";
-print "  Example: feat(auth): add OAuth2 login support\n";
-exit 2;
+# Non-blocking advisory: nudge toward Conventional Commits without blocking the
+# commit. Conventional Commits is the preferred convention, not a hard gate, so
+# this prints to STDERR and exits 0 instead of failing the tool call.
+print STDERR "[pre-commit-lint] Note: commit message is not in Conventional Commits format.\n";
+print STDERR "  Got: $msg\n";
+print STDERR "  Preferred: <type>(<scope>): <subject>  (feat, fix, refactor, chore, docs, test, perf, ci, build, revert)\n";
+exit 0;
 PERL

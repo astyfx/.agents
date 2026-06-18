@@ -143,18 +143,6 @@ type HostTerminalCreateSessionResult = {
 // GOOD — thread the field through protocol, Zod schema, preload, d.ts, and consumer state
 ```
 
-## Provider Symmetry Rule
-
-If the change is meant to be provider-agnostic, inspect both adapters.
-
-Check:
-
-- Claude runtime path
-- Codex runtime or App Server path
-- shared producer and replay paths
-
-Do not ship a general feature wired only on one adapter unless the change is explicitly provider-specific.
-
 ### 5. Async function result passed without await to serializer
 
 ```typescript
@@ -183,6 +171,18 @@ When adding a dispatch case or changing a function from sync to async, grep for 
 
 Treat new terminal/session calls as end-to-end boundary changes, not local runtime helpers.
 
+## Provider Symmetry Rule
+
+If the change is meant to be provider-agnostic, inspect both adapters.
+
+Check:
+
+- Claude runtime path
+- Codex runtime or App Server path
+- shared producer and replay paths
+
+Do not ship a general feature wired only on one adapter unless the change is explicitly provider-specific.
+
 ## Guardrails
 
 - never trust TypeScript alone on IPC work
@@ -208,3 +208,8 @@ Return:
 - missing sync points
 - provider symmetry status
 - verification completed vs still required
+
+## See also
+
+- [the-terminal-surface-guard](../the-terminal-surface-guard/SKILL.md) - the runtime/lifecycle side of the same terminal IPC chain
+- [the-provider-router](../the-provider-router/SKILL.md) - provider routing/intent design that produces the events whose contracts this skill keeps in sync

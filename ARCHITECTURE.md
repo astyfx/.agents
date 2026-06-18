@@ -123,8 +123,8 @@ User request
 
 | Event | Matcher | Hook(s) |
 |---|---|---|
-| `PreToolUse` | `Bash` | `pre-commit-lint.sh` — blocks non-Conventional commit messages before commit commands run |
-| `PreToolUse` | `Write`, `Edit` | `pre-write-secrets.sh` — blocks suspicious secret writes |
+| `PreToolUse` | `Bash` | `pre-commit-lint.sh` — non-blocking advisory: warns (STDERR, exit 0) when a commit message is not Conventional Commits; does not block the commit |
+| `PreToolUse` | `Write`, `Edit` | `pre-write-secrets.sh` — blocks secret-bearing files (narrow filename list: `.env`, `.pem`/`.p12`/`.pfx`/`.key`/`.keystore`/`.jks`, `id_rsa*`) and secret-like content in tracked/template files. Broad name substrings (`credentials`, `_secret`, `_token`) were removed so ordinary source files are not blocked |
 | `PostToolUse` | `Write`, `Edit` | `post-write-format.sh` (formats supported source) + `post-skill-sync.sh` (keeps cross-tool skill copies in sync) |
 | `PostToolUse` | `*` | superset `notify.sh` (best-effort desktop/runtime notify, no-op when unset) |
 | `Stop` | — | `on-stop-handoff.sh` (runtime snapshot + tracked handoff sync) + superset `notify.sh` |

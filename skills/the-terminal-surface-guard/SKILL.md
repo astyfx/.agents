@@ -103,7 +103,7 @@ Visibility belongs in session gating, not bootstrap identity.
 
 - `slotKey` is a shared helper contract, not an ad hoc string
 - `attachmentId` exists to prevent stale detach or stale resume from tearing down the active viewer
-- `nativeSessionId` is part of restart and provider-resume behavior; if it changes shape or persistence, follow the IPC chain all the way through
+- `nativeSessionId` is part of restart and provider-resume behavior; if it changes shape or persistence, follow the IPC chain all the way through (see [the-ipc-schema-sync](../the-ipc-schema-sync/SKILL.md) for the full terminal/host-service contract chain)
 
 When adding session metadata, verify that dock and CLI flows agree on identity semantics.
 
@@ -190,3 +190,8 @@ Return:
 - focus or resize risks
 - runtime hardening gaps
 - verification completed vs still required
+
+## See also
+
+- [the-ipc-schema-sync](../the-ipc-schema-sync/SKILL.md) - the schema/contract side of the same terminal IPC chain (`slotKey`, `attachmentId`, `nativeSessionId`)
+- [the-react-effect-guardrail](../the-react-effect-guardrail/SKILL.md) - effect/ref hygiene behind keep-alive and bootstrap stability

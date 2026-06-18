@@ -117,3 +117,8 @@ Return:
 - grep targets still at risk
 - verification completed vs still required
 
+## See also
+
+- [the-design-tokens](../the-design-tokens/SKILL.md) - the product-agnostic method for *designing and building* a token system. This skill is the Stave-specific checklist for *syncing existing* tokens when you edit them: design there, sync here.
+- [the-css-craft](../the-css-craft/SKILL.md) - applying tokens while writing component CSS
+

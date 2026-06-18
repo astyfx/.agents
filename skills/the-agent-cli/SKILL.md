@@ -148,7 +148,9 @@ stave <noun> <verb> [flags]
 
 Write a Zod (or equivalent) schema for each subcommand's input flags and
 output shape. Validate on entry, serialize on exit. Ship the schemas so
-agents (or a generator) can produce tool definitions automatically.
+agents (or a generator) can produce tool definitions automatically. For the
+single-schema-drives-everything pattern (one schema -> CLI parser, help, and
+Anthropic/OpenAI/MCP tool definitions), see `the-agent-tool-schema`.
 
 ### C8 — `--dry-run` on anything that mutates
 
@@ -248,9 +250,15 @@ When building Stave's CLI:
 
 ## Integration with Other Skills
 
+- `the-agent-tool-schema`: the single source of truth behind C7 and Step 5 -
+  one schema emits the CLI parser, help, and the agent tool definitions.
 - `the-cli-designer`: for the human-facing UX pieces (help formatting,
   colors in TTY mode, shell completion).
 - `the-tui-designer`: if a subset of commands gains an interactive mode.
+- `the-subprocess-orchestrator`: when a command spawns child processes - the
+  bounded-side-effects (C9) and exit-code contract carry through.
+- `the-cli-packaging`: to ship the CLI as a signed, versioned binary agents
+  can pin.
 - `the-ipc-schema-sync`: when the CLI talks to Stave's host-service.
 - `the-build-fixer`: CI for binary packaging and exit-code regression
   tests.

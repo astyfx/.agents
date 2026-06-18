@@ -3,6 +3,71 @@
 Human-written log of major harness changes. Not generated.
 For micro-changes, see `git log`.
 
+## 2026-06-18 — Capability de-constraint + UI skill expansion
+
+User-requested sweep: remove harness that constrained model capability,
+consolidate duplicate skills, and add methodology-first UI/look-and-feel skills.
+
+### Changed (enforcement de-constraint)
+- **`scripts/hooks/pre-commit-lint.sh`** is now a non-blocking advisory. It prints
+  a Conventional Commits nudge to STDERR and exits 0 instead of failing the commit
+  (was a hard `exit 2` block).
+- **`scripts/hooks/pre-write-secrets.sh`** filename blocklist narrowed. Removed the
+  broad substrings (`credentials`, `_secret`, `_token`, generic `_key`) that
+  unconditionally blocked ordinary source files (`credentials.ts`, `user_token.ts`,
+  `api_secret.ts`) regardless of content. Now blocks true secret-bearing names
+  (`.env`, `.pem`/`.p12`/`.pfx`/`.key`/`.keystore`/`.jks`, `id_rsa*`); the
+  content-based secret scan for tracked/template files is unchanged, so real
+  protection is preserved. Verified with positive and negative cases.
+- **`CLAUDE.md`** — added a "How to read these rules" preamble framing the
+  behavioral rules as default postures, not capability ceilings (mirrors the
+  RESPONSE_STYLE "default to optimize, not maximize" framing). Softened the Review
+  rule "No suggestions beyond the scope" so a material out-of-scope issue can be
+  briefly flagged.
+
+### Changed (skill consolidation)
+- **`the-figma-to-code` consolidated into `the-design-cloner`** and removed. The
+  design-cloner was the stronger superset (Figma + website + library, token table,
+  layout map, side-by-side verification); it now explicitly covers the Figma
+  design-handoff role and a Storybook render path. References rewired in
+  `the-css-craft`, `the-frontend-director`, `the-sparkler-to-sbdashboard`,
+  `skills/INDEX.md`, and `memory/playbooks/figma-design-to-implementation-and-visual-verification.md`.
+
+### Added (UI skills — methodology-first, no hardcoded values)
+- **`skills/the-design-tokens/SKILL.md`** — token-system method: three-tier
+  structure, role-based naming, color/type/space/radius/shadow/z/motion scales,
+  theming and dark-mode parity. Derives values from the product; never imports a
+  fixed palette, scale, or font.
+- **`skills/the-motion-design/SKILL.md`** — motion/micro-interaction method:
+  motion-must-have-a-job, enter/exit easing direction, duration-by-distance,
+  `transform`/`opacity`-only performance contract, mandatory `prefers-reduced-motion`.
+  Durations/curves come from the product's motion language.
+- **`skills/the-a11y-components/SKILL.md`** — accessible-component method: derive
+  each widget's keyboard/focus/ARIA contract from its WAI-ARIA APG pattern,
+  semantic-HTML-first, focus management, live-region announcements, dual
+  keyboard + screen-reader verification.
+
+### Notes
+- Skill count 37 -> 39 (removed 1, added 3; the niche `the-sparkler-to-sbdashboard`
+  and `the-provider-router` were kept by user request as intentional personal skills).
+- `skills/INDEX.md` and `ARCHITECTURE.md` enforcement table updated to match.
+
+### Reviewed — CLI and safety clusters (no consolidation)
+Deep-read the 6 CLI skills (`the-agent-cli`, `the-cli-designer`, `the-tui-designer`,
+`the-agent-tool-schema`, `the-subprocess-orchestrator`, `the-cli-packaging`) and the
+5 Stave/Electron safety skills (`the-theme-token-sync`, `the-terminal-surface-guard`,
+`the-zustand-guardrail`, `the-ipc-schema-sync`, `the-react-effect-guardrail`) for
+duplication. Verdict: **no true duplicates** — each guards a distinct facet/subsystem,
+so all were kept. Applied cross-reference hygiene instead:
+- `the-agent-cli` Integration now links `the-agent-tool-schema` (the C7/Step 5
+  single-schema source of truth), `the-subprocess-orchestrator`, and `the-cli-packaging`.
+- Added a `## See also` block to all 5 safety skills, wiring scopes that touch
+  (theme-token-sync <-> design-tokens, terminal-surface <-> ipc-schema-sync,
+  zustand <-> react-effect, etc.) so the loop-vs-loop and design-vs-sync
+  distinctions are explicit.
+- `the-ipc-schema-sync` "Common Failure Modes" renumbered contiguous 1-6 (the
+  "Provider Symmetry Rule" section was splitting the group; moved below them).
+
 ## 2026-06-17 — Platform Re-Alignment (Phase 6)
 
 Realigned the documented harness model with the actual runtime and current

@@ -28,7 +28,7 @@ validates that names here match the actual skill set.
 | the-dead-code-detector | workflow | claude, codex | dead code, unused files/exports, stale paths, evidence-based cleanup |
 | the-codebase-mapper | workflow | claude, codex | codebase analysis, module map, onboarding guide |
 | the-data-analyst | workflow | claude, codex | dataset analysis, visualization, insight reports |
-| the-figma-to-code | ui | claude, codex | Figma design to production code with visual verification |
+| the-sparkler-to-sbdashboard | ui | claude, codex | Sparkler Storybook design proposals to sbdashboard-ready plans and code |
 | the-improvement-loop | workflow | claude, codex | scored iteration, quality improvement loops |
 | the-progress-tracker | workflow | claude, codex | resume task, work handoff continuity |
 | the-refactoring-planner | workflow | claude, codex | large-scale refactoring, module extraction, product separation |
@@ -36,6 +36,9 @@ validates that names here match the actual skill set.
 | the-pr-reviewer | review | claude, codex | automated PR review, GitHub integration |
 | the-design-cloner | ui | claude, codex | faithful clone of Figma/website/library designs with token extraction and side-by-side verification |
 | the-css-craft | ui | claude, codex | modern CSS craft, AI-slop prevention, reference fidelity for everyday UI work in sbdashboard/stave/dui |
+| the-design-tokens | ui | claude, codex | token-system method: tiers, role-based naming, color/type/space scales, theming; values derived from the product, not hardcoded |
+| the-motion-design | ui | claude, codex | motion/micro-interaction method: purpose, easing direction, performance, reduced-motion; durations from the product's motion language |
+| the-a11y-components | ui | claude, codex | accessible interactive components: APG keyboard/focus/ARIA contract, semantic-HTML-first, keyboard + screen-reader verification |
 | the-provider-router | architecture | claude, codex | Stave Auto / provider routing design reference and change discipline for extensions and redesigns |
 | the-agent-cli | cli | claude, codex | design CLIs called by LLM agents — JSON output, exit-code contract, idempotency, NDJSON streaming |
 | the-cli-designer | cli | claude, codex | design human-facing CLIs — subcommand taxonomy, help output, error UX, shell completion |

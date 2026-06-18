@@ -31,7 +31,10 @@ Rules for writing UI that feels intentional, modern, and rooted in the project's
 - Picking the overall aesthetic direction from scratch for greenfield work → use [the-frontend-director](../the-frontend-director/SKILL.md).
 - Token / theme changes across presets and built-in themes → use [the-theme-token-sync](../the-theme-token-sync/SKILL.md).
 - Adding shadcn components by CLI → use [shadcn-ui](../shadcn-ui/SKILL.md).
-- Figma-specific handoff → use [the-figma-to-code](../the-figma-to-code/SKILL.md).
+- Figma handoff or pixel-accurate clone → use [the-design-cloner](../the-design-cloner/SKILL.md).
+- Building or extending a token system → use [the-design-tokens](../the-design-tokens/SKILL.md).
+- Motion / transitions / micro-interactions → use [the-motion-design](../the-motion-design/SKILL.md).
+- Accessible interactive components (keyboard, focus, ARIA) → use [the-a11y-components](../the-a11y-components/SKILL.md).
 
 These skills overlap on topic but not on operating mode. This one is the background rulebook while you write CSS.
 
@@ -223,7 +226,9 @@ Run this list mentally before saying a UI change is complete.
 ## See also
 
 - [the-frontend-director](../the-frontend-director/SKILL.md) — picking the aesthetic direction
-- [the-design-cloner](../the-design-cloner/SKILL.md) — pixel-accurate reference reproduction
-- [the-figma-to-code](../the-figma-to-code/SKILL.md) — Figma-backed handoff with visual verification
+- [the-design-cloner](../the-design-cloner/SKILL.md) — pixel-accurate reproduction and Figma handoff
+- [the-design-tokens](../the-design-tokens/SKILL.md) — building / extending a token system
+- [the-motion-design](../the-motion-design/SKILL.md) — motion and micro-interaction craft
+- [the-a11y-components](../the-a11y-components/SKILL.md) — accessible interactive components
 - [the-theme-token-sync](../the-theme-token-sync/SKILL.md) — token / theme cross-file sync (stave)
 - [shadcn-ui](../shadcn-ui/SKILL.md) — shadcn CLI-based component addition

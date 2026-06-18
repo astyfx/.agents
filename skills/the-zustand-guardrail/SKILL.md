@@ -168,3 +168,7 @@ Return:
 - exact bad → good rewrite plan
 - verification still required
 
+## See also
+
+- [the-react-effect-guardrail](../the-react-effect-guardrail/SKILL.md) - the other half of referential-identity loops. This skill covers *selector* identity at the Zustand subscription; that one covers *effect dependency-array* identity. Same symptom (`Maximum update depth exceeded`), different fix site.
+

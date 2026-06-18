@@ -149,14 +149,21 @@ for my $pattern (@allowlist_patterns) {
     }
 }
 
+# Filename patterns that almost always indicate a real secret-bearing file.
+# Deliberately narrow: broad substrings like "credentials", "_secret", and
+# "_token" were removed because they also match ordinary source files
+# (credentials.ts, user_token.ts, api_secret.ts) and blocked legitimate work.
+# Secret *content* in any file is still caught by has_secret_content() below,
+# so narrowing the filename list does not weaken real protection.
 my @blocklist_patterns = (
     qr/^\.env$/i,
     qr/\.pem$/i,
-    qr/_key[^a-z]?$/i,
-    qr/_key\./i,
-    qr/_secret/i,
-    qr/_token/i,
-    qr/credentials/i,
+    qr/\.p12$/i,
+    qr/\.pfx$/i,
+    qr/\.key$/i,
+    qr/\.keystore$/i,
+    qr/\.jks$/i,
+    qr/^id_(?:rsa|dsa|ecdsa|ed25519)$/i,
 );
 my $risky_filename = 0;
 for my $pattern (@blocklist_patterns) {

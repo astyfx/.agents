@@ -24,6 +24,8 @@ viewport and theme.
 
 - The user provides a Figma URL, website URL, screenshot, or library component
   and wants the result to match it.
+- A Figma design handoff: implement the frame as production code and verify it
+  against the source ("피그마 구현해줘", "implement this Figma design").
 - Words like "그대로", "똑같이", "exactly", "pixel-accurate", "clone", "replicate",
   "copy", "reference and match" appear in the request.
 - Close-but-off results would be a failure (e.g. brand landing page, marketing
@@ -133,7 +135,8 @@ One component at a time. Ship the outer shell first, then fill children.
 
 This is the non-negotiable step.
 
-1. Render the implementation at the reference viewport width (e.g. 1440).
+1. Render the implementation (dev server, preview route, or a Storybook story)
+   at the reference viewport width (e.g. 1440).
 2. Screenshot it (Playwright or `stave_lens_screenshot`).
 3. Place reference and implementation side by side.
 4. Diff against the token table and the layout map.
@@ -188,8 +191,8 @@ Do not declare done until:
 
 ## Integration with Other Skills
 
-- `the-figma-to-code`: if the source is specifically Figma and the user wants
-  full Figma MCP extraction, delegate or compose.
+- `the-design-tokens`: when the values you extract should become a structured,
+  reusable token system rather than one-off hardcoded values.
 - `the-frontend-director`: use after cloning when the user wants additional
   product-design judgment layered on top.
 - `shadcn-ui`: use when the clone should sit on top of shadcn primitives.

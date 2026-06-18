@@ -14,7 +14,7 @@ production-ready UI implementation with explicit visual verification.
 
 ## Required Tools
 
-- `the-figma-to-code`
+- `the-design-cloner` (Figma extraction + side-by-side visual verification)
 - `the-frontend-director` when implementation quality and product polish matter
 - Figma MCP if available, otherwise screenshot analysis
 - local preview or Storybook surface

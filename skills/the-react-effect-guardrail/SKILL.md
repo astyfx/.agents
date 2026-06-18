@@ -162,3 +162,8 @@ Return:
 - shell/runtime split concerns
 - verification completed vs still required
 
+## See also
+
+- [the-zustand-guardrail](../the-zustand-guardrail/SKILL.md) - the other half of referential-identity loops: *selector* identity at the store subscription vs *effect dependency-array* identity here
+- [the-terminal-surface-guard](../the-terminal-surface-guard/SKILL.md) - keep-alive / bootstrap stability that depends on correct effect deps
+

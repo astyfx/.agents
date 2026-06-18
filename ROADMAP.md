@@ -315,6 +315,22 @@ quality, executed in the same phase:
   `shadcn-ui` repositioned as shared rubric / reference rather than duplicates;
   `electron-best-practices` frontmatter normalized.
 
+**Follow-on capability de-constraint + UI expansion (2026-06-18)** — user-requested
+sweep, recorded in CHANGELOG:
+- Enforcement de-constrained: `pre-commit-lint.sh` made a non-blocking advisory;
+  `pre-write-secrets.sh` filename blocklist narrowed so ordinary source files
+  (`credentials.ts`, `user_token.ts`) are no longer blocked while real
+  secret-bearing files and secret content stay blocked.
+- `CLAUDE.md` reframed: behavioral rules are default postures, not capability
+  ceilings; Review "no out-of-scope suggestions" softened to allow brief flags.
+- Skill duplicate consolidated: `the-figma-to-code` folded into `the-design-cloner`
+  (the stronger superset) and removed; references rewired. The earlier Phase 3
+  records of `the-figma-to-code` (above) are historical.
+- New methodology-first UI skills added (no hardcoded values; derive from the
+  product): `the-design-tokens`, `the-motion-design`, `the-a11y-components`.
+- Niche personal skills (`the-sparkler-to-sbdashboard`, `the-provider-router`) kept
+  intentionally per user.
+
 **Design constraints**: additive-first (extend files, do not break references);
 runtime state files are not source-of-truth (reflect facts in docs, do not
 hand-edit `config.toml`/`.claude.json`/caches/live `settings.json`).

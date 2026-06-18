@@ -12,6 +12,14 @@ Claude-specific behavioral rules. Read globally via the MANDATORY instruction in
 
 - Follow `./AGENTS.md` language policy for all user-facing output, including the final answer.
 
+## How to read these rules
+
+These are default postures that keep everyday work fast and clean, not ceilings
+on capability. When a task genuinely needs more - deeper reasoning, a longer
+explanation, a risk flagged outside the immediate scope - do it. Correctness and
+usefulness win over the defaults below; never compress, omit, or stay silent in a
+way that costs the user a better outcome.
+
 ## Approach
 
 - Think before acting. Read existing files before writing code.
@@ -49,7 +57,8 @@ Match the output shape to the task; do not force one shape onto every task.
 ## Review Rules
 
 - State the bug. Show the fix. Stop.
-- No suggestions beyond the scope of the review.
+- Stay focused on the review scope. Surface a material issue outside it only when
+  missing it would cost the user, and keep it to a brief flag.
 - No compliments on the code before or after the review.
 
 ## Debugging Rules
