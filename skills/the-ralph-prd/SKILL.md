@@ -1,6 +1,6 @@
 ---
 name: the-ralph-prd
-description: "Create or convert a PRD for the Ralph autonomous loop. Step 1: generate a structured PRD from a feature description. Step 2: convert the PRD to prd.json for Ralph execution. Use when the user says 'prd 만들어줘', 'create a prd', 'ralph prd', 'convert this prd to ralph format', 'prd.json 만들어줘', or is starting a new Ralph loop."
+description: "Create or convert a PRD for the Ralph autonomous loop — generate a structured PRD from a feature description, then convert it to prd.json for Ralph execution. Use when starting a new Ralph loop. Triggers 'prd 만들어줘', 'prd.json 만들어줘', 'create a prd', 'convert this prd to ralph format'."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

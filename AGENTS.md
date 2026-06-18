@@ -71,27 +71,20 @@ user instructions and hard safety invariants.
 
 ## Tracking Trigger
 
-- Treat work as substantial when it spans multiple files, changes behavior across components, introduces or refactors a feature, requires phased execution, or couples code and docs/process updates.
-- For small one-file fixes, quick questions, or isolated doc edits, formal tracking artifacts are optional unless the user asks for them.
+- Tracking artifacts (`execution/`, `work-handoff.md`) are optional. Reach for them only when the work genuinely needs durable state across sessions, or when the user asks. Do not add tracking overhead to ordinary tasks.
 
 ## Memory Model
 
 - `execution/` is the default execution-memory root for active work.
 - `work-handoff.md` is cross-session scratch state.
 - `memory/` is operational memory: patterns, troubleshooting, playbooks,
-  decisions, and scorecards.
+  and decisions.
 
 ## Harness Maintenance
 
-- Before changing the harness itself under `~/.agents/` — policy, hooks,
-  skills, subagents, evals, memory, execution-memory flow, or runtime bridges — read
-  `~/.agents/ARCHITECTURE.md` and `~/.agents/ROADMAP.md` first.
-- If a harness change affects structure, execution flow, invariants, or directory responsibilities, update `~/.agents/ARCHITECTURE.md` in the same change.
-- For major harness changes, also update `~/.agents/CHANGELOG.md`.
-- If a harness change affects prompt-loading or memory boundaries, update
-  `~/.agents/docs/instructions/CONTEXT_LOADING.md` and the relevant `memory/`
-  records in the same change.
-- Keep `AGENTS.md` minimal; prefer putting harness-specific flow detail in `ARCHITECTURE.md`, `ROUTING.md`, `evals/README.md`, or skill docs.
+- The harness is a thin set of defaults plus on-demand skills, not a product to maintain. Resist accretion: prefer deleting or simplifying over adding.
+- Keep `ARCHITECTURE.md` accurate when you change harness structure or directory responsibilities. Other docs are optional; history lives in `git log`.
+- Keep `AGENTS.md` minimal; put flow detail in `ARCHITECTURE.md`, `ROUTING.md`, or skill docs.
 - When initializing agent config for a new project, use `~/.agents/scripts/init-repo.sh`.
 
 ## Prompt Routing Default
@@ -121,7 +114,6 @@ user instructions and hard safety invariants.
 - `~/.agents/docs/instructions/CONTEXT_LOADING.md` — thin-core loading rules
 - `~/.agents/ARCHITECTURE.md` — harness structure and responsibilities
 - `~/.agents/ROADMAP.md` — active harness evolution plan
-- `~/.agents/evals/README.md` — evaluation workflow and scoring
 - `~/.agents/memory/` — operational memory and durable harness knowledge
 
 ## Runtime Directories

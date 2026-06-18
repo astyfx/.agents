@@ -64,7 +64,6 @@ It is trying to make them behave similarly at the workflow level.
 │  execution/      -> default execution memory for active tasks      │
 │  work-handoff.md -> cross-session handoff scratch                  │
 │  memory/         -> patterns, troubleshooting, playbooks, ADRs     │
-│  evals/results/  -> benchmark run history                          │
 └───────────────────────────────┬────────────────────────────────────┘
                                 │ bootstrapped and checked by
 ┌───────────────────────────────▼────────────────────────────────────┐
@@ -85,7 +84,6 @@ User request
   -> agent executes work
   -> execution artifacts record durable task state and optional deep plans
   -> work handoff file enables resume and leftover-work transfer
-  -> evals can measure whether harness changes improved outcomes
 ```
 
 ## Directory Responsibilities
@@ -95,7 +93,6 @@ User request
 | `AGENTS.md` | Canonical shared policy | Keep minimal and human-written |
 | `ARCHITECTURE.md` | Harness structure and flow reference | Must be updated for structural harness changes |
 | `ROADMAP.md` | Living evolution plan with phases and decisions | Read before harness work; update when phases change |
-| `CHANGELOG.md` | Human-written harness change log | Update for major harness evolution |
 | `docs/instructions/CONVENTIONS.md` | Implementation conventions | Applies broadly |
 | `docs/instructions/TRACKING.md` | Lightweight tracking lifecycle | Applies to substantial work |
 | `docs/instructions/CONTEXT_LOADING.md` | Thin-core prompt loading rules | Keeps default context small |
@@ -103,13 +100,9 @@ User request
 | `skills/` | Reusable portable procedures | Primary context injection layer |
 | `subagents/` | Reusable agent role definitions | Use sparingly and intentionally |
 | `execution/` | Default execution-memory task records | Active task state and handoff only |
-| `memory/` | Operational memory | Patterns, troubleshooting, playbooks, decisions, scorecards |
-| `evals/tasks/` | Benchmark prompts | Stable task corpus |
-| `evals/results/` | Run results | Compare Claude vs Codex over time |
+| `memory/` | Operational memory | Patterns, troubleshooting, playbooks, decisions |
 | `scripts/hooks/` | Claude enforcement scripts | Mechanical invariants |
 | `scripts/new-task.sh` | Execution-memory scaffolder | Seeds lite or expanded task folders and work-handoff linkage |
-| `scripts/new-eval-result.sh` | Eval result scaffolder | Creates result markdown files |
-| `scripts/summarize-evals.pl` | Eval aggregation (Perl) | Summarizes benchmark history |
 | `scripts/init-repo.sh` | Per-repo agent config scaffolder | Creates bridge files, override templates, optional execution/CI |
 | `scripts/check-harness.sh` | Harness health validator | Checks structure and wiring |
 | `claude/` | Claude runtime state + bridge config | Symlink target for `~/.claude` |
@@ -127,7 +120,7 @@ User request
 | `PreToolUse` | `Write`, `Edit` | `pre-write-secrets.sh` — blocks secret-bearing files (narrow filename list: `.env`, `.pem`/`.p12`/`.pfx`/`.key`/`.keystore`/`.jks`, `id_rsa*`) and secret-like content in tracked/template files. Broad name substrings (`credentials`, `_secret`, `_token`) were removed so ordinary source files are not blocked |
 | `PostToolUse` | `Write`, `Edit` | `post-write-format.sh` (formats supported source) + `post-skill-sync.sh` (keeps cross-tool skill copies in sync) |
 | `PostToolUse` | `*` | superset `notify.sh` (best-effort desktop/runtime notify, no-op when unset) |
-| `Stop` | — | `on-stop-handoff.sh` (runtime snapshot + tracked handoff sync) + superset `notify.sh` |
+| `Stop` | — | `on-stop-handoff.sh` (tracked handoff sync only, when an active task exists; no per-stop snapshot file) + superset `notify.sh` |
 | `UserPromptSubmit` | — | superset `notify.sh` |
 | `PostToolUseFailure` | `*` | superset `notify.sh` |
 | `PermissionRequest` | `*` | superset `notify.sh` |
@@ -176,18 +169,10 @@ Non-hook settings that shape Claude's behavior:
 ### memory/
 
 - Operational memory for cross-task reuse
-- Houses patterns, troubleshooting records, playbooks, durable decisions, and
-  scorecards
+- Houses patterns, troubleshooting records, playbooks, and durable decisions
 - Should grow through real work and retrospectives, not by speculative
   note-taking
 - Curated by default; not a raw-source or transcript-ingestion layer
-
-### evals/
-
-- `tasks/` contains benchmark prompts
-- `results/` contains run records
-- Scripts scaffold and summarize results, but human judgment still matters
-- Runs should stay selective and decision-linked, not become routine task logs
 
 ## Cross-Agent Parity Table (v3)
 
@@ -213,7 +198,6 @@ the workflow level, not implementation detail.
 | Goals / memories | `memory/` + execution memory | native goals/memories + shared `memory/` |
 | Durable execution memory | Shared `execution/` | Shared `execution/` |
 | Progress scratch | Shared `work-handoff.md` format | Shared `work-handoff.md` format |
-| Evals | Shared `evals/` | Shared `evals/` |
 | Operational memory | Shared `memory/` | Shared `memory/` |
 | Per-repo init | Shared `scripts/init-repo.sh` | Shared `scripts/init-repo.sh` |
 
@@ -242,13 +226,8 @@ policy; reflect facts in docs, do not hand-edit runtime state.
 
 ## Harness Maintenance Rules
 
-- Read this file before changing the harness itself.
-- If you add a new layer, directory, or invariant, update:
-  - `ARCHITECTURE.md`
-  - `AGENTS.md` if the behavior changes shared policy
-  - `CHANGELOG.md` for major evolution
-  - `check-harness.sh` if the harness should validate it
-- Prefer improving wiring and enforcement before adding more surface area.
+- The harness is a thin set of defaults + on-demand skills, not a product. Prefer deleting or simplifying over adding surface area.
+- When you change structure, keep `ARCHITECTURE.md` accurate and update `check-harness.sh` if it validates the changed thing. Other docs are optional; history lives in `git log`.
 
 ## Global vs Per-Repo Model
 
@@ -282,7 +261,7 @@ This means:
 - Generic skills, subagents, operational memory
 - Enforcement hooks (in global `~/.claude/settings.json`)
 - Default conventions and library preferences
-- Eval framework, ROADMAP, CHANGELOG
+- ROADMAP (direction and durable decisions)
 
 ### What lives per-repo (scaffolded, committable)
 

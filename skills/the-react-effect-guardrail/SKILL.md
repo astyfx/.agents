@@ -1,6 +1,6 @@
 ---
 name: the-react-effect-guardrail
-description: Prevent React effect, ref, and dependency anti-patterns that cause stale closures, identity loops, duplicate listeners, and keep-alive regressions. Use when editing useEffect, useMemo, useCallback, useRef, observers, timers, IPC listeners, or long-lived callbacks in React and Electron renderer code.
+description: Prevent React effect/ref/dependency anti-patterns that cause stale closures, identity loops, duplicate listeners, and keep-alive regressions. Use when editing useEffect, useMemo, useCallback, useRef, observers, timers, IPC listeners, or long-lived callbacks in React/Electron renderer code.
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:

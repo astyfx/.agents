@@ -1,6 +1,6 @@
 ---
 name: the-ralph-loop
-description: "Ralph-style autonomous multi-story execution with fresh agent context per iteration. Use ONLY when the work is decomposable into a PRD of independent, verifiable stories and the user wants the loop to spawn fresh Claude or Codex agents until every story passes. Triggers: 'ralph loop', 'ralph 설정', 'PRD run until complete', 'fresh-context autonomous run', 'prd.json 실행'. Do NOT use for scored single-target refinement (use the-improvement-loop) or single-shot fixes."
+description: "Ralph-style autonomous multi-story execution with fresh agent context per iteration. Use ONLY when work decomposes into a PRD of independent, verifiable stories and the user wants fresh Claude/Codex agents spawned until every story passes; NOT for scored single-target refinement (use the-improvement-loop). Triggers 'ralph loop', 'ralph 설정', 'prd.json 실행'."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

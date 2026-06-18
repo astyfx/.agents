@@ -1,6 +1,6 @@
 ---
 name: the-tui-designer
-description: "Design and build terminal UIs (TUIs) with Ink (React for terminal) for Node/TypeScript projects — layout, focus management, keyboard input, raw-mode discipline, non-TTY fallbacks, and graceful exit. Use when building an interactive terminal experience (a dashboard, a prompt flow, a live view of agent activity), picking between Ink and alternatives, handling keyboard/signal/resize events, or when the user says 'tui 만들어', 'interactive terminal ui', 'ink으로 대시보드', 'terminal dashboard', '라이브 뷰 터미널', 'keypress 처리', 'non-tty fallback'. Pair with the-cli-designer for the command surface around the TUI."
+description: "Design and build terminal UIs (TUIs) with Ink (React for terminal) for Node/TypeScript — layout, focus, keyboard input, raw-mode discipline, non-TTY fallbacks, graceful exit. Use when building an interactive terminal dashboard or prompt flow, picking between Ink and alternatives, or when the user says 'tui 만들어', 'ink으로 대시보드', 'terminal dashboard', 'non-tty fallback'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

@@ -41,8 +41,6 @@ Everything else should be loaded because the task needs it, not by default.
 - `memory/`
   - when a reusable pattern, troubleshooting note, playbook, or decision is
     relevant
-- `evals/README.md`
-  - when validating harness changes or comparing outcomes
 
 ## Budget Rules
 

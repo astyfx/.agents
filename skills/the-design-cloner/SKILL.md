@@ -1,6 +1,6 @@
 ---
 name: the-design-cloner
-description: "Faithfully clone a visual reference — Figma frame, live website, or design-system component — into production code by inspecting the source directly, extracting real tokens (colors, spacing, typography, radii, shadows), mapping layout geometry, and verifying with side-by-side screenshots. Use when the user says '이 디자인 그대로 구현', '이 사이트 베껴줘', 'clone this Figma frame', 'match this component exactly', 'replicate this UI', '피그마 그대로', 'copy this website design', 'reference this library component', or provides a URL/Figma link/screenshot and expects the output to look like the reference, not just 'similar'. Built to fix the typical AI failure mode where it eyeballs a screenshot and outputs a vague approximation."
+description: "Faithfully clone a visual reference (Figma frame, website, design-system component) into code by inspecting the source, extracting real tokens, and verifying with screenshots, so output matches the reference not just looks similar. Triggers '이 디자인 그대로 구현', '피그마 그대로', 'clone this Figma frame', 'replicate this UI'."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

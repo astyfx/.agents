@@ -1,6 +1,6 @@
 ---
 name: the-cli-packaging
-description: "Package a Node/TypeScript CLI as a distributable binary — Bun compile, pkg, or node-sea — with cross-platform targets (macOS arm64/x64, Linux x64/arm64, Windows x64), code signing and notarization on macOS, Windows signing, install/update paths (Homebrew tap, npm, direct download), version/commit embedding, and size optimization. Use when shipping a CLI to users or agents, picking a bundler strategy, or when the user says 'cli 배포', 'bundle single binary', 'bun build compile', 'macos codesign notarize', 'windows signing', 'homebrew tap', 'cli release pipeline', 'cross-compile'. Pair with the-cli-designer for the surface and the-agent-cli for the contract."
+description: "Package a Node/TypeScript CLI as a distributable binary (Bun compile, pkg, node-sea) — cross-platform targets, macOS/Windows signing and notarization, install paths (Homebrew, npm). Use when shipping a CLI or picking a bundler, or the user says 'cli 배포', 'single binary 빌드', 'macos codesign notarize'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

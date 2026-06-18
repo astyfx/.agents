@@ -1,64 +1,38 @@
 #!/usr/bin/env bash
-# on-stop-handoff.sh — Stop hook that writes a session snapshot when Claude stops.
-# NOTE: intentionally no set -e — this hook must never block the stop event.
-
-SNAPSHOT_DIR="${HOME}/.agents/claude/session-snapshots"
-mkdir -p "${SNAPSHOT_DIR}"
-
-TIMESTAMP="$(date +%Y-%m-%d_%H%M%S)"
-SNAPSHOT_FILE="${SNAPSHOT_DIR}/${TIMESTAMP}.md"
+# on-stop-handoff.sh — Stop hook.
+# Only does something when there is an ACTIVE tracked task: it refreshes a small
+# "Auto Snapshot" section in that task's handoff.md so a resume has fresh state.
+# When there is no active task it is a no-op — it deliberately does NOT spew a
+# timestamped snapshot file per stop (that previously accumulated hundreds of
+# dead files). NOTE: intentionally no set -e — this hook must never block stop.
 
 CURRENT_PWD="$(pwd)"
-GIT_STATUS="$(git status --short 2>/dev/null || echo "not a git repo")"
 WORK_HANDOFF_FILE="${CURRENT_PWD}/work-handoff.md"
-STATE_FILE=""
-TRACKING_TASK_PATH=""
 
-if [[ -f "${WORK_HANDOFF_FILE}" ]]; then
-  STATE_FILE="${WORK_HANDOFF_FILE}"
+# No work-handoff scratch -> nothing to track -> no-op.
+[[ -f "${WORK_HANDOFF_FILE}" ]] || exit 0
+
+TRACKING_TASK_PATH="$(perl -0ne '
+  if (/^## Active Task Path\s*\n([^\n]+)\s*$/m) {
+    print $1;
+    exit 0;
+  }
+' "${WORK_HANDOFF_FILE}")"
+
+# No active task path -> no-op.
+[[ -n "${TRACKING_TASK_PATH}" ]] || exit 0
+
+HANDOFF_BASE="${TRACKING_TASK_PATH}"
+if [[ "${HANDOFF_BASE}" != /* ]]; then
+  HANDOFF_BASE="${CURRENT_PWD}/${HANDOFF_BASE}"
 fi
 
-if [[ -n "${STATE_FILE}" ]]; then
-  TRACKING_TASK_PATH="$(perl -0ne '
-    if (/^## Active Task Path\s*\n([^\n]+)\s*$/m) {
-      print $1;
-      exit 0;
-    }
-  ' "${STATE_FILE}")"
-fi
+[[ -d "${HANDOFF_BASE}" && -f "${HANDOFF_BASE}/handoff.md" ]] || exit 0
 
-cat > "${SNAPSHOT_FILE}" <<EOF
-# Session Snapshot — ${TIMESTAMP}
-
-## Status
-stopped
-
-## Working Directory
-${CURRENT_PWD}
-
-## Scratch File
-${STATE_FILE:-none}
-
-## Active Task Path
-${TRACKING_TASK_PATH:-unknown}
-
-## Recent Git Status
-${GIT_STATUS}
-EOF
-
-if [[ -n "${TRACKING_TASK_PATH}" ]]; then
-  HANDOFF_BASE="${TRACKING_TASK_PATH}"
-  if [[ "${HANDOFF_BASE}" != /* ]]; then
-    HANDOFF_BASE="${CURRENT_PWD}/${HANDOFF_BASE}"
-  fi
-
-  if [[ -d "${HANDOFF_BASE}" && -f "${HANDOFF_BASE}/handoff.md" ]]; then
-    HANDOFF_FILE="${HANDOFF_BASE}/handoff.md"
-    TIMESTAMP="${TIMESTAMP}" \
-    CURRENT_PWD="${CURRENT_PWD}" \
-    SNAPSHOT_FILE="${SNAPSHOT_FILE}" \
-    GIT_STATUS="${GIT_STATUS}" \
-      perl - "${HANDOFF_FILE}" <<'PERL'
+TIMESTAMP="$(date +%Y-%m-%d_%H%M%S)" \
+CURRENT_PWD="${CURRENT_PWD}" \
+GIT_STATUS="$(git status --short 2>/dev/null || echo 'not a git repo')" \
+  perl - "${HANDOFF_BASE}/handoff.md" <<'PERL'
 use strict;
 use warnings;
 
@@ -72,7 +46,6 @@ close $fh;
 
 my $timestamp = $ENV{TIMESTAMP} // q{};
 my $working_dir = $ENV{CURRENT_PWD} // q{};
-my $snapshot_file = $ENV{SNAPSHOT_FILE} // q{};
 my $git_status = $ENV{GIT_STATUS} // q{};
 
 my $section = <<"EOF";
@@ -80,7 +53,6 @@ my $section = <<"EOF";
 
 - Timestamp: $timestamp
 - Working Directory: $working_dir
-- Snapshot File: $snapshot_file
 - Recent Git Status:
 ```text
 $git_status
@@ -99,7 +71,5 @@ open my $out, '>', $handoff_file or exit 0;
 print {$out} $updated;
 close $out;
 PERL
-  fi
-fi
 
 exit 0

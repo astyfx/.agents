@@ -34,8 +34,8 @@ these before reaching for a custom `subagents/` definition:
 
 | Built-in | Use for | Replaces custom |
 |---|---|---|
-| `Explore` | Broad read-only search across many files/dirs; "where does X live?", convention sweeps. Returns conclusions, not file dumps. | `researcher` (most cases) |
-| `Plan` | Design an implementation/refactoring strategy; step-by-step plan with trade-offs and critical files. | `planner` (most cases) |
+| `Explore` | Broad read-only search across many files/dirs; "where does X live?", convention sweeps. Returns conclusions, not file dumps. | the read/search default |
+| `Plan` | Design an implementation/refactoring strategy; step-by-step plan with trade-offs and critical files. | the planning default |
 | `general-purpose` | Open-ended multi-step research/search when match confidence is low. | — |
 
 - Launch multiple Explore agents in one message for independent search areas.
@@ -52,8 +52,8 @@ Custom definitions also keep Claude/Codex parity (Codex spawns the same `AGENT.m
 |---|---|---|
 | `reviewer` | Independent post-implementation review (>3 files, security-sensitive, public API/interface change). Reads code cold. | Fixed six-axis review contract; no built-in equivalent. |
 | `qa-engineer` | Verify phase needs a structured test plan (complex logic, security-sensitive, >5 files). Produces a plan, not test code. | Fixed test-plan output shape; no built-in equivalent. |
-| `researcher` | Discover phase where you need the exact structured report format (Relevant Files / Patterns / Constraints / Risks / Assumptions), or for Codex. | Otherwise prefer built-in `Explore`. |
-| `planner` | Plan phase needing the fixed architecture-plan + Mermaid output, or for Codex. | Otherwise prefer built-in `Plan`. |
+
+For read/search and planning, use the built-in `Explore` and `Plan` directly — there are no custom research/plan subagents.
 
 **How to spawn**:
 - Claude: pass the `subagents/<name>/AGENT.md` definition via the Agent tool
@@ -101,7 +101,7 @@ Routing rules and anti-patterns: `memory/playbooks/scheduled-and-background-agen
 
 - To save context on trivial tasks (spawn overhead not worth it).
 - Single-file tasks under ~30 min.
-- When the helper would need to write code (researcher/planner/Explore/Plan are read-only).
+- When the helper would need to write code (Explore/Plan are read-only).
 - When the helper needs the same full context the main session already has.
 - A Workflow without an explicit opt-in (see §4).
 

@@ -1,6 +1,6 @@
 ---
 name: the-refactoring-planner
-description: Plan large-scale refactoring and product separation — scope analysis, dependency partitioning, migration phases, risk matrix. Use when the user says "리팩토링 계획 세워줘", "plan the refactoring", "product separation plan", "모듈 분리 계획", or before any multi-sprint refactoring effort.
+description: Plan large-scale refactoring and product separation — scope analysis, dependency partitioning, migration phases, risk matrix. Use before any multi-sprint refactoring, or when the user says "리팩토링 계획 세워줘", "모듈 분리 계획", "plan the refactoring", "product separation plan".
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

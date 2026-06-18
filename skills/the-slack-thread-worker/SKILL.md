@@ -1,12 +1,6 @@
 ---
 name: the-slack-thread-worker
-description: |
-  Read a Slack thread and turn it into the right level of work: extract tasks,
-  prepare Jira and linked resources, or execute the change through code and PR.
-  Use when the user says "슬랙 쓰레드로 작업해", "슬랙 보고 이슈 만들어",
-  "이 스레드 정리해서 태스크로 만들어", "이 스레드 보고 수정하고 PR 올려",
-  "work this Slack thread", or otherwise expects planning, setup, or end-to-end
-  execution from a Slack discussion.
+description: "Read a Slack thread and turn it into work: extract tasks, prepare Jira and linked resources, or execute the change through code and PR. Use when the user says \"슬랙 쓰레드로 작업해\", \"슬랙 보고 이슈 만들어\", \"이 스레드 보고 수정하고 PR 올려\", \"work this Slack thread\", or expects planning, setup, or end-to-end execution from a Slack discussion."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

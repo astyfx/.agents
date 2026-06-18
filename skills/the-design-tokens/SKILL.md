@@ -1,6 +1,6 @@
 ---
 name: the-design-tokens
-description: "Build or extend a coherent design-token system for any product - the structure, naming, scales, and theming method behind colors, typography, spacing, radius, shadow, z-index, and motion. Use when setting up tokens for a new design system, adding a role/scale-step/dark-mode/surface to an existing token set, or refactoring scattered hardcoded values into tokens. Triggers: '디자인 토큰 만들어', '토큰 정리해줘', 'color scale 잡아줘', 'type scale', 'spacing system', '테마 구조 잡아줘', 'design tokens', 'set up a token system', 'build a color scale', 'design system foundations'. This skill teaches the METHOD; the product's brand and existing system decide the actual values - it never imports a fixed palette, scale, or font from memory."
+description: "Build or extend a coherent design-token system (color/type/spacing/radius/shadow/motion scales, naming, theming). Use to set up tokens, add a role/scale-step/dark-mode/surface, or refactor hardcoded values into tokens. Triggers '디자인 토큰 만들어', 'color scale 잡아줘', 'design tokens', 'build a color scale'."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

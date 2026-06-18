@@ -1,6 +1,6 @@
 ---
 name: the-progress-tracker
-description: Resume work from a previous session, keep a concise work handoff, or summarize leftover work for the next agent. Use when the user says "이어서 작업", "어디까지 했지", "resume", "continue where we left off", "진행 상황 정리", "handoff 정리", "잔여 작업 정리", or "다음에 이어서". Reads and writes `work-handoff.md` as a cross-agent portable handoff file.
+description: Resume work from a previous session, keep a concise handoff, or summarize leftover work for the next agent, reading/writing `work-handoff.md` as a cross-agent handoff file. Triggers '이어서 작업', '어디까지 했지', '진행 상황 정리', 'resume', 'continue where we left off'.
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

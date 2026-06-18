@@ -1,6 +1,6 @@
 ---
 name: the-pr-reviewer
-description: Automated pull request review — fetches PR diff, runs 6-axis review, posts findings as GitHub PR comments. Use when the user says "PR 리뷰해줘", "review PR #123", "이 PR 봐줘", or when automating PR review workflows. Builds on the-code-reviewer rubric with GitHub integration.
+description: Automated pull request review — fetches PR diff, runs 6-axis review, posts findings as GitHub PR comments. Use when automating PR review workflows. Triggers 'PR 리뷰해줘', '이 PR 봐줘', 'review PR #123', 'check this pull request'.
 compatible-tools: [claude, codex]
 category: review
 test-prompts:

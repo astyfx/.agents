@@ -1,6 +1,6 @@
 ---
 name: the-code-reviewer
-description: Perform a structured code review on a file, diff, or pull request. Use when the user asks for code review, PR review, asks to "review this", "이 코드 봐줘", "코드 리뷰", "check for bugs", or when the user shares a diff or file and wants feedback. Produces a prioritized review with CRITICAL / SUGGESTION / NIT ratings across correctness, security, performance, conventions, architecture, and accessibility.
+description: Structured code review of a file, diff, or PR with prioritized CRITICAL/SUGGESTION/NIT ratings across correctness, security, performance, conventions, and architecture. Use when the user says "review this", "이 코드 봐줘", "코드 리뷰", "check for bugs", or shares a diff for feedback.
 compatible-tools: [claude, codex]
 category: review
 test-prompts:

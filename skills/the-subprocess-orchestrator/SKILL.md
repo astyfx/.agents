@@ -1,6 +1,6 @@
 ---
 name: the-subprocess-orchestrator
-description: "Spawn and supervise child processes safely from Node/Bun — lifecycle, stdio streaming, timeout, kill tree, signal handling, backpressure, PTY vs pipe, and zombie prevention. Use when building CLI/host-service code that shells out to git, codex, claude, docker, test runners, or long-running user scripts; or when the user says 'subprocess 관리', 'child process spawn', 'kill tree', 'stdio backpressure', 'pty로 실행', 'timeout 걸고 죽이기', 'zombie 방지', 'output streaming'. Covers both agent-invoked CLIs spawning helpers and Stave's host-service running user scripts."
+description: "Spawn and supervise child processes safely from Node/Bun — lifecycle, stdio streaming, timeout, kill tree, signals, backpressure, PTY vs pipe, zombie prevention. Use when building CLI/host-service code that shells out to git, docker, test runners, or user scripts, or when the user says 'subprocess 관리', 'child process spawn', 'kill tree', 'pty로 실행', 'zombie 방지'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

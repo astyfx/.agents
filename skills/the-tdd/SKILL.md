@@ -1,6 +1,6 @@
 ---
 name: the-tdd
-description: Guide test-driven development using the red-green-refactor cycle. Use when the user says "TDD", "테스트 먼저 작성", "red-green-refactor", "write tests first", or asks to implement a feature following TDD discipline. Enforces writing the failing test before any implementation code.
+description: Guide test-driven development using the red-green-refactor cycle, enforcing a failing test before any implementation. Use when the user says "TDD", "테스트 먼저 작성", "red-green-refactor", "write tests first", or asks to implement a feature following TDD discipline.
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

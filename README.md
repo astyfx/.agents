@@ -14,7 +14,7 @@ Unified home for Claude and Codex configuration.
 - `docs/instructions/TRACKING.md`: lightweight execution-memory and handoff standard.
 - `docs/instructions/ENGINEERING_GROWTH.md`: agentic engineering coaching rules.
 - `execution/`: default execution-memory root for future substantial tasks.
-- `memory/`: operational memory for patterns, troubleshooting, playbooks, decisions, and scorecards.
+- `memory/`: operational memory for patterns, troubleshooting, playbooks, and decisions.
 - `skills/`: shared skill library.
 - `subagents/`: shared subagent definitions.
 - `claude/`: Claude runtime directory; `claude/CLAUDE.md` is the global entry point that loads `AGENTS.md` and `CLAUDE.md`.

@@ -1,6 +1,6 @@
 ---
 name: the-theme-token-sync
-description: Prevent theme token drift, missing built-in theme values, and silent visual regressions when editing globals.css, CSS custom properties, shadcn presets, or theme definitions. Use when changing color tokens, theme presets, built-in themes, or any UI surface that introduces or removes semantic tokens.
+description: Prevent theme token drift, missing built-in theme values, and silent visual regressions when editing globals.css, CSS custom properties, shadcn presets, or theme definitions. Use when changing color tokens, theme presets, built-in themes, or any surface that adds or removes semantic tokens.
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:

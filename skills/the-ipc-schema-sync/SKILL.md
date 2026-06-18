@@ -1,6 +1,6 @@
 ---
 name: the-ipc-schema-sync
-description: Prevent IPC schema drift and provider or host-service contract mismatches that cause Zod rejections, dropped events, silent runtime failures, or broken terminal/session restore flows. Use when changing runtimeOptions, IPC payloads, MessagePart shapes, provider events, NormalizedProviderEvent, preload contracts, host-service request or response fields, renderer-to-main terminal/session APIs, or window-api request fields.
+description: Prevent IPC schema drift and provider/host-service contract mismatches that cause Zod rejections, dropped events, or silent runtime failures. Use when changing runtimeOptions, IPC payloads, MessagePart shapes, provider events, NormalizedProviderEvent, preload contracts, host-service fields, or window-api fields.
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:

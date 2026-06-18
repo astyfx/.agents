@@ -15,8 +15,6 @@ improve future work across sessions, projects, Claude, and Codex.
   - repeatable workflows and integration procedures
 - `decisions/`
   - durable harness decisions and ADR-style records
-- `scorecard/`
-  - measurable baselines and periodic improvement snapshots
 
 ## Boundaries
 

@@ -1,6 +1,6 @@
 ---
 name: the-a11y-components
-description: "Build accessible interactive UI components for any product - the keyboard, focus, semantics, and screen-reader contract behind menus, dialogs, comboboxes, tabs, tooltips, forms, and custom widgets. Use when implementing or fixing an interactive component, when keyboard or screen-reader support is missing or broken, or when an a11y/WCAG bar must be met. Triggers: '접근성 챙겨줘', '키보드 네비게이션', 'a11y', 'aria 추가', 'screen reader 대응', 'focus 관리', 'WCAG 맞춰줘', 'make this accessible', 'keyboard navigation', 'fix focus trap', 'add aria roles'. This skill teaches the METHOD - derive each widget's contract from its interaction pattern and the product's existing primitives; it does not impose a fixed component library or design values."
+description: "Build accessible interactive UI components — the keyboard, focus, semantics, and screen-reader contract behind menus, dialogs, comboboxes, tabs, tooltips, and forms. Use when implementing or fixing an interactive component, when keyboard/screen-reader support is broken, or to meet an a11y/WCAG bar. Triggers: '접근성 챙겨줘', '키보드 네비게이션', 'focus 관리', 'make this accessible', 'fix focus trap', 'add aria roles'."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

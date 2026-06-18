@@ -15,9 +15,10 @@ something a built-in does not give you:
 
 | Custom subagent | Prefer built-in instead | Keep custom when |
 |---|---|---|
-| `researcher` | `Explore` | you need the exact research-report contract, or running under Codex |
-| `planner` | `Plan` | you need the architecture-plan + Mermaid contract, or running under Codex |
 | `reviewer` | — (no built-in equivalent) | always: fixed six-axis cold review |
 | `qa-engineer` | — (no built-in equivalent) | always: fixed structured test plan |
+
+For read/search and planning, use the built-in `Explore` and `Plan` directly —
+the former `researcher` and `planner` subagents were removed as redundant.
 
 Routing details: `docs/instructions/ROUTING.md`.

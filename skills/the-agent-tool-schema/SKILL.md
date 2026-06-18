@@ -1,6 +1,6 @@
 ---
 name: the-agent-tool-schema
-description: "Keep one schema as the single source of truth for a CLI subcommand's input flags, output envelope, CLI help text, AND the LLM tool definitions (Anthropic tools, OpenAI function-calling, MCP tool schemas) that agents consume. Use when starting a new agent-callable CLI, adding a new subcommand, or when flag/output drift between the CLI and the agent's tool list is causing tool-use bugs. Trigger phrases: 'tool schema 통합', 'cli와 tool definition 싱크', 'anthropic tool spec 자동 생성', 'zod schema에서 tool 뽑기', 'one schema drives everything', 'agent tool 정의 자동화', 'mcp tool schema 생성'."
+description: "One schema as the single source of truth for a CLI subcommand's flags, output, help text, AND the LLM tool definitions (Anthropic, OpenAI, MCP) agents consume. Use when adding a subcommand or when CLI/tool-list drift causes tool-use bugs. Triggers: 'tool schema 통합', 'cli와 tool definition 싱크', 'mcp tool schema 생성'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

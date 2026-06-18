@@ -1,6 +1,6 @@
 ---
 name: the-improvement-loop
-description: "Scored iterative refinement of a single existing artifact against a rubric — implement, score, refine, repeat until threshold or max iterations. Use ONLY when there is one concrete target (a component, a file, a page, a test suite, a performance metric) that needs measurable quality driven up. Triggers: '반복 개선', 'score and improve', 'keep refining until good', 'rubric으로 점수 내서 개선', 'polish until X'. Do NOT use for PRD-driven multi-story autonomous runs (use the-ralph-loop) or single-pass implementation tasks."
+description: "Scored iterative refinement of one existing artifact against a rubric — implement, score, refine, repeat until threshold or max iterations. Use ONLY for one concrete target needing measurable quality driven up; NOT for PRD multi-story runs (use the-ralph-loop). Triggers '반복 개선', 'rubric으로 점수 내서 개선', 'score and improve', 'polish until X'."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

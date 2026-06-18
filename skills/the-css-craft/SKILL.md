@@ -1,6 +1,6 @@
 ---
 name: the-css-craft
-description: "Write high-quality, modern CSS and UI code that respects the project's design system and a user-provided reference. Use this when implementing or modifying UI in sbdashboard, stave, dui, or any repo — writing styles, translating a screenshot/Figma/example into components, modernizing dated CSS, or whenever the user says the work should not look AI-generated, outdated, or generic. Blocks the typical failures: inventing colors and fonts from memory, reaching for 2019-era CSS tricks, drifting from the user's reference, or filling space with AI-slop tropes (gradients, glass cards, Inter, left-border-accent cards, decorative SVGs, emoji). Complements the-frontend-director (aesthetic direction) and the-design-cloner (pixel-accurate clone) by covering everyday CSS craft, not macro art direction."
+description: "Write modern CSS/UI that respects the project's design system and reference, avoiding invented colors/fonts and AI-slop tropes. Use when writing styles, translating a screenshot/Figma to components, modernizing dated CSS, or the user says it shouldn't look AI-generated ('더 모던하게', 'less AI-generated', '올드하지 않게')."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

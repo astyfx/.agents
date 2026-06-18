@@ -1,6 +1,6 @@
 ---
 name: the-dead-code-detector
-description: Detect unused, unreachable, or stale code before cleanup or refactoring. Use when the user asks to find dead code, unused files, unused exports, stale components, old feature flags, or says "dead code", "unused code", "안쓰는 코드", "안쓰는 파일", "unused export", "remove stale code", or "cleanup legacy paths". Produces evidence-ranked candidates, separates safe-delete items from review-needed items, and uses repo-native tooling such as knip, ts-prune, depcheck, or lint rules when available.
+description: Detect unused, unreachable, or stale code before cleanup or refactoring, producing evidence-ranked safe-delete vs review-needed candidates via repo-native tooling (knip, ts-prune, depcheck). Triggers '안쓰는 코드', '안쓰는 파일', 'dead code', 'unused export', 'remove stale code'.
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

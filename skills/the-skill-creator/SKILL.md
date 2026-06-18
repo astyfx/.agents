@@ -1,6 +1,6 @@
 ---
 name: the-skill-creator
-description: "Create, rewrite, evaluate, and tighten reusable skills. Use whenever the user wants to turn a workflow into a skill, merge or improve existing skills, refine skill triggering/frontmatter, add scripts/references/assets, or test whether a skill actually performs better. For new skills created with this skill, default the folder name and frontmatter name to the-SLUG unless the user explicitly asks for another name."
+description: "Create, rewrite, evaluate, and tighten reusable skills. Use when the user wants to turn a workflow into a skill, merge or improve existing skills, refine skill triggering/frontmatter, or test whether a skill performs better. Default new skill folder and name to the-SLUG unless the user asks otherwise."
 compatible-tools: [claude, codex]
 category: workflow
 test-prompts:

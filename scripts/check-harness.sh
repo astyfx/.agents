@@ -37,7 +37,6 @@ echo "--- Policy files ---"
 check "AGENTS.md exists" "[[ -f '${REPO_DIR}/AGENTS.md' ]]"
 check "ARCHITECTURE.md exists" "[[ -f '${REPO_DIR}/ARCHITECTURE.md' ]]"
 check "ROADMAP.md exists" "[[ -f '${REPO_DIR}/ROADMAP.md' ]]"
-check "CHANGELOG.md exists" "[[ -f '${REPO_DIR}/CHANGELOG.md' ]]"
 check "CONVENTIONS.md exists" "[[ -f '${REPO_DIR}/docs/instructions/CONVENTIONS.md' ]]"
 check "CONTEXT_LOADING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/CONTEXT_LOADING.md' ]]"
 check "RESPONSE_STYLE.md exists" "[[ -f '${REPO_DIR}/docs/instructions/RESPONSE_STYLE.md' ]]"
@@ -50,7 +49,6 @@ check "AGENTS.md references ARCHITECTURE.md" "grep -q 'ARCHITECTURE.md' '${REPO_
 check "AGENTS.md references ROADMAP.md" "grep -q 'ROADMAP.md' '${REPO_DIR}/AGENTS.md'"
 check "AGENTS.md references RESPONSE_STYLE.md" "grep -q 'RESPONSE_STYLE.md' '${REPO_DIR}/AGENTS.md'"
 check "AGENTS.md references CONTEXT_LOADING.md" "grep -q 'CONTEXT_LOADING.md' '${REPO_DIR}/AGENTS.md'"
-check "AGENTS.md references evals/README.md" "grep -q 'evals/README.md' '${REPO_DIR}/AGENTS.md'"
 check "AGENTS.md references memory/" "grep -q 'memory/' '${REPO_DIR}/AGENTS.md'"
 
 echo ""
@@ -94,11 +92,6 @@ check "scaffold-ralph-codex.sh is executable" "[[ -x '${REPO_DIR}/scripts/scaffo
 check "Ralph loop Codex prompt template exists" "[[ -f '${REPO_DIR}/skills/the-ralph-loop/assets/template/scripts/ralph/CODEX.md' ]]"
 check "Ralph loop Codex script template exists" "[[ -f '${REPO_DIR}/skills/the-ralph-loop/assets/template/scripts/ralph/ralph-codex.sh' ]]"
 check "Ralph loop prd.json example exists" "[[ -f '${REPO_DIR}/skills/the-ralph-loop/assets/template/scripts/ralph/prd.json.example' ]]"
-check "new-eval-result.sh" "[[ -f '${REPO_DIR}/scripts/new-eval-result.sh' ]]"
-check "summarize-evals.pl" "[[ -f '${REPO_DIR}/scripts/summarize-evals.pl' ]]"
-check "summarize-evals.pl is executable" "[[ -x '${REPO_DIR}/scripts/summarize-evals.pl' ]]"
-check "summarize-evals.pl avoids python3" "! grep -q 'python3' '${REPO_DIR}/scripts/summarize-evals.pl'"
-check "no stale summarize-evals.py remains" "[[ ! -f '${REPO_DIR}/scripts/summarize-evals.py' ]]"
 
 echo ""
 echo "--- Skills ---"
@@ -179,20 +172,6 @@ else
 fi
 
 echo ""
-echo "--- Evals ---"
-warn "evals/ directory" "[[ -d '${REPO_DIR}/evals' ]]"
-warn "evals/README.md" "[[ -f '${REPO_DIR}/evals/README.md' ]]"
-if [[ -d "${REPO_DIR}/evals/tasks" ]]; then
-  EVAL_COUNT=$(ls "${REPO_DIR}/evals/tasks/"*.md 2>/dev/null | wc -l | tr -d ' ')
-  echo "  ${EVAL_COUNT} eval tasks found"
-fi
-if [[ -d "${REPO_DIR}/evals/results" ]]; then
-  RESULT_COUNT=$(find "${REPO_DIR}/evals/results" -type f ! -name '.gitkeep' | wc -l | tr -d ' ')
-  echo "  ${RESULT_COUNT} eval result files found"
-  warn "eval result history exists" "[[ ${RESULT_COUNT} -gt 0 ]]"
-fi
-
-echo ""
 echo "--- Subagents ---"
 SUBAGENT_COUNT=$(ls "${REPO_DIR}/subagents/"*/AGENT.md 2>/dev/null | wc -l | tr -d ' ')
 echo "  ${SUBAGENT_COUNT} subagents defined"
@@ -201,7 +180,6 @@ echo ""
 echo "--- Operational memory ---"
 warn "memory/ directory" "[[ -d '${REPO_DIR}/memory' ]]"
 warn "memory/README.md" "[[ -f '${REPO_DIR}/memory/README.md' ]]"
-warn "memory/scorecard/" "[[ -d '${REPO_DIR}/memory/scorecard' ]]"
 check "learnings/ retired (removed)" "[[ ! -d '${REPO_DIR}/learnings' ]]"
 
 echo ""

@@ -1,6 +1,6 @@
 ---
 name: electron-best-practices
-description: "Guide AI agents through Electron app development with React including security patterns, type-safe IPC, React integration, packaging with code signing, and testing. Use when the user is building an Electron app, asks about IPC, contextBridge, electron-vite, electron-forge, desktop app packaging, code signing, notarization, or Playwright testing for Electron."
+description: "Electron + React app development: security patterns, type-safe IPC, packaging, and testing. Use when building an Electron app or asking about IPC, contextBridge, electron-vite, electron-forge, code signing, notarization, or Playwright testing for Electron."
 compatible-tools: [claude, codex]
 category: development
 test-prompts:

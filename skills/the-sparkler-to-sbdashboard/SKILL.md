@@ -1,6 +1,6 @@
 ---
 name: the-sparkler-to-sbdashboard
-description: "Convert Sparkler Storybook design proposals into sbdashboard-ready implementation plans and code changes. Use when the user wants to use ~/workspaces/Sparkler instead of Figma, translate Sparkler Product/Projects stories, review-source files, CSS modules, or Dash DS components into sbdashboard screens, or map Sparkler design intent to sbdashboard AGENTS.md, Feather/UI primitives, React Query hooks, dialogs, and styling conventions."
+description: "Convert Sparkler Storybook design proposals into sbdashboard-ready implementation plans and code. Use when the user wants to use ~/workspaces/Sparkler instead of Figma, translate Sparkler Product/Projects stories, CSS modules, or Dash DS components into sbdashboard screens, or map Sparkler design intent to sbdashboard's Feather/UI primitives, React Query hooks, and styling conventions."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

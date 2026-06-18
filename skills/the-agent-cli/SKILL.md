@@ -1,6 +1,6 @@
 ---
 name: the-agent-cli
-description: "Design and build CLIs intended to be called by LLM agents (not humans) — deterministic output, structured JSON mode, stable exit-code contract, machine-readable error envelopes, idempotent subcommands, and safe-by-default side effects. Use when building a CLI that will sit on the Stave/Claude/Codex tool surface, replace an MCP server with a CLI, expose internal stave operations as agent-callable commands, or when the user says 'agent용 cli', 'ai가 호출할 cli', 'tool cli', 'cli로 바꾸자 mcp 말고', 'stave 기능을 cli로', 'llm-safe cli', 'structured output cli'. This is the right skill when the primary caller is a model, not a person."
+description: "Design CLIs called by LLM agents, not humans — deterministic output, JSON mode, stable exit codes, machine-readable errors, idempotent subcommands. Use when the primary caller is a model, e.g. replacing an MCP server with a CLI, or the user says 'agent용 cli', 'ai가 호출할 cli', 'tool cli', 'llm-safe cli'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

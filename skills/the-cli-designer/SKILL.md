@@ -1,6 +1,6 @@
 ---
 name: the-cli-designer
-description: "Design and build human-facing CLIs with clean argv parsing, intuitive subcommand taxonomy, helpful --help, TTY-aware color/progress, shell completion, and good error messages. Use when building or improving a CLI whose primary user is a developer at a terminal, picking between argv parsers (commander, yargs, oclif, clipanion, citty, cac), defining flag conventions, or when the user says 'cli 설계', 'command line 툴 만들어', 'argv 파싱', 'subcommand 구조', 'shell completion', 'help 출력 개선', 'cli ux'. Pair with the-agent-cli when the same CLI is also called by LLMs."
+description: "Design human-facing CLIs — argv parsing, subcommand taxonomy, --help, TTY-aware color/progress, shell completion, good errors. Use when the primary user is a developer at a terminal or picking argv parsers (commander, yargs, oclif, citty), or the user says 'cli 설계', 'argv 파싱', 'shell completion', 'cli ux'."
 compatible-tools: [claude, codex]
 category: cli
 test-prompts:

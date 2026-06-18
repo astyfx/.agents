@@ -1,6 +1,6 @@
 ---
 name: the-provider-router
-description: "Design reference and change discipline for Stave's provider routing layer — intent classification, orchestration, model resolution, fallback, and Stave Auto behavior. Use when designing, redesigning, or extending how Stave turns a user turn into concrete provider calls; when adding/removing/renaming intents, roles, or providers; when changing Stave Auto's decision logic; or when editing files under electron/providers/stave-*, intent preprocessor, orchestration supervisor, or model resolver. The skill is a map of the current system and a protocol for breaking its rules intentionally, not a lock against change."
+description: "Design reference and change discipline for Stave's provider routing layer — intent classification, orchestration, model resolution, fallback, Stave Auto. Use when designing how Stave turns a turn into provider calls, adding/renaming intents/roles/providers, changing Stave Auto logic, or editing electron/providers/stave-* or the model resolver."
 compatible-tools: [claude, codex]
 category: architecture
 test-prompts:

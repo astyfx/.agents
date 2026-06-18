@@ -1,6 +1,6 @@
 ---
 name: the-terminal-surface-guard
-description: Prevent terminal and PTY surface regressions in Electron desktop apps by enforcing shell/runtime separation, attach-detach lifecycle discipline, session restore safety, viewport recovery, and bounded async runtime behavior. Use when changing terminal UI, dock or panel shells, PTY session lifecycle, terminal focus, resize, transcript replay, session resume across workspace or app restarts, slot or attachment identity, native session IDs, or host-service terminal runtime code.
+description: Prevent terminal and PTY surface regressions in Electron desktop apps via shell/runtime separation, attach-detach lifecycle discipline, and session restore safety. Use when changing terminal UI, PTY session lifecycle, terminal focus, resize, transcript replay, session resume across restarts, or host-service terminal runtime code.
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:

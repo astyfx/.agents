@@ -1,6 +1,6 @@
 ---
 name: the-refine-prompt
-description: Refine a user's rough, ambiguous, or under-specified prompt into a clearer, more professional instruction for another AI. Use aggressively when the user asks to improve, polish, rewrite, tighten, clarify, structure, professionalize, sharpen, or optimize a prompt, task brief, handoff, request, system prompt, or agent instruction, and also when the user gives a fuzzy idea-dump rather than a clear execution directive. Best for turning rough intent into a prompt with explicit goal, scope, constraints, deliverables, assumptions, and success criteria.
+description: Refine a rough, ambiguous prompt into a clear instruction for another AI with explicit goal, scope, constraints, deliverables, and success criteria. Use when the user asks to improve, polish, rewrite, tighten, or optimize a prompt, task brief, system prompt, or agent instruction, or gives a fuzzy idea-dump instead of a clear directive.
 compatible-tools: [claude, codex]
 category: planning
 test-prompts:

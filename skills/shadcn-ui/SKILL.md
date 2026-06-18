@@ -1,6 +1,6 @@
 ---
 name: shadcn-ui
-description: Use when adding or updating shadcn/ui components, forms, dialogs, tables, or theme primitives in React apps. Prefer generating components with the shadcn CLI, preserving project aliases, and syncing semantic tokens instead of hand-writing copied wrappers. Good for Tailwind, Radix, Zod form work, and design-system-safe UI changes.
+description: Add or update shadcn/ui components, forms, dialogs, tables, or theme primitives in React apps via the shadcn CLI, preserving aliases and syncing semantic tokens. Use for Tailwind, Radix, Zod form work, and design-system-safe UI changes.
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

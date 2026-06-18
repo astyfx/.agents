@@ -1,6 +1,6 @@
 ---
 name: the-frontend-director
-description: Build production-grade frontend interfaces for existing-product repos, dashboards, admin panels, settings screens, onboarding flows, product pages, landing-page redesigns, and desktop-style Electron UI with strong product design judgment. Use this skill when the user asks to build, redesign, modernize, polish, or rethink a component, page, flow, or interface where layout, hierarchy, interaction, responsiveness, accessibility, or visual UX materially matter. Prefer existing-repo UI improvement first, dashboard/admin surfaces second, and Figma-backed implementation when designs exist. Default to a minimal, refined product style closer to Linear or Sentry than Jira or AWS, with restrained color and strong readability. Skip this skill for tiny CSS tweaks or logic-only fixes unless the user explicitly wants UI polish, redesign, or a stronger frontend result.
+description: Build production-grade frontend interfaces (dashboards, admin panels, settings, onboarding, Electron UI) with strong product design judgment, defaulting to a minimal Linear/Sentry-style aesthetic. Use to build, redesign, modernize, or polish a component/page/flow where layout, hierarchy, or visual UX matter. Skip tiny CSS tweaks or logic-only fixes.
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

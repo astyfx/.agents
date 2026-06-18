@@ -1,6 +1,6 @@
 ---
 name: the-motion-design
-description: "Design motion and micro-interactions for any product - transitions, hover/press feedback, enter/exit, loading, drag, and state changes - so the UI feels responsive and intentional instead of static or gratuitously animated. Use when adding or refining animation, deciding how an element should appear/disappear/respond, or making a UI feel alive. Triggers: '애니메이션 넣어줘', '전환 효과', '인터랙션 살려줘', '모션 디자인', 'hover 효과', 'loading 처리', 'make it feel smooth', 'add transitions', 'micro-interactions', 'animate this'. This skill teaches the METHOD - purpose, easing direction, performance, accessibility, and restraint; the product's existing motion language decides the actual durations and curves, which it never hardcodes from memory."
+description: "Design motion and micro-interactions (transitions, hover/press feedback, enter/exit, loading, drag, state changes) so UI feels responsive and intentional, not static or over-animated. Use when adding or refining animation. Triggers '애니메이션 넣어줘', '전환 효과', '모션 디자인', 'add transitions', 'animate this'."
 compatible-tools: [claude, codex]
 category: ui
 test-prompts:

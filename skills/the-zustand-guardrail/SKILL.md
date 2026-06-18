@@ -1,6 +1,6 @@
 ---
 name: the-zustand-guardrail
-description: Prevent Zustand selector and subscription anti-patterns that cause React runtime loops, hot-surface rerender storms, and stale UI. Use when editing useAppStore, useStore, useShallow, selector logic, list rendering, row subscriptions, task/workspace switching surfaces, or debugging Maximum update depth exceeded.
+description: Prevent Zustand selector and subscription anti-patterns that cause React runtime loops, rerender storms, and stale UI. Use when editing useAppStore, useStore, useShallow, selector logic, list rendering, row subscriptions, or debugging "Maximum update depth exceeded".
 compatible-tools: [claude, codex]
 category: safety
 test-prompts:
