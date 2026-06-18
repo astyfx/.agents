@@ -42,7 +42,6 @@ check "CONTEXT_LOADING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/CONTEXT_
 check "RESPONSE_STYLE.md exists" "[[ -f '${REPO_DIR}/docs/instructions/RESPONSE_STYLE.md' ]]"
 check "LIBRARIES.md exists" "[[ -f '${REPO_DIR}/docs/instructions/LIBRARIES.md' ]]"
 check "TRACKING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/TRACKING.md' ]]"
-check "ENGINEERING_GROWTH.md exists" "[[ -f '${REPO_DIR}/docs/instructions/ENGINEERING_GROWTH.md' ]]"
 check "ROUTING.md exists" "[[ -f '${REPO_DIR}/docs/instructions/ROUTING.md' ]]"
 check "TRACKING.md references execution/" "grep -q './execution/' '${REPO_DIR}/docs/instructions/TRACKING.md'"
 check "AGENTS.md references ARCHITECTURE.md" "grep -q 'ARCHITECTURE.md' '${REPO_DIR}/AGENTS.md'"

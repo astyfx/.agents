@@ -12,5 +12,8 @@ and not loaded or validated. Full history is in `git log`.
   `git log`; the harness no longer maintains a parallel narrative.
 - `scripts/` — eval/scorecard helper scripts (`new-eval-result.sh`,
   `summarize-evals.pl`, `scorecard.sh`).
+- `ENGINEERING_GROWTH.md` — agentic-engineering coaching doc. Was never routed
+  (no Core Docs / CONTEXT_LOADING entry) and overlapped the core behavioral
+  principles; retired 2026-06-19.
 
 To revive any of these, `git mv` it back and re-add the relevant references.

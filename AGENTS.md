@@ -21,13 +21,8 @@ Central policy hub for all agents (Claude, Codex, etc.).
 
 ## Behavioral Principles
 
-These shared coding-behavior defaults are adapted from
-`forrestchang/andrej-karpathy-skills`
-(https://github.com/forrestchang/andrej-karpathy-skills), which packages
-Karpathy-inspired guidance for common LLM coding pitfalls. Keep this
-attribution in place so future sessions can quickly reassess whether this
-adaptation still earns always-on status. These principles guide execution after
-user instructions and hard safety invariants.
+Shared coding-behavior defaults, applied after user instructions and hard safety
+invariants (provenance in `memory/decisions/2026-04-14-karpathy-guidelines-attribution-in-core-policy.md`):
 
 - Think before coding: state assumptions, surface ambiguity, and push back when
   a simpler or safer path is better.
@@ -79,13 +74,6 @@ user instructions and hard safety invariants.
 - `work-handoff.md` is cross-session scratch state.
 - `memory/` is operational memory: patterns, troubleshooting, playbooks,
   and decisions.
-
-## Harness Maintenance
-
-- The harness is a thin set of defaults plus on-demand skills, not a product to maintain. Resist accretion: prefer deleting or simplifying over adding.
-- Keep `ARCHITECTURE.md` accurate when you change harness structure or directory responsibilities. Other docs are optional; history lives in `git log`.
-- Keep `AGENTS.md` minimal; put flow detail in `ARCHITECTURE.md`, `ROUTING.md`, or skill docs.
-- When initializing agent config for a new project, use `~/.agents/scripts/init-repo.sh`.
 
 ## Prompt Routing Default
 

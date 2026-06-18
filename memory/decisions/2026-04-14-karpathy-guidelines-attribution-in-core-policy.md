@@ -35,7 +35,10 @@ The source packages four concise behavioral principles:
 ## Decision
 
 - Add a short `Behavioral Principles` section to `AGENTS.md`.
-- Keep explicit attribution to the source repository in that always-on section.
+- Keep the four principles in `AGENTS.md`; keep the source attribution/provenance
+  in this ADR. (Updated 2026-06-19: the attribution paragraph was removed from the
+  always-on `AGENTS.md` section to keep the core thin — per this ADR's own
+  Follow-Up Work — and `AGENTS.md` now points here for provenance.)
 - Adapt the four principles to this harness instead of importing the external
   `CLAUDE.md` verbatim.
 - Keep user instructions and hard safety invariants above these principles in

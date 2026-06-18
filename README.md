@@ -12,7 +12,6 @@ Unified home for Claude and Codex configuration.
 - `docs/instructions/RESPONSE_STYLE.md`: default response brevity and clarity rules.
 - `docs/instructions/LIBRARIES.md`: preferred libraries and dependency policy.
 - `docs/instructions/TRACKING.md`: lightweight execution-memory and handoff standard.
-- `docs/instructions/ENGINEERING_GROWTH.md`: agentic engineering coaching rules.
 - `execution/`: default execution-memory root for future substantial tasks.
 - `memory/`: operational memory for patterns, troubleshooting, playbooks, and decisions.
 - `skills/`: shared skill library.
