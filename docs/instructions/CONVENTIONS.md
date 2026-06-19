@@ -3,6 +3,15 @@
 Shared engineering conventions for all projects in this workspace.
 Use this as the default unless a project provides an explicit override.
 
+## Token & Context Discipline
+
+Tool I/O is the largest token sink, not the prompt. Keep the working context lean:
+
+- **Read narrowly.** Locate first (`grep`/`rg`, or an `Explore` agent), then read the slice that answers the question with `offset`/`limit`. Don't read a whole large file when a span will do; don't re-read a file already in context.
+- **Cap command output.** Pipe noisy commands through `head`/filters; prefer counts and summaries. Never paste a full test/build/log run into context — extract the failing lines and the verdict.
+- **Offload bulk reads.** Route multi-file or whole-directory sweeps to an `Explore`/`fork` subagent that returns conclusions, not file dumps. This keeps the main context small and avoids compaction, which re-bills the whole window.
+- **Do less.** Prefer the smallest change that solves the task: fewer tool calls, less generated scaffolding, no unrequested explanation. The cheapest tokens are the ones never produced.
+
 ## Naming
 
 - Files and directories: `kebab-case` (unless language/tooling convention requires otherwise)

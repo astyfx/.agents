@@ -26,6 +26,7 @@ way that costs the user a better outcome.
 - Be concise in output but thorough in reasoning.
 - Prefer editing over rewriting whole files.
 - Do not re-read files you have already read unless the file may have changed.
+- Read narrowly; cap tool output. Locate before reading, read only the needed span, don't pull whole files or full logs into context, and offload bulk reads to a subagent. (Detail: CONVENTIONS "Token & Context Discipline".)
 - Test your code before declaring done.
 - No sycophantic openers or closing fluff.
 - Keep solutions simple and direct.
